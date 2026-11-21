@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katy's Nails — bozze del sito</title>
+<link rel="stylesheet" href="fonts/archivo.css">
+<style>
+:root{--petrolio:#155E7C;--scuro:#0F3A4D;--rosso:#A51C27;--crema:#FCF7E4;--acqua:#50F1BF;--muted:#5E6B6E}
+*{box-sizing:border-box}
+body{margin:0;background:var(--crema);color:var(--scuro);font-family:'Archivo',system-ui,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:1200px;margin:0 auto;padding:32px 16px 60px}
+@media (min-width:760px){.wrap{padding:48px 32px 80px}}
+header{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+header img{width:64px;height:64px;border-radius:50%;background:#fff}
+h1{margin:0;font-weight:900;font-stretch:115%;font-size:clamp(30px,5vw,48px);line-height:1;color:var(--petrolio)}
+.intro{max-width:46em;margin:18px 0 40px;color:var(--muted)}
+.grid{display:grid;gap:28px}
+@media (min-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
+.card{background:#fff;border:1.5px solid var(--scuro);display:flex;flex-direction:column}
+.card img{width:100%;aspect-ratio:16/10;object-fit:cover;object-position:top;border-bottom:1.5px solid var(--scuro)}
+.card .body{padding:18px 18px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.card h2{margin:0;font-weight:800;font-stretch:115%;font-size:24px;line-height:1.1}
+.card h2 span{display:block;font-size:13px;font-weight:500;font-stretch:100%;letter-spacing:.08em;text-transform:uppercase;color:var(--rosso);margin-bottom:6px}
+.card p{margin:0;font-size:16px;color:#33474F}
+.card .links{margin-top:auto;padding-top:10px;display:flex;flex-wrap:wrap;gap:10px}
+.card a.go{background:var(--petrolio);color:#fff;text-decoration:none;font-weight:700;padding:11px 16px}
+.card a.alt{color:var(--petrolio);padding:11px 4px}
+.note{margin-top:40px;padding:18px 20px;border-left:4px solid var(--acqua);background:#fff;font-size:15px;max-width:52em}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header><img src="assets/logo-katys-nails.jpg" alt="Logo Katy's Nails"><h1>Katy's Nails<br>tre bozze del sito</h1></header>
+  <p class="intro">Tre direzioni diverse, tutte costruite sul logo (blu petrolio, acquamarina, rosso smalto), sulle foto del profilo e sui dati veri dello studio di Curcuris. Aprile dal telefono: è da lì che arriveranno quasi tutte le clienti.</p>
+  <div class="grid">
+    <article class="card">
+      <img src="screenshots/bozza-1-campionario-desktop-hero.jpg" alt="Anteprima bozza Campionario">
+      <div class="body">
+        <h2><span>Bozza 1</span>Campionario</h2>
+        <p>Grafico e moderno, come una cartella colori stampata. La parete tonda degli smalti dello studio diventa il selettore: tocchi una boccetta, la pagina si colora e il messaggio WhatsApp parte già con il numero del colore.</p>
+        <div class="links"><a class="go" href="bozza-1-campionario/">Apri la bozza</a><a class="alt" href="screenshots/bozza-1-campionario-mobile-full.jpg">Vista telefono</a></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="screenshots/bozza-2-quaderno-desktop-hero.jpg" alt="Anteprima bozza Quaderno">
+      <div class="body">
+        <h2><span>Bozza 2</span>Il quaderno di Katy</h2>
+        <p>Personale e caldo: Katy parla in prima persona, scritte a penna nel blu del logo, polaroid con lo scotch, post-it e il listino su foglio a righe. Si prenota compilando il classico biglietto dell'appuntamento.</p>
+        <div class="links"><a class="go" href="bozza-2-quaderno/">Apri la bozza</a><a class="alt" href="screenshots/bozza-2-quaderno-mobile-full.jpg">Vista telefono</a></div>
+      </div>
+    </article>
+    <article class="card">
+      <img src="screenshots/bozza-3-ricamo-desktop-hero.jpg" alt="Anteprima bozza Ricamo">
+      <div class="body">
+        <h2><span>Bozza 3</span>Ricamo</h2>
+        <p>Nasce dalla maglietta ricamata dello studio e dalla tessitura sarda: il nome a punto croce in filo rosso e blu, fasce di rombi, i lavori dentro i telai da ricamo. Un cartellino dice se lo studio è aperto adesso.</p>
+        <div class="links"><a class="go" href="bozza-3-ricamo/">Apri la bozza</a><a class="alt" href="screenshots/bozza-3-ricamo-mobile-full.jpg">Vista telefono</a></div>
+      </div>
+    </article>
+  </div>
+  <p class="note"><b>Cosa è vero e cosa no.</b> Nome, logo, indirizzo, telefono, Instagram e foto vengono dal profilo. Prezzi, orari, P.IVA, link Facebook e alcune frasi sono segnaposto: nelle bozze sono sottolineati con un tratteggio giallo.</p>
+</div>
+</body>
+</html>

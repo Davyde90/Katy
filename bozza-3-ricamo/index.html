@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katy's Nails — ricamato a Curcuris</title>
+<meta name="description" content="Katy's Nails, studio di onicotecnica a Curcuris (OR): semipermanente, gel, nail art e pedicure su appuntamento. Prenota su WhatsApp al 349 413 6132.">
+<link rel="stylesheet" href="../fonts/big-shoulders-display.css">
+<link rel="stylesheet" href="../fonts/familjen-grotesk.css">
+<style>
+:root{
+  --rosso:#B3202C;      /* il filo rosso della maglietta */
+  --petrolio:#155E7C;   /* il blu della scritta del logo */
+  --petrolio-scuro:#0E4258;
+  --acqua:#50F1BF;
+  --turchese:#42C3D6;
+  --lino:#F8F3E8;
+  --lino-2:#EFE7D6;
+  --legno:#D4AE73;
+  --legno-scuro:#9E7A43;
+  --text:#1F3440;
+  --muted:#5E6B6E;
+  --display:'Big Shoulders Display', 'Arial Narrow', sans-serif;
+  --sans:'Familjen Grotesk', system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;color:var(--text);font-family:var(--sans);font-size:18px;line-height:1.55;
+  background-color:var(--lino);
+  background-image:repeating-linear-gradient(0deg,rgba(110,90,50,.05) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(110,90,50,.045) 0 1px,transparent 1px 4px)}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 16px}
+@media (min-width:760px){.wrap{padding:0 32px}}
+:focus-visible{outline:3px dashed var(--rosso);outline-offset:4px}
+.stitch-line{height:0;border-top:2.5px dashed var(--rosso);opacity:.9}
+
+/* testata */
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none}
+.brand img{width:52px;height:52px;border-radius:50%;background:#fff;outline:2px dashed var(--petrolio);outline-offset:3px}
+.brand b{font-family:var(--display);font-weight:800;font-size:24px;letter-spacing:.04em;text-transform:uppercase;color:var(--petrolio)}
+.top nav{display:none;gap:26px;font-weight:600;font-size:16px}
+.top nav a{text-decoration:none;padding-bottom:3px}
+.top nav a:hover{border-bottom:2px dashed var(--rosso)}
+@media (min-width:900px){.top nav{display:flex}}
+
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 20px;background:var(--rosso);color:#fff;text-decoration:none;font-weight:700;font-size:16px;border-radius:4px;outline:2px dashed rgba(255,255,255,.75);outline-offset:-6px;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.blue{background:var(--petrolio)}
+.btn.line{background:transparent;color:var(--petrolio);outline-color:var(--petrolio);outline-offset:-1px;outline-width:2px}
+.btn.small{padding:10px 15px;font-size:15px}
+
+/* cartellino aperto/chiuso */
+.tag-open{display:inline-flex;align-items:center;gap:10px;background:#fff;padding:8px 14px 8px 12px;border-radius:4px;font-weight:600;font-size:15px;position:relative;outline:1.5px dashed var(--muted);outline-offset:-5px;box-shadow:0 6px 16px -10px rgba(0,0,0,.4)}
+.tag-open::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--dot,#999);box-shadow:0 0 0 3px color-mix(in srgb,var(--dot,#999) 25%,transparent)}
+.tag-open.open{--dot:#1FA67A}
+.tag-open.closed{--dot:var(--rosso)}
+
+/* hero */
+.hero{display:grid;gap:40px;padding:30px 0 70px}
+@media (min-width:980px){.hero{grid-template-columns:1.1fr .9fr;gap:50px;align-items:center;padding:40px 0 90px}}
+.kicker{font-weight:700;font-size:14px;letter-spacing:.14em;text-transform:uppercase;color:var(--petrolio);margin:0 0 22px;display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.wordmark{width:100%;height:auto;max-width:640px}
+.wordmark-wrap{position:relative}
+.lead{font-family:var(--display);font-weight:700;text-transform:uppercase;font-size:clamp(30px,4.2vw,48px);line-height:1;color:var(--petrolio);margin:30px 0 14px;letter-spacing:.01em}
+.lead em{font-style:normal;color:var(--rosso)}
+.hero p.sub{margin:0 0 26px;max-width:32em;font-size:19px}
+.hero .cta{display:flex;flex-wrap:wrap;gap:12px}
+
+/* telaio da ricamo */
+.hoop{position:relative;aspect-ratio:1/1;border-radius:50%;width:var(--size,100%);margin:28px auto 0;
+  box-shadow:0 0 0 9px var(--legno),0 0 0 11px var(--legno-scuro),0 0 0 15px var(--legno),0 0 0 17px var(--legno-scuro),0 26px 40px -10px rgba(60,40,10,.45)}
+.hoop img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.hoop::before{content:"";position:absolute;left:50%;top:-30px;transform:translateX(-50%);width:30px;height:26px;background:var(--legno);border:2px solid var(--legno-scuro);border-radius:3px}
+.hoop::after{content:"";position:absolute;left:50%;top:-38px;transform:translateX(-50%);width:46px;height:10px;background:linear-gradient(#C9CBD0,#8D9096);border-radius:5px;border:1px solid #6F7277}
+.hoop-cap{text-align:center;margin:34px 0 0;font-size:15px;color:var(--muted)}
+.hero .hoop{--size:min(100%,470px)}
+
+/* fasce a punto croce */
+.band{display:block;width:100%;height:auto}
+.band-wrap{overflow:hidden;padding:6px 0}
+
+/* sezioni */
+.sec{padding:80px 0}
+.sec-title{display:flex;align-items:center;gap:14px;margin:0 0 34px;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(44px,7vw,84px);line-height:.9;letter-spacing:.005em;color:var(--petrolio)}
+.sec-title svg{width:clamp(30px,4vw,44px);height:auto;flex:none}
+.sec-sub{margin:-20px 0 34px;max-width:40em;color:var(--muted)}
+
+/* stoffa blu */
+.fabric{background-color:var(--petrolio);color:#F4EFE3;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.05) 0 1px,transparent 1px 4px),repeating-linear-gradient(90deg,rgba(0,0,0,.06) 0 1px,transparent 1px 4px)}
+.fabric .sec-title{color:#F4EFE3}
+.fabric .sec-sub{color:rgba(244,239,227,.75)}
+
+/* etichette cucite (listino) */
+.labels{display:grid;gap:22px}
+@media (min-width:760px){.labels{grid-template-columns:1fr 1fr}}
+@media (min-width:1100px){.labels{grid-template-columns:repeat(4,1fr)}}
+.label{background:var(--lino);color:var(--text);padding:26px 22px 22px;border-radius:3px;outline:2px dashed var(--rosso);outline-offset:-9px;position:relative;box-shadow:0 14px 30px -18px rgba(0,0,0,.55)}
+.label:nth-child(2){outline-color:var(--petrolio)}
+.label:nth-child(4){outline-color:var(--petrolio)}
+.label h3{margin:0 0 4px;font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:32px;line-height:1;color:var(--petrolio)}
+.label .what{margin:0 0 16px;color:var(--muted);font-size:15px}
+.label ul{list-style:none;margin:0;padding:0}
+.label li{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1.5px dashed rgba(31,52,64,.25);font-size:16px}
+.label li b{font-family:var(--display);font-weight:700;font-size:22px;color:var(--rosso);white-space:nowrap;line-height:1.1}
+.fabric .fine{margin:26px 0 0;font-size:15px;color:rgba(244,239,227,.75)}
+
+/* lavori nei telai */
+.hoops{display:grid;gap:70px 40px;grid-template-columns:1fr 1fr;padding-top:20px}
+@media (min-width:900px){.hoops{grid-template-columns:repeat(4,1fr)}}
+.hoops figure{margin:0}
+.hoops .hoop{--size:86%}
+.hoops figcaption{text-align:center;margin-top:30px;font-weight:600}
+.hoops figcaption span{display:block;font-weight:400;font-size:14px;color:var(--muted)}
+.ig{margin-top:50px;display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+.ig .count{font-family:var(--display);font-weight:800;font-size:clamp(48px,7vw,80px);line-height:.9;color:var(--rosso)}
+
+/* katy */
+.about{display:grid;gap:40px;align-items:center}
+@media (min-width:900px){.about{grid-template-columns:1fr 1fr;gap:70px}}
+.quote{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:clamp(40px,5.6vw,70px);line-height:.95;color:var(--petrolio);margin:0 0 26px}
+.quote em{font-style:normal;color:var(--rosso)}
+.about p{margin:0 0 16px}
+.framed{background:#fff;padding:14px;outline:2.5px dashed var(--rosso);outline-offset:-24px;box-shadow:0 20px 40px -22px rgba(60,40,10,.5);transform:rotate(1.2deg)}
+.framed img{width:100%;aspect-ratio:4/5;object-fit:cover}
+
+/* prenota e dove */
+.visit{display:grid;gap:30px}
+@media (min-width:900px){.visit{grid-template-columns:1fr 1fr;gap:40px;align-items:start}}
+.tips{margin:26px 0 0;padding:18px 0 0;border-top:1.5px dashed rgba(31,52,64,.3);list-style:none;display:grid;gap:10px;font-size:16px}
+.tips li{position:relative;padding-left:20px}
+.tips li::before{content:"×";position:absolute;left:0;color:var(--rosso);font-weight:700}
+.panel{background:#fff;color:var(--text);border-radius:4px;padding:30px 26px;outline:2px dashed var(--petrolio);outline-offset:-10px;box-shadow:0 18px 40px -26px rgba(60,40,10,.5)}
+.panel.red{outline-color:var(--rosso)}
+.panel h3{font-family:var(--display);font-weight:800;text-transform:uppercase;font-size:40px;line-height:1;color:var(--petrolio);margin:0 0 12px}
+.panel .phone{font-family:var(--display);font-weight:800;font-size:clamp(44px,6vw,64px);line-height:1;color:var(--rosso);text-decoration:none;display:block;margin:8px 0 18px}
+.panel .acts{display:flex;flex-wrap:wrap;gap:12px}
+.bottle{width:54px;height:auto;float:right;margin:-6px 0 0 12px}
+.addr{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.05;text-transform:uppercase;color:var(--petrolio);margin:4px 0 16px}
+.hours{width:100%;border-collapse:collapse;margin:18px 0 18px}
+.hours td{padding:9px 0;border-top:1.5px dashed rgba(31,52,64,.25);font-size:17px}
+.hours td:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.hours tr.today td{font-weight:700;color:var(--rosso)}
+
+.todo{text-decoration:underline dashed #C08A00 1.5px;text-underline-offset:5px}
+
+footer{padding:30px 0 40px}
+.foot{display:grid;gap:20px;align-items:center;margin-top:30px;font-size:14px;color:var(--muted)}
+@media (min-width:760px){.foot{grid-template-columns:auto 1fr auto}}
+.foot img{width:90px;height:90px;border-radius:50%;background:#fff;outline:2px dashed var(--rosso);outline-offset:4px}
+.draft{display:block;margin:24px auto 0;width:max-content;background:var(--petrolio-scuro);color:#fff;font-size:12px;padding:6px 10px;text-decoration:none;letter-spacing:.04em}
+@media (min-width:900px){.draft{position:fixed;left:10px;bottom:10px;margin:0;z-index:9}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="#"><img src="../assets/logo-katys-nails.jpg" alt=""><b>Katy's Nails</b></a>
+    <nav aria-label="Sezioni"><a href="#servizi">Servizi e prezzi</a><a href="#lavori">Lavori</a><a href="#katy">Katy</a><a href="#vieni">Dove e orari</a></nav>
+    <a class="btn small" href="#vieni">Prenota</a>
+  </header>
+
+  <section class="hero">
+    <div>
+      <p class="kicker"><span>Onicotecnica · Curcuris (OR)</span><span class="tag-open" id="openTag">…</span></p>
+      <div class="wordmark-wrap">
+        <h1 style="margin:0"><span class="sr" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Katy's Nails</span><svg class="wordmark" id="wordmark" role="img" aria-label="Katy's Nails, ricamato a punto croce"></svg></h1>
+      </div>
+      <p class="lead">Unghie curate <em>punto per punto.</em></p>
+      <p class="sub">Semipermanente, ricostruzione in gel, nail art e pedicure nello studio di Katy, in Via Grazia Deledda. Su appuntamento, una cliente alla volta.</p>
+      <div class="cta">
+        <a class="btn" id="waHero" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota su WhatsApp</a>
+        <a class="btn line" href="tel:+393494136132">Chiama 349 413 6132</a>
+      </div>
+    </div>
+    <div>
+      <div class="hoop"><img src="../assets/ig-maglietta.jpg" alt="Maglietta con Katy's Nails ricamato in rosso e blu" style="object-position:50% 0%"></div>
+      <p class="hoop-cap">Il nome ricamato sulla maglietta dello studio: da qui nasce questo sito.</p>
+    </div>
+  </section>
+</div>
+
+<div class="band-wrap" aria-hidden="true"><svg class="band" id="band1"></svg></div>
+
+<section class="sec fabric" id="servizi">
+  <div class="wrap">
+    <h2 class="sec-title"><svg class="diamond" viewBox="0 0 50 50" aria-hidden="true"></svg>Servizi e prezzi</h2>
+    <p class="sec-sub">Prezzi indicativi <span class="todo">da confermare</span>: il preventivo giusto te lo fa Katy guardando le tue unghie.</p>
+    <div class="labels">
+      <div class="label"><h3>Semipermanente</h3><p class="what">Dura 2–3 settimane, si toglie senza limare l'unghia.</p>
+        <ul><li>Mani<b class="todo">€ 25</b></li><li>Piedi<b class="todo">€ 22</b></li><li>Rimozione<b class="todo">€ 12</b></li></ul></div>
+      <div class="label"><h3>Gel</h3><p class="what">Per allungare o rinforzare le unghie naturali.</p>
+        <ul><li>Ricostruzione<b class="todo">€ 50</b></li><li>Refill (3–4 sett.)<b class="todo">€ 40</b></li><li>Copertura<b class="todo">€ 35</b></li></ul></div>
+      <div class="label"><h3>Nail art</h3><p class="what">Disegni a mano libera, glitter, strass, french.</p>
+        <ul><li>A unghia<b class="todo">da € 2</b></li><li>French / babyboomer<b class="todo">+ € 5</b></li><li>Cromo / aurora<b class="todo">+ € 5</b></li></ul></div>
+      <div class="label"><h3>Piedi</h3><p class="what">Pedicure estetico con smalto o semipermanente.</p>
+        <ul><li>Pedicure estetico<b class="todo">€ 30</b></li><li>Con semipermanente<b class="todo">€ 40</b></li></ul></div>
+    </div>
+  </div>
+</section>
+
+<div class="band-wrap" aria-hidden="true"><svg class="band" id="band2"></svg></div>
+
+<section class="sec" id="lavori">
+  <div class="wrap">
+    <h2 class="sec-title"><svg class="diamond" viewBox="0 0 50 50" aria-hidden="true"></svg>Lavori</h2>
+    <div class="hoops">
+      <figure><div class="hoop"><img src="../assets/ig-salvia.jpg" alt="Semipermanente verde salvia con un'unghia glitter" loading="lazy" style="object-position:50% 25%"></div><figcaption>Salvia e glitter<span>semipermanente</span></figcaption></figure>
+      <figure><div class="hoop"><img src="../assets/ig-french.jpg" alt="French sottile" loading="lazy"></div><figcaption>French sottile<span>base nude</span></figcaption></figure>
+      <figure><div class="hoop"><img src="../assets/ig-latte.jpg" alt="Unghie rosa latte" loading="lazy"></div><figcaption>Rosa latte<span>effetto naturale</span></figcaption></figure>
+      <figure><div class="hoop"><img src="../assets/ig-corallo.jpg" alt="Unghie rosa fragola" loading="lazy"></div><figcaption>Fragola<span>lucido pieno</span></figcaption></figure>
+    </div>
+    <div class="ig"><span class="count">1.018</span><span>post su Instagram, e ogni settimana ne arrivano di nuovi.</span><a class="btn blue" href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">@katys.nails.studio90</a></div>
+  </div>
+</section>
+
+<div class="band-wrap" aria-hidden="true"><svg class="band" id="band3"></svg></div>
+
+<section class="sec" id="katy">
+  <div class="wrap about">
+    <div>
+      <h2 class="sec-title"><svg class="diamond" viewBox="0 0 50 50" aria-hidden="true"></svg>Katy</h2>
+      <p class="quote">Onicotecnica, <em>in continua formazione.</em></p>
+      <p>Sono Katiuscia, per tutte Katy. Ho aperto il mio studio a Curcuris per fare le unghie come piacciono a me: con calma, con prodotti professionali e strumenti sterilizzati, una cliente alla volta.</p>
+      <p class="todo">[Due righe vere: da quando lavora, i corsi che ha fatto, cosa le piace fare di più.]</p>
+    </div>
+    <div class="framed"><img src="../assets/ig-parete.jpg" alt="Katy davanti alla parete tonda degli smalti" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="sec fabric" id="vieni">
+  <div class="wrap">
+    <h2 class="sec-title"><svg class="diamond" viewBox="0 0 50 50" aria-hidden="true"></svg>Vieni in studio</h2>
+    <div class="visit">
+      <div class="panel red">
+        <svg class="bottle" id="bottle" aria-hidden="true"></svg>
+        <h3>Prenota</h3>
+        <p>Scrivi o chiama: Katy ti risponde con il primo posto libero.</p>
+        <a class="phone" href="tel:+393494136132">349 413 6132</a>
+        <div class="acts"><a class="btn" id="waBook" href="https://wa.me/393494136132" target="_blank" rel="noopener">Scrivi su WhatsApp</a><a class="btn line" href="tel:+393494136132">Chiama</a></div>
+        <ul class="tips"><li>Hai visto un lavoro su Instagram? Manda lo screenshot: Katy ti dice tempi e prezzo.</li><li>Vieni con le unghie senza smalto: la rimozione del semipermanente la fa lei.</li><li>Se non puoi venire, avvisa <span class="todo">almeno un giorno prima</span>.</li></ul>
+      </div>
+      <div class="panel">
+        <h3>Dove</h3>
+        <p class="addr">Via Grazia Deledda 2a<br>Curcuris (OR)</p>
+        <span class="tag-open" id="openTag2">…</span>
+        <table class="hours" id="hours"></table>
+        <a class="btn blue small" href="https://www.google.com/maps/search/?api=1&query=Via+Grazia+Deledda+2a+Curcuris+OR" target="_blank" rel="noopener">Apri in Maps</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="band-wrap" aria-hidden="true"><svg class="band" id="band4"></svg></div>
+  <div class="wrap">
+    <div class="foot">
+      <img src="../assets/logo-katys-nails.jpg" alt="Logo Katy's Nails">
+      <div>Katy's Nails di Katiuscia Manias · Via Grazia Deledda 2a, Curcuris (OR) · P.IVA <span class="todo">00000000000</span><br>
+        <a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Instagram</a> · <a href="#" class="todo">Facebook</a> · <a href="tel:+393494136132">349 413 6132</a></div>
+      <div><a href="#">Privacy</a> · <a href="#">Cookie</a></div>
+    </div>
+    <a class="draft" href="../">Bozza 3/3 · Ricamo</a>
+  </div>
+</footer>
+
+<script>
+// ===== DATI DA CONFERMARE =====
+const WHATSAPP = "393494136132"; // dalla bio Instagram: verificare che sia su WhatsApp
+// orari: per ogni giorno (0 = domenica) le fasce [apertura, chiusura] in "hh:mm"
+const ORARI = {
+  0: [], 1: [],
+  2: [["09:00","13:00"],["15:00","19:00"]], 3: [["09:00","13:00"],["15:00","19:00"]],
+  4: [["09:00","13:00"],["15:00","19:00"]], 5: [["09:00","13:00"],["15:00","19:00"]],
+  6: [["09:00","14:00"]]
+};
+// ===============================
+
+const $ = s => document.querySelector(s);
+const ROSSO = ["#A51C27","#C9363F"], BLU = ["#125570","#2A7697"];
+
+// --- punto croce: ogni "x" della matrice diventa una crocetta di filo ---
+function stitches(rows, colorOf, cell = 10, w = 2.7){
+  let out = "";
+  rows.forEach((row, y) => [...row].forEach((ch, x) => {
+    const col = colorOf(ch, x, y); if (!col) return;
+    const X = x*cell, Y = y*cell, a = 1.8, b = cell-1.8;
+    out += `<path d="M${X+a},${Y+a}L${X+b},${Y+b}" stroke="${col[0]}"/><path d="M${X+b},${Y+a}L${X+a},${Y+b}" stroke="${col[1]}"/>`;
+  }));
+  return `<g stroke-width="${w}" stroke-linecap="round" fill="none">${out}</g>`;
+}
+
+// alfabeto 5x7 solo per le lettere che servono
+const FONT = {
+  K:["x...x","x..x.","x.x..","xx...","x.x..","x..x.","x...x"],
+  A:[".xxx.","x...x","x...x","xxxxx","x...x","x...x","x...x"],
+  T:["xxxxx","..x..","..x..","..x..","..x..","..x..","..x.."],
+  Y:["x...x","x...x",".x.x.","..x..","..x..","..x..","..x.."],
+  "'":["x","x","x",".",".",".","."],
+  S:[".xxxx","x....","x....",".xxx.","....x","....x","xxxx."],
+  N:["x...x","xx..x","x.x.x","x.x.x","x..xx","x...x","x...x"],
+  I:["xxx",".x.",".x.",".x.",".x.",".x.","xxx"],
+  L:["x....","x....","x....","x....","x....","x....","xxxxx"]
+};
+function word(text){
+  const rows = ["","","","","","",""];
+  [...text].forEach((ch, i) => { const g = FONT[ch]; rows.forEach((_, r) => rows[r] += (i ? "." : "") + g[r]); });
+  return rows;
+}
+(function wordmark(){
+  const l1 = word("KATY'S"), l2 = word("NAILS");
+  const cols = Math.max(l1[0].length, l2[0].length), cell = 10;
+  const rows = [...l1, ".", ".", ...l2.map(r => r.padEnd(cols, "."))];
+  const svg = stitches(rows, (ch, x, y) => ch === "x" ? (y < 7 ? ROSSO : BLU) : null, cell, 3);
+  // filo che corre sotto la scritta (punto filza)
+  const yy = rows.length*cell + 14;
+  const filo = `<path d="M2,${yy} C${cols*cell*.3},${yy-8} ${cols*cell*.6},${yy+8} ${cols*cell-6},${yy-2}" stroke="#A51C27" stroke-width="2.2" stroke-dasharray="9 7" fill="none" stroke-linecap="round"/>`;
+  const el = $("#wordmark");
+  el.setAttribute("viewBox", `0 0 ${cols*cell} ${yy+8}`);
+  el.innerHTML = svg + filo;
+})();
+
+// --- fascia di rombi in stile tessitura sarda (un modulo che si ripete) ---
+const MODULO = (() => {
+  const W = 14, H = 9, rows = [];
+  for (let y = 0; y < H; y++){
+    let r = "";
+    for (let x = 0; x < W; x++){
+      const d = Math.abs(x-6.5) + Math.abs(y-4);
+      let c = ".";
+      if (d === 4.5 || d === 0.5) c = "r";
+      else if (d === 2.5) c = "b";
+      else if (y === 4 && d > 4.5) c = "b";
+      else if ((x === 0 || x === W-1) && (y === 0 || y === 8)) c = "r";
+      r += c;
+    }
+    rows.push(r);
+  }
+  return stitches(rows, ch => ch === "r" ? ROSSO : ch === "b" ? BLU : null, 10, 2.6);
+})();
+document.querySelectorAll(".band").forEach((el, i) => {
+  const h = window.innerWidth < 700 ? 36 : 50, k = h / 90;
+  el.setAttribute("height", h); el.style.height = h + "px";
+  el.innerHTML = `<defs><pattern id="rombi${i}" width="${140*k}" height="${h}" patternUnits="userSpaceOnUse"><g transform="scale(${k})">${MODULO}</g></pattern></defs><rect width="100%" height="100%" fill="url(#rombi${i})"/>`;
+});
+
+// --- rombo piccolo per i titoli ---
+document.querySelectorAll(".diamond").forEach((el, i) => {
+  const rows = ["..x..",".x.x.","x.x.x",".x.x.","..x.."];
+  el.innerHTML = stitches(rows, (ch, x, y) => ch === "x" ? ((x+y) % 4 === 2 ? BLU : ROSSO) : null, 10, 2.8);
+  if (el.closest(".fabric")) el.innerHTML = stitches(rows, ch => ch === "x" ? ["#F4EFE3","#FFFFFF"] : null, 10, 2.8);
+});
+
+// --- boccetta di smalto ricamata, come sulla maglietta ---
+(function(){
+  const rows = ["...bbb...","...bbb...","...bbb...","..bbbbb..",".rrrrrrr.","rrrrrrrrr","r.rrrrrrr","r.rrrrrrr","rrrrrrrrr","rrrrrrrrr",".rrrrrrr."];
+  const el = $("#bottle");
+  el.setAttribute("viewBox", "0 0 90 110");
+  el.innerHTML = stitches(rows, ch => ch === "r" ? ROSSO : ch === "b" ? BLU : null, 10, 2.8);
+})();
+
+// --- orari e cartellino aperto/chiuso calcolato dall'ora attuale ---
+const GIORNI = ["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+const min = t => { const [h, m] = t.split(":").map(Number); return h*60 + m; };
+const fmt = t => t.replace(/^0/, "");
+$("#hours").innerHTML = [1,2,3,4,5,6,0].map(d => {
+  const f = ORARI[d];
+  const txt = f.length ? f.map(([a, b]) => `${fmt(a)}–${fmt(b)}`).join(" · ") : "chiuso";
+  return `<tr class="${d === new Date().getDay() ? "today" : ""}"><td>${GIORNI[d][0].toUpperCase() + GIORNI[d].slice(1)}</td><td class="todo">${txt}</td></tr>`;
+}).join("");
+
+function stato(now = new Date()){
+  const d = now.getDay(), m = now.getHours()*60 + now.getMinutes();
+  for (const [a, b] of ORARI[d]) if (m >= min(a) && m < min(b)) return { open: true, text: `Aperto adesso · fino alle ${fmt(b)}` };
+  for (let k = 0; k < 8; k++){
+    const dd = (d + k) % 7;
+    for (const [a] of ORARI[dd]) {
+      if (k === 0 && min(a) <= m) continue;
+      const quando = k === 0 ? "oggi" : k === 1 ? "domani" : GIORNI[dd];
+      return { open: false, text: `Chiuso adesso · riapre ${quando} alle ${fmt(a)}` };
+    }
+  }
+  return { open: false, text: "Chiuso" };
+}
+function aggiornaStato(){
+  const s = stato();
+  ["#openTag","#openTag2"].forEach(sel => { const el = $(sel); el.textContent = s.text; el.className = "tag-open " + (s.open ? "open" : "closed"); });
+}
+aggiornaStato(); setInterval(aggiornaStato, 60000);
+
+const wa = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Ciao Katy! Vorrei prenotare un appuntamento.")}`;
+$("#waHero").href = wa; $("#waBook").href = wa;
+</script>
+</body>
+</html>
