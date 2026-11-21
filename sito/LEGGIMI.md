@@ -27,6 +27,23 @@ Questo è il sito vero, nato dalla bozza C (Rosa lucido). Katy può aggiornarlo 
 
 La pagina iniziale del pannello mostra cosa manca ancora: prezzi da confermare, P.IVA, poche foto, ecc.
 
+## Cosa comprare
+
+Basta un hosting Linux base. Prima di comprare, controlla che abbia:
+
+| Serve | Perché |
+|---|---|
+| **PHP 8.1 o più recente** (meglio 8.2 o 8.3) | il sito e il pannello sono scritti in PHP |
+| **Estensione GD** con supporto WebP | per ridimensionare le foto caricate da Katy (c'è quasi sempre) |
+| **Apache o LiteSpeed** | leggono i file `.htaccess` con le regole di sicurezza |
+| **Certificato SSL gratuito** (Let's Encrypt) | per avere `https://` e proteggere la password del pannello |
+| **Dominio incluso**, per esempio `katysnails.it` | l'indirizzo del sito |
+| **Accesso FTP** o file manager | per caricare i file |
+
+**Non serve**: database MySQL, Node.js, WordPress. Lo spazio non è un problema: 1 GB basta per migliaia di foto, perché ognuna pesa 50–150 KB.
+
+Vanno bene, per esempio, i pacchetti base di Aruba, Register.it, Netsons o SiteGround. Controlla nella scheda dell'offerta la versione di PHP. Vercel, Netlify e GitHub Pages vanno bene solo per l'anteprima, perché non eseguono PHP.
+
 ## Messa online
 
 **Serve:** un hosting con PHP 8.1 o più recente e l'estensione GD, cioè quasi tutti (Aruba, Register.it, SiteGround, Netsons…). È consigliato Apache, perché le regole di sicurezza sono nei file `.htaccess`.

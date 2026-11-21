@@ -73,7 +73,7 @@ function kn_import_image(string $path): array
     imagedestroy($big);
     imagedestroy($small);
 
-    return ['file' => "uploads/$base.$ext", 'thumb' => "uploads/$base-t.$ext", 'w' => $bw, 'h' => $bh, 'didascalia' => ''];
+    return ['file' => "uploads/$base.$ext", 'thumb' => "uploads/$base-t.$ext", 'didascalia' => '', 'apertura' => false, 'w' => $bw, 'h' => $bh];
 }
 
 function kn_fix_orientation($img, int $o)

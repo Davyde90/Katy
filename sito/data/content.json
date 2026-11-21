@@ -155,37 +155,42 @@
             {
                 "file": "uploads/20261121-e12d07703976.webp",
                 "thumb": "uploads/20261121-e12d07703976-t.webp",
+                "didascalia": "Rosa fragola lucido",
+                "apertura": true,
                 "w": 710,
-                "h": 372,
-                "didascalia": "Rosa fragola lucido"
+                "h": 372
             },
             {
                 "file": "uploads/20261121-7a33137fe847.webp",
                 "thumb": "uploads/20261121-7a33137fe847-t.webp",
+                "didascalia": "Salvia con un dito glitter",
+                "apertura": true,
                 "w": 710,
-                "h": 944,
-                "didascalia": "Salvia con un dito glitter"
+                "h": 944
             },
             {
                 "file": "uploads/20261121-0f730c578a9b.webp",
                 "thumb": "uploads/20261121-0f730c578a9b-t.webp",
+                "didascalia": "French sottile",
+                "apertura": true,
                 "w": 710,
-                "h": 372,
-                "didascalia": "French sottile"
+                "h": 372
             },
             {
                 "file": "uploads/20261121-e0dcf2bb16c1.webp",
                 "thumb": "uploads/20261121-e0dcf2bb16c1-t.webp",
+                "didascalia": "Rosa latte",
+                "apertura": true,
                 "w": 712,
-                "h": 372,
-                "didascalia": "Rosa latte"
+                "h": 372
             },
             {
                 "file": "uploads/20261121-679b4338b60c.webp",
                 "thumb": "uploads/20261121-679b4338b60c-t.webp",
+                "didascalia": "La maglietta dello studio",
+                "apertura": false,
                 "w": 550,
-                "h": 944,
-                "didascalia": "La maglietta dello studio"
+                "h": 944
             }
         ]
     },
@@ -324,5 +329,5 @@
         "titolo": "Katy's Nails · Salone per la cura delle unghie a Curcuris (OR)",
         "descrizione": "Copertura in gel, semipermanente, smalto e nail art a Curcuris (Oristano). Su appuntamento: prenota su WhatsApp al 349 413 6132."
     },
-    "aggiornato": "2026-11-21T15:38:06+01:00"
+    "aggiornato": "2026-11-21T20:23:22+01:00"
 }

@@ -107,6 +107,7 @@ function kn_clean_value(array $f, $v)
                     'file' => $it['file'],
                     'thumb' => kn_upload_exists($thumb) ? $thumb : $it['file'],
                     'didascalia' => kn_clean_text($it['didascalia'] ?? '', 80),
+                    'apertura' => !empty($it['apertura']),
                     'w' => max(0, (int) ($it['w'] ?? 0)),
                     'h' => max(0, (int) ($it['h'] ?? 0)),
                 ];

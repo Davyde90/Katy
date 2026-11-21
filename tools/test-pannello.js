@@ -68,6 +68,13 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.waitForTimeout(500);
   check(await page.$$eval('.gi', x => x.length) === prima + 1, 'la foto compare nella galleria del pannello');
   check((await site()).match(/class="shot/g).length === prima + 1, 'la foto compare sul sito');
+  const nSlides = h => ((h.match(/data-slides="([^"]*)"/) || [, ''])[1].match(/&quot;src&quot;/g) || []).length;
+  const slidesPrima = nSlides(await site());
+  await page.click('.gi >> nth=0 >> .star');
+  check(await page.getAttribute('.gi >> nth=0 >> .star', 'aria-pressed') === 'true', 'la stellina "in apertura" si accende');
+  await page.click('#salva');
+  await toast('Salvato');
+  check(nSlides(await site()) === slidesPrima + 1, 'la foto con la stellina si alterna in apertura');
   await page.setInputFiles('.uploader input[type=file]', [process.env.FINTA]);
   check((await toast('Formato')).includes('Formato non supportato'), 'rifiuta un file che non è una foto');
 

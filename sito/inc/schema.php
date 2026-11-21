@@ -80,7 +80,7 @@ return [
         ],
     ],
     [
-        'key' => 'galleria', 'titolo' => 'Galleria', 'descr' => 'Le foto dei lavori. Puoi caricarle direttamente dal telefono.',
+        'key' => 'galleria', 'titolo' => 'Galleria', 'descr' => 'Le foto dei lavori. Puoi caricarle direttamente dal telefono. Con la stellina scegli quali si alternano nella foto grande in apertura.',
         'fields' => [
             ['k' => 'intro', 't' => 'textarea', 'l' => 'Frase di presentazione', 'max' => 200],
             ['k' => 'foto', 't' => 'gallery', 'l' => 'Foto', 'max' => 80],

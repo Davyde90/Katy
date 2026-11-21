@@ -550,8 +550,13 @@
       grid.replaceChildren.apply(grid, arr.map(function (g, i) {
         var cap = h('input', { type: 'text', value: g.didascalia || '', maxlength: 80, placeholder: 'Descrizione (facoltativa)', 'aria-label': 'Descrizione foto ' + (i + 1) });
         cap.addEventListener('input', function () { g.didascalia = cap.value; changed(); });
+        var star = h('button', {
+          type: 'button', class: 'star' + (g.apertura ? ' on' : ''), 'aria-pressed': String(!!g.apertura),
+          title: 'Mostra questa foto nella foto grande in apertura', text: g.apertura ? '★ In apertura' : '☆ In apertura',
+          onclick: function () { g.apertura = !g.apertura; changed(); paint(); }
+        });
         return h('div', { class: 'gi' },
-          h('img', { src: url(g.thumb), alt: g.didascalia || '', loading: 'lazy' }),
+          h('div', { class: 'gi-img' }, h('img', { src: url(g.thumb), alt: g.didascalia || '', loading: 'lazy' }), star),
           h('div', { class: 'gi-b' }, cap, h('div', { class: 'gi-a' },
             h('button', { type: 'button', class: 'ib', 'aria-label': 'Sposta prima', text: '←', disabled: i === 0, onclick: function () { arr.splice(i - 1, 0, arr.splice(i, 1)[0]); changed(); paint(); } }),
             h('span', { class: 'n', text: String(i + 1) }),

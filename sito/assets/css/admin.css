@@ -159,6 +159,10 @@ body.gate{min-height:100vh;display:grid;place-items:center;padding:20px;backgrou
 @media (min-width:1100px){.gal{grid-template-columns:repeat(4,1fr)}}
 .gi{background:#fff;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
 .gi img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.gi-img{position:relative}
+.gi .star{position:absolute;left:8px;top:8px;border:0;border-radius:999px;padding:6px 10px;font:600 13px/1 var(--sans);background:rgba(255,255,255,.92);color:var(--ink);cursor:pointer}
+.gi .star.on{background:#F5A524;color:#fff}
+.gi .star:focus-visible{outline:3px solid var(--petrolio)}
 .gi .gi-b{padding:8px;display:grid;gap:8px}
 .gi input{width:100%;border:1.5px solid var(--line);border-radius:10px;padding:8px 10px;font-size:14px}
 .gi .gi-a{display:flex;justify-content:space-between}

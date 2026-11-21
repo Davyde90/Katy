@@ -15,6 +15,21 @@ $hero = $c['hero'];
 $servizi = $c['servizi']['elenco'] ?? [];
 $galleria = $c['galleria']['foto'] ?? [];
 $heroFoto = $hero['foto'] ?: ($galleria[0]['file'] ?? '');
+$slides = [['src' => $heroFoto, 'cap' => $hero['foto_etichetta']]];
+foreach ($galleria as $g) { // le foto con la stellina "in apertura", scelte da Katy nel pannello
+    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6) {
+        $slides[] = ['src' => $g['file'], 'cap' => $g['didascalia']];
+    }
+}
+// galleria senza buchi: la prima foto diventa grande solo se riempie la griglia a 4 colonne,
+// altrimenti la scheda Instagram si allarga fino a fine riga
+$nFoto = min(count($galleria), 11);
+$conIg = kn_instagram_url($c) !== '';
+$feat = ($nFoto + ($conIg ? 1 : 0) + 3) % 4 === 0;
+$gridClass = $feat ? 'feat' : '';
+$igSpan = fn(int $col) => $col - ($nFoto % $col);
+$igStyle = '--ig2:' . $igSpan(2) . ';--ig3:' . $igSpan(3) . ';--ig4:' . ($feat ? 1 : $igSpan(4));
+
 $recensioni = array_values(array_filter($c['recensioni']['elenco'] ?? [], fn($r) => trim($r['testo']) !== ''));
 $faq = array_values(array_filter($c['faq']['elenco'] ?? [], fn($q) => trim($q['domanda']) !== '' && trim($q['risposta']) !== ''));
 $categorie = array_values(array_filter($c['listino']['categorie'] ?? [], fn($k) => !empty($k['voci'])));
@@ -41,23 +56,25 @@ kn_page_start($c, ['jsonld' => true]);
 <section class="hero">
   <div class="wrap">
     <div class="hero-text">
-      <span class="chip"><?= KN_PIN_ICON ?><?= e($hero['etichetta']) ?></span>
-      <h1><?= e($hero['titolo']) ?> <span class="script"><?= e($hero['titolo_script']) ?></span></h1>
-      <p class="lead"><?= e($hero['sottotitolo']) ?></p>
-      <div class="cta">
+      <span class="chip up" style="--d:0"><?= KN_PIN_ICON ?><?= e($hero['etichetta']) ?></span>
+      <h1><span class="up" style="--d:1"><?= e($hero['titolo']) ?></span> <span class="script up" style="--d:2"><?= e($hero['titolo_script']) ?></span></h1>
+      <p class="lead up" style="--d:3"><?= e($hero['sottotitolo']) ?></p>
+      <div class="cta up" style="--d:4">
         <a class="btn" href="#prenota"><?= KN_WA_ICON ?>Prenota su WhatsApp</a>
         <a class="btn white" href="#listino">Vedi il listino</a>
       </div>
       <?php if (!empty($hero['numeri'])): ?>
-      <dl class="facts">
-        <?php foreach ($hero['numeri'] as $n): ?><div><dt><?= e($n['valore']) ?></dt><dd><?= e($n['testo']) ?></dd></div><?php endforeach ?>
+      <dl class="facts up" style="--d:5">
+        <?php foreach ($hero['numeri'] as $n): ?><div><dt<?= preg_match('/^\d{1,3}(\.\d{3})*$/', $n['valore']) ? ' data-count="' . (int) str_replace('.', '', $n['valore']) . '"' : '' ?>><?= e($n['valore']) ?></dt><dd><?= e($n['testo']) ?></dd></div><?php endforeach ?>
       </dl>
       <?php endif ?>
     </div>
     <?php if ($heroFoto): ?>
-    <figure class="visual">
-      <?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'width="800" height="1000" fetchpriority="high"') ?>
-      <?php if ($hero['foto_etichetta']): ?><figcaption><i></i><?= e($hero['foto_etichetta']) ?></figcaption><?php endif ?>
+    <figure class="visual pop" data-slides="<?= e(json_encode(array_slice($slides, 1), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
+      <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="800" height="1000" fetchpriority="high"') ?></div>
+      <span class="shine" aria-hidden="true"></span>
+      <span class="status live" id="hero-status" hidden></span>
+      <figcaption<?= $hero['foto_etichetta'] ? '' : ' hidden' ?>><i></i><span id="hero-cap"><?= e($hero['foto_etichetta']) ?></span></figcaption>
     </figure>
     <?php endif ?>
   </div>
@@ -67,10 +84,10 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($servizi): ?>
 <section class="sec" id="servizi">
   <div class="wrap">
-    <div class="head"><h2>I miei <span class="script">servizi</span></h2><?php if ($c['servizi']['intro']): ?><p><?= e($c['servizi']['intro']) ?></p><?php endif ?></div>
+    <div class="head rv"><h2>I miei <span class="script">servizi</span></h2><?php if ($c['servizi']['intro']): ?><p><?= e($c['servizi']['intro']) ?></p><?php endif ?></div>
     <div class="cards">
       <?php foreach ($servizi as $sv): ?>
-      <article class="card <?= e($sv['colore']) ?>">
+      <article class="card rv <?= e($sv['colore']) ?>">
         <?php if ($sv['foto']): ?><div class="pic"><?= kn_img_tag(kn_thumb($sv['foto']), $sv['nome'], 'loading="lazy" width="400" height="400"') ?></div><?php endif ?>
         <div class="txt">
           <h3><?= e($sv['nome']) ?></h3>
@@ -87,10 +104,10 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($categorie): ?>
 <section class="sec listino" id="listino">
   <div class="wrap">
-    <div class="head"><h2>Il <span class="script">listino</span></h2><?php if ($c['listino']['intro']): ?><p><?= e($c['listino']['intro']) ?></p><?php endif ?></div>
+    <div class="head rv"><h2>Il <span class="script">listino</span></h2><?php if ($c['listino']['intro']): ?><p><?= e($c['listino']['intro']) ?></p><?php endif ?></div>
     <div class="menus n<?= count($categorie) ?>">
       <?php foreach ($categorie as $k): ?>
-      <div class="menu">
+      <div class="menu rv">
         <h3><i style="background:<?= e($k['colore']) ?>"></i><?= e($k['nome']) ?></h3>
         <?php foreach ($k['voci'] as $v): ?>
         <div class="line"><span class="n"><?= e($v['nome']) ?><?php if ($v['nota']): ?> <small><?= e($v['nota']) ?></small><?php endif ?></span><span class="p"><?= e($v['prezzo']) ?></span></div>
@@ -99,7 +116,7 @@ kn_page_start($c, ['jsonld' => true]);
       <?php endforeach ?>
     </div>
     <?php if ($noteListino): ?>
-    <div class="notes"><?php foreach ($noteListino as $nota): ?><p><?= e($nota) ?></p><?php endforeach ?></div>
+    <div class="notes rv"><?php foreach ($noteListino as $nota): ?><p><?= e($nota) ?></p><?php endforeach ?></div>
     <?php endif ?>
   </div>
 </section>
@@ -108,15 +125,15 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($galleria): ?>
 <section class="sec" id="lavori">
   <div class="wrap">
-    <div class="head"><h2>Ultimi <span class="script">lavori</span></h2><?php if ($c['galleria']['intro']): ?><p><?= e($c['galleria']['intro']) ?></p><?php endif ?></div>
-    <div class="grid" id="grid">
+    <div class="head rv"><h2>Ultimi <span class="script">lavori</span></h2><?php if ($c['galleria']['intro']): ?><p><?= e($c['galleria']['intro']) ?></p><?php endif ?></div>
+    <div class="grid <?= $gridClass ?>" id="grid">
       <?php foreach ($galleria as $i => $g): ?>
-      <button class="shot<?= $i >= 11 ? ' extra' : '' ?>" type="button" data-full="<?= e($g['file']) ?>" data-caption="<?= e($g['didascalia']) ?>" aria-label="Ingrandisci: <?= e($g['didascalia'] ?: 'foto ' . ($i + 1)) ?>">
-        <?= kn_img_tag($g['thumb'], $g['didascalia'], 'loading="lazy" width="400" height="400"') ?>
+      <button class="shot rv<?= $i >= 11 ? ' extra' : '' ?>" type="button" data-full="<?= e($g['file']) ?>" data-caption="<?= e($g['didascalia']) ?>" aria-label="Ingrandisci: <?= e($g['didascalia'] ?: 'foto ' . ($i + 1)) ?>">
+        <?= kn_img_tag($i === 0 && $feat ? $g['file'] : $g['thumb'], $g['didascalia'], 'loading="lazy" width="400" height="400"') ?>
       </button>
       <?php endforeach ?>
       <?php if (kn_instagram_url($c)): ?>
-      <a class="ig" href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><span class="script">seguimi su</span><b>Instagram</b><small>più di 1.000 lavori</small></a>
+      <a class="ig rv" style="<?= $igStyle ?>" href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><span class="script">seguimi su</span><b>Instagram</b><small>@<?= e(ltrim($s['instagram'], '@')) ?> →</small></a>
       <?php endif ?>
     </div>
     <?php if (count($galleria) > 11): ?>
@@ -135,10 +152,10 @@ kn_page_start($c, ['jsonld' => true]);
 <section class="sec about" id="katy">
   <div class="wrap">
     <?php if ($c['chi_sono']['foto']): ?>
-    <div class="portrait"><?= kn_img_tag($c['chi_sono']['foto'], 'Foto di ' . ($s['titolare'] ?: $s['nome']), 'loading="lazy" width="600" height="750"') ?></div>
+    <div class="portrait rv"><?= kn_img_tag($c['chi_sono']['foto'], 'Foto di ' . ($s['titolare'] ?: $s['nome']), 'loading="lazy" width="600" height="750"') ?></div>
     <?php endif ?>
     <div>
-      <h2><span class="script"><?= e($c['chi_sono']['saluto']) ?></span><?= e($c['chi_sono']['titolo']) ?></h2>
+      <h2 class="rv"><span class="script"><?= e($c['chi_sono']['saluto']) ?></span><?= e($c['chi_sono']['titolo']) ?></h2>
       <?php foreach (preg_split("/\n\s*\n/", trim($c['chi_sono']['testo'])) as $par): if (trim($par) === '') continue; ?>
       <p><?= nl2br(e(trim($par))) ?></p>
       <?php endforeach ?>
@@ -152,10 +169,10 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($recensioni): ?>
 <section class="sec" id="recensioni">
   <div class="wrap">
-    <div class="head"><h2>Dicono di <span class="script">me</span></h2><?php if ($c['recensioni']['link']): ?><p><a href="<?= e($c['recensioni']['link']) ?>" target="_blank" rel="noopener">Leggi tutte le recensioni →</a></p><?php endif ?></div>
+    <div class="head rv"><h2>Dicono di <span class="script">me</span></h2><?php if ($c['recensioni']['link']): ?><p><a href="<?= e($c['recensioni']['link']) ?>" target="_blank" rel="noopener">Leggi tutte le recensioni →</a></p><?php endif ?></div>
     <div class="reviews">
       <?php foreach ($recensioni as $r): ?>
-      <figure class="review">
+      <figure class="review rv">
         <div class="stars" role="img" aria-label="<?= (int) $r['stelle'] ?> stelle su 5"><?= str_repeat('★', (int) $r['stelle']) ?><span><?= str_repeat('★', 5 - (int) $r['stelle']) ?></span></div>
         <blockquote><?= nl2br(e($r['testo'])) ?></blockquote>
         <figcaption><?= e($r['nome']) ?> <span>· <?= e($r['fonte']) ?></span></figcaption>
@@ -169,7 +186,7 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if (!empty($c['buono']['attivo'])): ?>
 <section class="sec gift" id="regalo">
   <div class="wrap">
-    <div class="voucher" aria-hidden="true">
+    <div class="voucher rv" aria-hidden="true">
       <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="48" height="48" loading="lazy"><span>Buono regalo</span></div>
       <div class="v-name"><?= e($s['nome']) ?></div>
     </div>
@@ -185,7 +202,7 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($faq): ?>
 <section class="sec" id="domande">
   <div class="wrap">
-    <div class="head"><h2>Domande <span class="script">frequenti</span></h2></div>
+    <div class="head rv"><h2>Domande <span class="script">frequenti</span></h2></div>
     <div class="faq">
       <?php foreach ($faq as $q): ?>
       <details><summary><?= e($q['domanda']) ?></summary><p><?= nl2br(e($q['risposta'])) ?></p></details>
@@ -201,7 +218,7 @@ kn_page_start($c, ['jsonld' => true]);
     <div>
       <h2><span class="script"><?= e($c['contatti']['titolo_script']) ?></span><?= e($c['contatti']['titolo']) ?></h2>
       <p class="intro"><?= e($c['contatti']['testo']) ?></p>
-      <form class="booker" id="booker" data-wa="<?= e(kn_digits($s['whatsapp'])) ?>" action="<?= e(kn_wa_url($c)) ?>" target="_blank">
+      <form class="booker rv" id="booker" data-wa="<?= e(kn_digits($s['whatsapp'])) ?>" action="<?= e(kn_wa_url($c)) ?>" target="_blank">
         <fieldset><legend>Cosa ti faccio?</legend>
           <div class="pills">
             <?php foreach (array_merge($opzioni, ['Altro']) as $i => $nome): ?>
@@ -230,7 +247,7 @@ kn_page_start($c, ['jsonld' => true]);
       </form>
       <p class="call">Preferisci chiamare? <a href="<?= e(kn_tel_url($c)) ?>"><?= KN_TEL_ICON ?><?= e($s['telefono']) ?></a></p>
     </div>
-    <div class="box">
+    <div class="box rv">
       <h3>Lo studio</h3>
       <p class="addr"><?= KN_PIN_ICON ?><?= e(kn_indirizzo($c, true)) ?></p>
       <span class="status" id="status" hidden></span>

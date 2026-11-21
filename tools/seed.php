@@ -14,6 +14,7 @@ foreach (['salvia' => 'Salvia con un dito glitter', 'corallo' => 'Rosa fragola l
           'latte' => 'Rosa latte', 'maglietta' => 'La maglietta dello studio', 'parete' => 'La parete degli smalti'] as $k => $didascalia) {
     $img = kn_import_image(__DIR__ . "/../assets/ig-$k.jpg");
     $img['didascalia'] = $didascalia;
+    $img['apertura'] = !in_array($k, ['maglietta', 'parete'], true); // si alterna nella foto grande in apertura
     $foto[$k] = $img;
 }
 

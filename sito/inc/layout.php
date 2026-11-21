@@ -22,6 +22,7 @@ function kn_page_start(array $c, array $opt): void
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<?php if (!empty($opt['base'])): ?><base href="<?= e(kn_base_url()) ?>/"><meta name="robots" content="noindex"><?php endif ?>
 <title><?= e($title) ?></title>
 <meta name="description" content="<?= e($desc) ?>">
 <link rel="canonical" href="<?= e($canonical) ?>">
@@ -42,6 +43,7 @@ function kn_page_start(array $c, array $opt): void
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/outfit-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= kn_asset('assets/css/site.css') ?>">
+<script>document.documentElement.classList.add('js')</script>
 <?php if (!empty($opt['jsonld'])): ?>
 <script type="application/ld+json"><?= kn_json_ld($c, $base) ?></script>
 <?php endif ?>

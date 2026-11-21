@@ -14,6 +14,8 @@ Rispetto alla bozza C ci sono in più:
 - pannello di gestione con backup automatici e ripristino
 - prenotazione guidata: Katy riceve su WhatsApp un messaggio già scritto ("Sono Giulia, vorrei prenotare: ritocco gel, sabato di mattina")
 - grafica da telefono rifatta: menu, barra fissa Chiama/WhatsApp, servizi a righe, icone vere, controllata a 320, 360, 390 e 414 px
+- apertura viva: foto che si alternano (Katy le sceglie con la stellina nel pannello), riflesso lucido, cartellino aperto/chiuso sulla foto, numeri che contano, sezioni che compaiono scorrendo, colate di smalto animate
+- pagina "non trovata" con la grafica del sito
 - galleria con foto ingrandibili da sfogliare col dito
 - avvisi in cima al sito, e chiusure per ferie che si annunciano da sole
 - cartellino "Aperto adesso / Chiuso · riapre martedì alle 9"
@@ -39,7 +41,7 @@ Schermate da telefono: [`screenshots/sito/`](screenshots/sito/) e [`screenshots/
 
 ## Cosa conviene fare dopo
 
-1. **Dominio e hosting**, per esempio `katysnails.it`. Con l'hosting arriva anche una casella email con il dominio.
+1. **Dominio e hosting PHP**, per esempio `katysnails.it`: cosa controllare prima di comprare è in [sito/LEGGIMI.md](sito/LEGGIMI.md#cosa-comprare). Con l'hosting arriva anche una casella email con il dominio. Vercel va bene solo per l'anteprima, perché non esegue PHP.
 2. **Scheda Google Business Profile** (Google Maps): per un'attività di paese è la cosa che porta più clienti. Va collegata al sito.
 3. **Recensioni**: chiedere alle clienti di lasciarne una su Google, poi copiare le migliori nel pannello.
 4. In futuro, se servono:
