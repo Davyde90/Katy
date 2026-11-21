@@ -22,12 +22,16 @@ Questo è il sito vero, nato dalla bozza C (Rosa lucido). Katy può aggiornarlo 
 | Buono regalo | Accendere o spegnere la sezione e cambiarne il testo |
 | Domande frequenti | Domande e risposte |
 | Orari e ferie | Orari con pausa pranzo e chiusure: tre settimane prima compare da solo un avviso sul sito |
-| Prenotazioni | I testi della sezione per prenotare |
+| Prenotazioni | I testi della sezione per prenotare, le opzioni del modulo e i tre passi "come funziona" |
 | Dati dello studio | Indirizzo, telefono, WhatsApp, social, P.IVA |
 | Google e condivisioni | Titolo e descrizione su Google e nelle anteprime di WhatsApp |
 | Password e backup | Cambiare password, tornare a una versione precedente, eliminare le foto non usate |
 
-La pagina iniziale del pannello mostra cosa manca ancora: prezzi da confermare, P.IVA, poche foto, ecc.
+La pagina iniziale del pannello mostra i numeri del sito (foto, servizi, voci del listino, recensioni), se lo studio è aperto adesso, la prossima chiusura e la lista di cosa manca ancora.
+
+**Anteprima dal vivo.** Sul computer il sito compare a fianco del pannello, dentro un telefono disegnato (o in versione computer), e si aggiorna da solo mentre Katy scrive: quello che vede è il sito con le modifiche non ancora salvate. Niente va online finché non preme **Salva** (o Ctrl+S). Sul telefono l'anteprima si apre con il pulsante in alto. Tecnicamente è `admin/api.php?azione=anteprima`, che renderizza `index.php` con i dati in bozza senza scriverli su disco.
+
+**Riordinare.** Foto della galleria, servizi, voci del listino, domande: si trascinano col mouse; sul telefono ci sono le frecce.
 
 ## Cosa comprare
 

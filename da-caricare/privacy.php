@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/inc/lib.php';
-require __DIR__ . '/inc/layout.php';
+require_once __DIR__ . '/inc/lib.php';
+require_once __DIR__ . '/inc/layout.php';
 
 $c = kn_content();
 $s = $c['studio'];

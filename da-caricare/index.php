@@ -1,8 +1,8 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/inc/lib.php';
-require __DIR__ . '/inc/layout.php';
+require_once __DIR__ . '/inc/lib.php';
+require_once __DIR__ . '/inc/layout.php';
 
 $c = kn_content();
 if (!$c) {
@@ -12,13 +12,20 @@ if (!$c) {
 
 $s = $c['studio'];
 $hero = $c['hero'];
-$servizi = $c['servizi']['elenco'] ?? [];
+$servizi = array_values(array_filter($c['servizi']['elenco'] ?? [], fn($x) => trim($x['nome']) !== ''));
 $galleria = $c['galleria']['foto'] ?? [];
 $heroFoto = $hero['foto'] ?: ($galleria[0]['file'] ?? '');
 $slides = [['src' => $heroFoto, 'cap' => $hero['foto_etichetta']]];
 foreach ($galleria as $g) { // le foto con la stellina "in apertura", scelte da Katy nel pannello
     if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6) {
         $slides[] = ['src' => $g['file'], 'cap' => $g['didascalia']];
+    }
+}
+$secondaFoto = null; // la piccola foto sovrapposta in apertura: un'altra foto con la stellina
+foreach ($galleria as $g) {
+    if (!empty($g['apertura']) && $g['file'] !== $heroFoto) {
+        $secondaFoto = $g;
+        break;
     }
 }
 // galleria senza buchi: la prima foto diventa grande solo se riempie la griglia a 4 colonne,
@@ -35,9 +42,11 @@ $faq = array_values(array_filter($c['faq']['elenco'] ?? [], fn($q) => trim($q['d
 $categorie = array_values(array_filter($c['listino']['categorie'] ?? [], fn($k) => !empty($k['voci'])));
 $noteListino = array_values(array_filter(array_map('trim', explode("\n", $c['listino']['note'] ?? ''))));
 $opzioni = array_values(array_filter($c['contatti']['opzioni'] ?? [])) ?: array_column($servizi, 'nome');
+$passi = array_values(array_filter($c['contatti']['passi'] ?? [], fn($x) => trim($x['titolo']) !== ''));
 $prova = $c['prova'] ?? [];
 $coloriProva = !empty($prova['attivo']) && is_file(__DIR__ . '/assets/img/prova/mappa.png') && is_file(__DIR__ . '/assets/img/prova/prova.json') ? array_values(array_filter($prova['colori'] ?? [], fn($x) => trim($x['nome']) !== '')) : [];
 $confronti = array_values(array_filter($c['prima_dopo']['elenco'] ?? [], fn($x) => $x['prima'] && $x['dopo']));
+$ticker = array_values(array_unique(array_filter(array_merge(array_column($servizi, 'nome'), array_map(fn($k) => $k['nome'], $categorie)))));
 
 // giorni in cui si può prenotare (lunedì → domenica)
 $giorniAperti = [];
@@ -47,24 +56,31 @@ foreach ([1, 2, 3, 4, 5, 6, 0] as $g) {
     }
 }
 $oggi = (int) date('w');
+$numero = 0; // numerazione delle sezioni (01, 02, …)
 
 function kn_img_tag(string $src, string $alt, string $attrs = ''): string
 {
     return '<img src="' . e($src) . '" alt="' . e($alt) . '" ' . $attrs . '>';
 }
 
+function kn_kicker(int &$n, string $testo, string $extra = ''): string
+{
+    $n++;
+    return '<p class="kicker' . ($extra ? ' ' . $extra : '') . '"><span class="num">' . sprintf('%02d', $n) . '</span><span>' . e($testo) . '</span></p>';
+}
+
 kn_page_start($c, ['jsonld' => true]);
 ?>
 
-<section class="hero">
-  <div class="wrap">
+<section class="hero grain" id="inizio">
+  <div class="wrap hero-grid">
     <div class="hero-text">
-      <span class="chip up" style="--d:0"><?= KN_PIN_ICON ?><?= e($hero['etichetta']) ?></span>
-      <h1><span class="up" style="--d:1"><?= e($hero['titolo']) ?></span> <span class="script up" style="--d:2"><?= e($hero['titolo_script']) ?></span></h1>
+      <p class="kicker up" style="--d:0"><?= KN_PIN_ICON ?><span><?= e($hero['etichetta']) ?></span></p>
+      <h1><span class="up" style="--d:1"><?= e($hero['titolo']) ?></span> <em class="script up" style="--d:2"><?= e($hero['titolo_script']) ?></em></h1>
       <p class="lead up" style="--d:3"><?= e($hero['sottotitolo']) ?></p>
       <div class="cta up" style="--d:4">
         <a class="btn" href="#prenota"><?= KN_WA_ICON ?>Prenota su WhatsApp</a>
-        <a class="btn white" href="#listino">Vedi il listino</a>
+        <a class="link-arrow" href="#listino">Vedi il listino</a>
       </div>
       <?php if (!empty($hero['numeri'])): ?>
       <dl class="facts up" style="--d:5">
@@ -73,84 +89,109 @@ kn_page_start($c, ['jsonld' => true]);
       <?php endif ?>
     </div>
     <?php if ($heroFoto): ?>
-    <figure class="visual pop" data-slides="<?= e(json_encode(array_slice($slides, 1), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
-      <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="800" height="1000" fetchpriority="high"') ?></div>
-      <span class="shine" aria-hidden="true"></span>
-      <span class="status live" id="hero-status" hidden></span>
-      <figcaption<?= $hero['foto_etichetta'] ? '' : ' hidden' ?>><i></i><span id="hero-cap"><?= e($hero['foto_etichetta']) ?></span></figcaption>
-    </figure>
+    <div class="hero-media pop">
+      <figure class="visual" data-slides="<?= e(json_encode(array_slice($slides, 1), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
+        <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="800" height="1000" fetchpriority="high"') ?></div>
+        <span class="shine" aria-hidden="true"></span>
+        <span class="status live" id="hero-status" hidden></span>
+        <figcaption<?= $hero['foto_etichetta'] ? '' : ' hidden' ?>><span id="hero-cap"><?= e($hero['foto_etichetta']) ?></span></figcaption>
+      </figure>
+      <?php if ($secondaFoto): ?>
+      <figure class="visual-2"><?= kn_img_tag($secondaFoto['thumb'], $secondaFoto['didascalia'], 'width="400" height="400" loading="lazy"') ?></figure>
+      <?php endif ?>
+    </div>
     <?php endif ?>
   </div>
+  <div class="hero-mark" aria-hidden="true"><?= e($s['nome']) ?></div>
 </section>
-<svg class="drip" data-drip="#FFEDF1" viewBox="0 0 1440 140" preserveAspectRatio="xMidYMin slice" aria-hidden="true"></svg>
+
+<?php if ($ticker): ?>
+<div class="ticker" aria-hidden="true"><div class="track">
+  <?php for ($i = 0; $i < 4; $i++): foreach ($ticker as $v): ?><span><?= e($v) ?></span><?php endforeach; endfor ?>
+</div></div>
+<?php endif ?>
 
 <?php if ($coloriProva): ?>
 <section class="sec prova" id="prova">
   <div class="wrap">
-    <div class="head rv"><h2>Prova il <span class="script">colore</span></h2><?php if (!empty($prova['testo'])): ?><p><?= e($prova['testo']) ?></p><?php endif ?></div>
-    <div class="stage-wrap rv">
-      <div class="stage" id="stage" data-finish="lucido" data-prova="<?= e((string) @file_get_contents(__DIR__ . '/assets/img/prova/prova.json')) ?>" data-mano="assets/img/prova/mano.webp" data-mappa="assets/img/prova/mappa.png">
-        <div class="layers">
-          <img class="l-mano" src="assets/img/prova/mano.webp" alt="Mano con smalto: tocca un colore per provarlo sulle unghie" width="710" height="944" loading="lazy">
-          <canvas class="l-tela" id="tela-a" width="710" height="944" aria-hidden="true"></canvas>
-          <canvas class="l-tela" id="tela-b" width="710" height="944" aria-hidden="true"></canvas>
+    <div class="head rv"><?= kn_kicker($numero, 'Prova il colore') ?><h2>Prova il <em class="script">colore</em></h2><?php if (!empty($prova['testo'])): ?><p><?= e($prova['testo']) ?></p><?php endif ?></div>
+    <div class="prova-grid">
+      <div class="stage-wrap rv">
+        <div class="stage" id="stage" data-finish="lucido" data-prova="<?= e((string) @file_get_contents(__DIR__ . '/assets/img/prova/prova.json')) ?>" data-mano="assets/img/prova/mano.webp" data-mappa="assets/img/prova/mappa.png">
+          <div class="layers">
+            <img class="l-mano" src="assets/img/prova/mano.webp" alt="Mano con smalto: tocca un colore per provarlo sulle unghie" width="710" height="944" loading="lazy">
+            <canvas class="l-tela" id="tela-a" width="710" height="944" aria-hidden="true"></canvas>
+            <canvas class="l-tela" id="tela-b" width="710" height="944" aria-hidden="true"></canvas>
+          </div>
+          <span class="stage-tag" aria-live="polite"><i id="tag-dot" style="background:<?= e($coloriProva[0]['colore']) ?>"></i><span id="tag-nome"><?= e($coloriProva[0]['nome']) ?></span></span>
         </div>
-        <span class="stage-tag" aria-live="polite"><i id="tag-dot" style="background:<?= e($coloriProva[0]['colore']) ?>"></i><span id="tag-nome"><?= e($coloriProva[0]['nome']) ?></span></span>
       </div>
-    </div>
-    <div class="prova-side">
-      <div class="palette rv" id="palette" role="radiogroup" aria-label="Colori da provare">
-        <?php foreach ($coloriProva as $i => $col): ?>
-        <button type="button" class="sw" role="radio" aria-checked="<?= $i === 0 ? 'true' : 'false' ?>" data-c="<?= e($col['colore']) ?>" data-n="<?= e($col['nome']) ?>" style="--c:<?= e($col['colore']) ?>"><i></i><span><?= e($col['nome']) ?></span></button>
-        <?php endforeach ?>
-        <button type="button" class="sw orig" role="radio" aria-checked="false" data-orig="1" data-n="Il lavoro vero (salvia + glitter)"><i></i><span>Il lavoro vero</span></button>
+      <div class="prova-side">
+        <p class="label rv">Scegli il colore</p>
+        <div class="palette rv" id="palette" role="radiogroup" aria-label="Colori da provare">
+          <?php foreach ($coloriProva as $i => $col): ?>
+          <button type="button" class="sw" role="radio" aria-checked="<?= $i === 0 ? 'true' : 'false' ?>" data-c="<?= e($col['colore']) ?>" data-n="<?= e($col['nome']) ?>" style="--c:<?= e($col['colore']) ?>"><i></i><span><?= e($col['nome']) ?></span></button>
+          <?php endforeach ?>
+          <button type="button" class="sw orig" role="radio" aria-checked="false" data-orig="1" data-n="Il lavoro vero (salvia + glitter)"><i></i><span>Il lavoro vero</span></button>
+        </div>
+        <div class="prova-row rv">
+          <div class="finish" role="group" aria-label="Finitura">
+            <button type="button" aria-pressed="true" data-f="lucido">Lucido</button><button type="button" aria-pressed="false" data-f="opaco">Opaco</button>
+          </div>
+          <a class="btn" id="prova-wa" href="<?= e(kn_wa_url($c)) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?><span>Prenota con <b id="prova-nome"><?= e($coloriProva[0]['nome']) ?></b></span></a>
+        </div>
+        <p class="hint rv">I colori sullo schermo sono indicativi: in studio li vedi dal vivo sulla parete degli smalti.</p>
       </div>
-      <div class="finish rv" role="group" aria-label="Finitura">
-        <button type="button" aria-pressed="true" data-f="lucido">Lucido</button><button type="button" aria-pressed="false" data-f="opaco">Opaco</button>
-      </div>
-      <a class="btn wa rv" id="prova-wa" href="<?= e(kn_wa_url($c)) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?><span>Prenota con <b id="prova-nome"><?= e($coloriProva[0]['nome']) ?></b></span></a>
-      <p class="hint rv">I colori sullo schermo sono indicativi: in studio li vedi dal vivo sulla parete degli smalti.</p>
     </div>
   </div>
 </section>
 <?php endif ?>
 
 <?php if ($servizi): ?>
-<section class="sec" id="servizi">
+<section class="sec servizi" id="servizi">
   <div class="wrap">
-    <div class="head rv"><h2>I miei <span class="script">servizi</span></h2><?php if ($c['servizi']['intro']): ?><p><?= e($c['servizi']['intro']) ?></p><?php endif ?></div>
-    <div class="cards">
-      <?php foreach ($servizi as $sv): ?>
-      <article class="card rv <?= e($sv['colore']) ?>">
-        <?php if ($sv['foto']): ?><div class="pic"><?= kn_img_tag(kn_thumb($sv['foto']), $sv['nome'], 'loading="lazy" width="400" height="400"') ?></div><?php endif ?>
-        <div class="txt">
-          <h3><?= e($sv['nome']) ?></h3>
-          <?php if ($sv['descrizione']): ?><p><?= e($sv['descrizione']) ?></p><?php endif ?>
-          <?php if ($sv['prezzo']): ?><b class="price"><?= e($sv['prezzo']) ?></b><?php endif ?>
-        </div>
-      </article>
-      <?php endforeach ?>
+    <div class="head rv"><?= kn_kicker($numero, 'I servizi') ?><h2>Cosa faccio, <em class="script">e come</em></h2><?php if ($c['servizi']['intro']): ?><p><?= e($c['servizi']['intro']) ?></p><?php endif ?></div>
+    <div class="svc-grid">
+      <div class="svc-list" id="svc-list">
+        <?php foreach ($servizi as $i => $sv): ?>
+        <article class="svc rv <?= e($sv['colore']) ?>" data-img="<?= e($sv['foto']) ?>" tabindex="0">
+          <span class="num"><?= sprintf('%02d', $i + 1) ?></span>
+          <?php if ($sv['foto']): ?><div class="svc-pic"><?= kn_img_tag(kn_thumb($sv['foto']), $sv['nome'], 'loading="lazy" width="200" height="200"') ?></div><?php endif ?>
+          <div class="svc-txt">
+            <h3><?= e($sv['nome']) ?></h3>
+            <?php if ($sv['descrizione']): ?><p><?= e($sv['descrizione']) ?></p><?php endif ?>
+          </div>
+          <?php if ($sv['prezzo']): ?><b class="svc-price"><?= e($sv['prezzo']) ?></b><?php endif ?>
+        </article>
+        <?php endforeach ?>
+      </div>
+      <div class="svc-stage rv" id="svc-stage" aria-hidden="true">
+        <?php foreach ($servizi as $i => $sv): if (!$sv['foto']) continue; ?>
+        <?= kn_img_tag($sv['foto'], '', 'data-img="' . e($sv['foto']) . '" loading="lazy" width="800" height="1000"' . ($i === 0 ? ' class="on"' : '')) ?>
+        <?php endforeach ?>
+        <span class="svc-stage-cap" id="svc-stage-cap"><?= e($servizi[0]['nome']) ?></span>
+      </div>
     </div>
   </div>
 </section>
 <?php endif ?>
 
 <?php if ($categorie): ?>
-<section class="sec listino" id="listino">
+<section class="sec listino plum grain" id="listino">
   <div class="wrap">
-    <div class="head rv"><h2>Il <span class="script">listino</span></h2><?php if ($c['listino']['intro']): ?><p><?= e($c['listino']['intro']) ?></p><?php endif ?></div>
+    <div class="head rv"><?= kn_kicker($numero, 'Il listino') ?><h2>Prezzi <em class="script">chiari</em></h2><?php if ($c['listino']['intro']): ?><p><?= e($c['listino']['intro']) ?></p><?php endif ?></div>
     <div class="menus n<?= count($categorie) ?>">
       <?php foreach ($categorie as $k): ?>
       <div class="menu rv">
         <h3><i style="background:<?= e($k['colore']) ?>"></i><?= e($k['nome']) ?></h3>
         <?php foreach ($k['voci'] as $v): ?>
-        <div class="line"><span class="n"><?= e($v['nome']) ?><?php if ($v['nota']): ?> <small><?= e($v['nota']) ?></small><?php endif ?></span><span class="p"><?= e($v['prezzo']) ?></span></div>
+        <div class="line"><span class="n"><?= e($v['nome']) ?><?php if ($v['nota']): ?> <small><?= e($v['nota']) ?></small><?php endif ?></span><span class="dots"></span><span class="p"><?= e($v['prezzo']) ?></span></div>
         <?php endforeach ?>
       </div>
       <?php endforeach ?>
     </div>
     <?php if ($noteListino): ?>
-    <div class="notes rv"><?php foreach ($noteListino as $nota): ?><p><?= e($nota) ?></p><?php endforeach ?></div>
+    <ul class="notes rv"><?php foreach ($noteListino as $nota): ?><li><?= e($nota) ?></li><?php endforeach ?></ul>
     <?php endif ?>
   </div>
 </section>
@@ -159,7 +200,7 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if ($confronti): ?>
 <section class="sec pd" id="prima-dopo">
   <div class="wrap">
-    <div class="head rv"><h2>Prima e <span class="script">dopo</span></h2><?php if ($c['prima_dopo']['intro']): ?><p><?= e($c['prima_dopo']['intro']) ?></p><?php endif ?></div>
+    <div class="head rv"><?= kn_kicker($numero, 'Prima e dopo') ?><h2>La differenza <em class="script">si vede</em></h2><?php if ($c['prima_dopo']['intro']): ?><p><?= e($c['prima_dopo']['intro']) ?></p><?php endif ?></div>
     <div class="pd-list<?= count($confronti) > 1 ? ' many' : '' ?>">
       <?php foreach ($confronti as $i => $x): ?>
       <figure class="ba rv" style="--pos:50%">
@@ -179,21 +220,22 @@ kn_page_start($c, ['jsonld' => true]);
 <?php endif ?>
 
 <?php if ($galleria): ?>
-<section class="sec" id="lavori">
+<section class="sec lavori" id="lavori">
   <div class="wrap">
-    <div class="head rv"><h2>Ultimi <span class="script">lavori</span></h2><?php if ($c['galleria']['intro']): ?><p><?= e($c['galleria']['intro']) ?></p><?php endif ?></div>
+    <div class="head rv"><?= kn_kicker($numero, 'I lavori') ?><h2>Dalle mie <em class="script">clienti</em></h2><?php if ($c['galleria']['intro']): ?><p><?= e($c['galleria']['intro']) ?></p><?php endif ?></div>
     <div class="grid <?= $gridClass ?>" id="grid">
       <?php foreach ($galleria as $i => $g): ?>
       <button class="shot rv<?= $i >= 11 ? ' extra' : '' ?>" type="button" data-full="<?= e($g['file']) ?>" data-caption="<?= e($g['didascalia']) ?>" aria-label="Ingrandisci: <?= e($g['didascalia'] ?: 'foto ' . ($i + 1)) ?>">
         <?= kn_img_tag($i === 0 && $feat ? $g['file'] : $g['thumb'], $g['didascalia'], 'loading="lazy" width="400" height="400"') ?>
+        <?php if ($g['didascalia']): ?><span class="cap"><?= e($g['didascalia']) ?></span><?php endif ?>
       </button>
       <?php endforeach ?>
-      <?php if (kn_instagram_url($c)): ?>
-      <a class="ig rv" style="<?= $igStyle ?>" href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><span class="script">seguimi su</span><b>Instagram</b><small>@<?= e(ltrim($s['instagram'], '@')) ?> →</small></a>
+      <?php if ($conIg): ?>
+      <a class="ig rv" style="<?= $igStyle ?>" href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><span class="ig-k">Instagram</span><b>Più di 1.000 lavori</b><span class="ig-h">@<?= e(ltrim($s['instagram'], '@')) ?> →</span></a>
       <?php endif ?>
     </div>
     <?php if (count($galleria) > 11): ?>
-    <div class="more"><button class="btn white" type="button" id="more">Mostra tutte le foto (<?= count($galleria) ?>)</button></div>
+    <div class="more"><button class="btn ghost" type="button" id="more">Mostra tutte le foto (<?= count($galleria) ?>)</button></div>
     <?php endif ?>
   </div>
 </section>
@@ -206,26 +248,27 @@ kn_page_start($c, ['jsonld' => true]);
 <?php endif ?>
 
 <section class="sec about" id="katy">
-  <div class="wrap">
+  <div class="wrap about-grid">
     <?php if ($c['chi_sono']['foto']): ?>
     <div class="portrait rv"><?= kn_img_tag($c['chi_sono']['foto'], 'Foto di ' . ($s['titolare'] ?: $s['nome']), 'loading="lazy" width="600" height="750"') ?></div>
     <?php endif ?>
-    <div>
-      <h2 class="rv"><span class="script"><?= e($c['chi_sono']['saluto']) ?></span><?= e($c['chi_sono']['titolo']) ?></h2>
+    <div class="about-text">
+      <?= kn_kicker($numero, 'Chi sono', 'rv') ?>
+      <h2 class="rv"><em class="script"><?= e($c['chi_sono']['saluto']) ?></em><?= e($c['chi_sono']['titolo']) ?></h2>
       <?php foreach (preg_split("/\n\s*\n/", trim($c['chi_sono']['testo'])) as $par): if (trim($par) === '') continue; ?>
-      <p><?= nl2br(e(trim($par))) ?></p>
+      <p class="rv"><?= nl2br(e(trim($par))) ?></p>
       <?php endforeach ?>
       <?php if ($c['chi_sono']['punti']): ?>
-      <ul class="badges"><?php foreach ($c['chi_sono']['punti'] as $p): ?><li><?= e($p) ?></li><?php endforeach ?></ul>
+      <ul class="punti rv"><?php foreach ($c['chi_sono']['punti'] as $p): ?><li><?= e($p) ?></li><?php endforeach ?></ul>
       <?php endif ?>
     </div>
   </div>
 </section>
 
 <?php if ($recensioni): ?>
-<section class="sec" id="recensioni">
+<section class="sec recensioni" id="recensioni">
   <div class="wrap">
-    <div class="head rv"><h2>Dicono di <span class="script">me</span></h2><?php if ($c['recensioni']['link']): ?><p><a href="<?= e($c['recensioni']['link']) ?>" target="_blank" rel="noopener">Leggi tutte le recensioni →</a></p><?php endif ?></div>
+    <div class="head rv"><?= kn_kicker($numero, 'Le recensioni') ?><h2>Dicono <em class="script">di me</em></h2><?php if ($c['recensioni']['link']): ?><p><a class="link-arrow" href="<?= e($c['recensioni']['link']) ?>" target="_blank" rel="noopener">Leggi tutte le recensioni</a></p><?php endif ?></div>
     <div class="reviews">
       <?php foreach ($recensioni as $r): ?>
       <figure class="review rv">
@@ -241,39 +284,44 @@ kn_page_start($c, ['jsonld' => true]);
 
 <?php if (!empty($c['buono']['attivo'])): ?>
 <section class="sec gift" id="regalo">
-  <div class="wrap">
+  <div class="wrap gift-grid">
     <div class="voucher rv" aria-hidden="true">
-      <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="48" height="48" loading="lazy"><span>Buono regalo</span></div>
+      <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="44" height="44" loading="lazy"><span>Buono regalo</span></div>
       <div class="v-name"><?= e($s['nome']) ?></div>
+      <div class="v-foot"><span>Per</span><i></i><span>Da</span><i></i></div>
     </div>
-    <div>
-      <h2><?= e($c['buono']['titolo']) ?></h2>
-      <p><?= e($c['buono']['testo']) ?></p>
-      <a class="btn" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Chiedi un buono regalo</a>
+    <div class="gift-text">
+      <?= kn_kicker($numero, 'Buono regalo', 'rv') ?>
+      <h2 class="rv"><?= e($c['buono']['titolo']) ?></h2>
+      <p class="rv"><?= e($c['buono']['testo']) ?></p>
+      <a class="btn rv" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Chiedi un buono regalo</a>
     </div>
   </div>
 </section>
 <?php endif ?>
 
 <?php if ($faq): ?>
-<section class="sec" id="domande">
-  <div class="wrap">
-    <div class="head rv"><h2>Domande <span class="script">frequenti</span></h2></div>
+<section class="sec domande" id="domande">
+  <div class="wrap faq-grid">
+    <div class="head rv"><?= kn_kicker($numero, 'Domande frequenti') ?><h2>Quello che mi <em class="script">chiedono</em></h2></div>
     <div class="faq">
-      <?php foreach ($faq as $q): ?>
-      <details><summary><?= e($q['domanda']) ?></summary><p><?= nl2br(e($q['risposta'])) ?></p></details>
+      <?php foreach ($faq as $i => $q): ?>
+      <details class="rv"><summary><span class="q-n"><?= sprintf('%02d', $i + 1) ?></span><span class="q-t"><?= e($q['domanda']) ?></span><span class="q-i" aria-hidden="true"></span></summary><div class="a"><p><?= nl2br(e($q['risposta'])) ?></p></div></details>
       <?php endforeach ?>
     </div>
   </div>
 </section>
 <?php endif ?>
 
-<svg class="drip" data-drip="#FFFFFF" viewBox="0 0 1440 140" preserveAspectRatio="xMidYMin slice" aria-hidden="true" style="background:var(--fragola)"></svg>
-<section class="contact" id="prenota">
+<section class="sec contact plum grain" id="prenota">
   <div class="wrap">
-    <div>
-      <h2><span class="script"><?= e($c['contatti']['titolo_script']) ?></span><?= e($c['contatti']['titolo']) ?></h2>
-      <p class="intro"><?= e($c['contatti']['testo']) ?></p>
+    <div class="head rv"><?= kn_kicker($numero, 'Prenota') ?><h2><em class="script"><?= e($c['contatti']['titolo_script']) ?></em><?= e($c['contatti']['titolo']) ?></h2><p><?= e($c['contatti']['testo']) ?></p></div>
+    <?php if ($passi): ?>
+    <ol class="steps rv">
+      <?php foreach ($passi as $i => $p): ?><li><span class="step-n"><?= $i + 1 ?></span><b><?= e($p['titolo']) ?></b><?php if ($p['testo']): ?><span><?= e($p['testo']) ?></span><?php endif ?></li><?php endforeach ?>
+    </ol>
+    <?php endif ?>
+    <div class="contact-grid">
       <form class="booker rv" id="booker" data-wa="<?= e(kn_digits($s['whatsapp'])) ?>" action="<?= e(kn_wa_url($c)) ?>" target="_blank">
         <fieldset><legend>Cosa ti faccio?</legend>
           <div class="pills">
@@ -299,24 +347,26 @@ kn_page_start($c, ['jsonld' => true]);
         </fieldset>
         <label class="name-l"><span>Il tuo nome <small>(facoltativo)</small></span><input class="name" name="nome" autocomplete="given-name" maxlength="40"></label>
         <div class="preview" aria-live="polite"><b>Il messaggio che invierai</b><span id="preview">Ciao Katy! Vorrei prenotare un appuntamento.</span></div>
-        <button class="btn wa block" type="submit"><?= KN_WA_ICON ?>Invia su WhatsApp</button>
+        <div class="booker-act">
+          <button class="btn wa" type="submit"><?= KN_WA_ICON ?>Invia su WhatsApp</button>
+          <a class="btn ghost" href="<?= e(kn_tel_url($c)) ?>"><?= KN_TEL_ICON ?><?= e($s['telefono']) ?></a>
+        </div>
       </form>
-      <p class="call">Preferisci chiamare? <a href="<?= e(kn_tel_url($c)) ?>"><?= KN_TEL_ICON ?><?= e($s['telefono']) ?></a></p>
-    </div>
-    <div class="box rv">
-      <h3>Lo studio</h3>
-      <p class="addr"><?= KN_PIN_ICON ?><?= e(kn_indirizzo($c, true)) ?></p>
-      <span class="status" id="status" hidden></span>
-      <table class="hours">
-        <?php foreach ([1, 2, 3, 4, 5, 6, 0] as $g): ?>
-        <?php $fasce = $c['orari']['settimana'][(string) $g] ?? []; ?>
-        <tr<?= $g === $oggi ? ' class="today"' : '' ?>><th scope="row"><?= KN_GIORNI[$g] ?></th><td><?= $fasce ? implode('', array_map(fn($f) => '<span>' . e(kn_ora($f[0]) . '–' . kn_ora($f[1])) . '</span>', $fasce)) : 'chiuso' ?></td></tr>
-        <?php endforeach ?>
-      </table>
-      <?php $prossime = array_filter($c['orari']['chiusure'] ?? [], fn($ch) => ($ch['al'] ?: $ch['dal']) >= date('Y-m-d')); if ($prossime): ?>
-      <p class="closures">Chiusure: <?= e(implode(' · ', array_map(fn($ch) => ($ch['dal'] === ($ch['al'] ?: $ch['dal']) ? kn_data_it($ch['dal']) : kn_data_it($ch['dal']) . '–' . kn_data_it($ch['al'])) . ($ch['motivo'] ? ' (' . $ch['motivo'] . ')' : ''), $prossime))) ?></p>
-      <?php endif ?>
-      <a class="btn dark block" href="<?= e(kn_maps_url($c)) ?>" target="_blank" rel="noopener"><?= KN_PIN_ICON ?>Indicazioni stradali</a>
+      <aside class="box rv">
+        <h3>Lo studio</h3>
+        <p class="addr"><?= KN_PIN_ICON ?><span><?= e($s['indirizzo']) ?><br><?= e(trim(($s['cap'] ? $s['cap'] . ' ' : '') . $s['citta'] . ($s['provincia'] ? ' (' . $s['provincia'] . ')' : ''))) ?></span></p>
+        <span class="status" id="status" hidden></span>
+        <table class="hours">
+          <?php foreach ([1, 2, 3, 4, 5, 6, 0] as $g): ?>
+          <?php $fasce = $c['orari']['settimana'][(string) $g] ?? []; ?>
+          <tr<?= $g === $oggi ? ' class="today"' : '' ?>><th scope="row"><?= KN_GIORNI[$g] ?></th><td><?= $fasce ? implode('', array_map(fn($f) => '<span>' . e(kn_ora($f[0]) . '–' . kn_ora($f[1])) . '</span>', $fasce)) : '<em>chiuso</em>' ?></td></tr>
+          <?php endforeach ?>
+        </table>
+        <?php $prossime = array_filter($c['orari']['chiusure'] ?? [], fn($ch) => ($ch['al'] ?: $ch['dal']) >= date('Y-m-d')); if ($prossime): ?>
+        <p class="closures">Chiusure: <?= e(implode(' · ', array_map(fn($ch) => ($ch['dal'] === ($ch['al'] ?: $ch['dal']) ? kn_data_it($ch['dal']) : kn_data_it($ch['dal']) . '–' . kn_data_it($ch['al'])) . ($ch['motivo'] ? ' (' . $ch['motivo'] . ')' : ''), $prossime))) ?></p>
+        <?php endif ?>
+        <a class="link-arrow" href="<?= e(kn_maps_url($c)) ?>" target="_blank" rel="noopener">Indicazioni stradali</a>
+      </aside>
     </div>
   </div>
 </section>

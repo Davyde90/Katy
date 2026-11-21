@@ -30,21 +30,20 @@ Il file con il codice di attivazione del pannello (`da-caricare/inc/config.php`)
 
 ## Il sito
 
-È la bozza C (Rosa lucido) migliorata e trasformata in un sito vero, con un **pannello di gestione** su `/admin`. Da lì Katy, dal telefono, cambia testi, prezzi, orari e ferie, carica le foto in galleria, scrive avvisi e aggiunge recensioni e domande frequenti. Gira in PHP, senza database: va bene qualsiasi hosting italiano economico.
+Grafica editoriale in rosa: titoli in Fraunces (serif con corsivo), testi in Outfit, sezioni numerate, listino e prenotazione su fondo lampone. Pensato prima per il telefono, poi per il computer. Gira in PHP senza database: va bene qualsiasi hosting italiano economico.
 
 Cosa c'è:
 
-- pannello di gestione con backup automatici e ripristino
+- **Pannello di gestione** su `/admin`: barra laterale con le sezioni, pagina iniziale con numeri e cose da completare, **anteprima dal vivo** del sito che si aggiorna mentre Katy scrive (sul computer a fianco, sul telefono con un pulsante), trascinamento per riordinare foto e voci, Ctrl+S per salvare, backup automatici e ripristino
 - prenotazione guidata: Katy riceve su WhatsApp un messaggio già scritto ("Sono Giulia, vorrei prenotare: ritocco gel, sabato di mattina")
-- grafica pensata per il telefono: menu, barra fissa Chiama/WhatsApp, controllata a 320, 360, 390 e 414 px
-- apertura viva: foto che si alternano (Katy le sceglie con la stellina nel pannello), riflesso lucido, cartellino aperto/chiuso, numeri che contano, sezioni che compaiono scorrendo
-- **Prova il colore**: la cliente tocca un colore e le unghie della foto cambiano davvero, con ombre, riflessi e glitter veri, lucido oppure opaco; poi prenota con quel colore su WhatsApp
-- **Prima e dopo**: confronto trascinabile col dito, pronto nel pannello. Compare sul sito solo quando Katy carica coppie di foto vere
-- galleria con foto ingrandibili, avvisi e chiusure per ferie che si annunciano da sole
-- sezioni Buono regalo, Domande frequenti e Recensioni (quest'ultima compare solo se ci sono recensioni)
+- apertura con foto che si alternano (Katy le sceglie con la stellina), cartellino aperto/chiuso, numeri che contano
+- **Prova il colore**: la cliente tocca un colore e le unghie della foto cambiano davvero, con ombre, riflessi e glitter veri, lucido oppure opaco; poi prenota con quel colore
+- servizi a lista con la foto grande che segue il mouse, listino su fondo lampone con le note di Katy, galleria con foto ingrandibili, domande frequenti, buono regalo, recensioni (compare solo se ce ne sono)
+- **Prima e dopo** pronto nel pannello: compare sul sito quando Katy carica coppie di foto vere
+- avvisi in cima al sito e chiusure per ferie che si annunciano da sole; orari riassunti nel piè di pagina
 - dati per Google (scheda NailSalon), anteprima per WhatsApp e Facebook, sitemap, pagina 404, privacy, nessun cookie
 
-Schermate da telefono: [`screenshots/sito/`](screenshots/sito/) e [`screenshots/pannello/`](screenshots/pannello/).
+Schermate: [`screenshots/sito/`](screenshots/sito/) (telefono e computer) e [`screenshots/pannello/`](screenshots/pannello/).
 
 **Anteprima senza hosting:** [`anteprima/index.html`](anteprima/index.html) è una copia statica del sito, da aprire dove il PHP non gira (Vercel, githack). Il pannello lì non funziona. Quando cambiano i contenuti va rigenerata con `php tools/anteprima.php`.
 

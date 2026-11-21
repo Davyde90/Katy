@@ -178,6 +178,11 @@ return [
             ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 40],
             ['k' => 'testo', 't' => 'textarea', 'l' => 'Testo', 'max' => 260],
             ['k' => 'opzioni', 't' => 'tags', 'l' => 'Cosa si può scegliere quando si prenota', 'max' => 10, 'maxlen' => 30, 'help' => 'Compaiono come pulsanti nel modulo di prenotazione. "Altro" viene aggiunto da solo.'],
+            ['k' => 'passi', 't' => 'list', 'l' => 'Come funziona (i passi)', 'max' => 4, 'add' => 'Aggiungi passo', 'title' => 'titolo',
+                'item' => [
+                    ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 40],
+                    ['k' => 'testo', 't' => 'text', 'l' => 'Spiegazione', 'max' => 120],
+                ]],
         ],
     ],
     [

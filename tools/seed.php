@@ -21,7 +21,7 @@ foreach (['salvia' => 'Salvia con un dito glitter', 'corallo' => 'Rosa fragola l
 $c = [
     'avviso' => ['attivo' => false, 'testo' => '', 'fino_al' => ''],
     'hero' => [
-        'etichetta' => 'Salone per la cura delle unghie · Curcuris',
+        'etichetta' => 'Salone per la cura delle unghie · Curcuris (OR)',
         'titolo' => 'Cura delle unghie,',
         'titolo_script' => 'nei minimi dettagli.',
         'sottotitolo' => 'Copertura in gel, semipermanente, smalto e decori a mano libera. Su appuntamento, una cliente alla volta.',
@@ -95,11 +95,11 @@ $c = [
         'elenco' => [],
     ],
     'galleria' => [
-        'intro' => 'Una parte dei più di 1.000 lavori pubblicati sul mio Instagram.',
+        'intro' => 'Una selezione dei lavori pubblicati sul mio Instagram.',
         'foto' => [$foto['corallo'], $foto['salvia'], $foto['french'], $foto['latte'], $foto['maglietta']],
     ],
     'chi_sono' => [
-        'saluto' => 'Ciao, sono Katy!',
+        'saluto' => 'Ciao, sono Katy',
         'titolo' => 'Onicotecnica, in continua formazione.',
         'testo' => "Mi chiamo Katiuscia. Nel mio studio di Curcuris lavoro su appuntamento, una cliente alla volta: così ho tutto il tempo per fare le cose per bene e tu non aspetti.\n\nMi aggiorno di continuo con corsi e tecniche nuove, per portarti sempre qualcosa in più.",
         'foto' => $foto['parete']['file'],
@@ -130,10 +130,15 @@ $c = [
         'chiusure' => [],
     ],
     'contatti' => [
-        'titolo_script' => 'ti aspetto!',
-        'titolo' => 'Prenota ora',
+        'titolo_script' => 'ti aspetto',
+        'titolo' => 'Prenota il tuo appuntamento',
         'testo' => 'Scegli cosa ti serve e quando preferisci: il messaggio per WhatsApp si scrive da solo. Se sto lavorando non rispondo subito, ma ti richiamo appena finisco.',
         'opzioni' => ['Copertura in gel', 'Ritocco gel', 'Semipermanente mani', 'Semipermanente piedi', 'Smalto', 'Riparazione'],
+        'passi' => [
+            ['titolo' => 'Scrivimi', 'testo' => 'Su WhatsApp o per telefono: dimmi cosa ti serve e quando preferisci.'],
+            ['titolo' => 'Fissiamo il giorno', 'testo' => 'Ti propongo il primo posto libero. Se hai un\'idea, mandami la foto.'],
+            ['titolo' => 'Vieni in studio', 'testo' => 'Una cliente alla volta, senza attese. Avvisami se non puoi venire.'],
+        ],
     ],
     'studio' => [
         'nome' => 'Katy\'s Nails',

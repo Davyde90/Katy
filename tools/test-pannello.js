@@ -21,6 +21,7 @@ const iso = d => d.toISOString().slice(0, 10);
   page.on('pageerror', e => errors.push(e.message));
   page.on('dialog', d => d.accept());
   const toast = async (txt) => { const el = await page.waitForSelector(txt ? `#toast:not([hidden]):has-text("${txt}")` : '#toast:not([hidden])', { timeout: 15000 }).catch(() => null); const v = el ? await el.textContent() : ''; await page.evaluate(() => { document.getElementById('toast').hidden = true; }); return v; };
+  const logout = async () => { if (await page.isVisible('#menuBtn')) await page.click('#menuBtn'); await page.click('.logout button'); };
   const site = async () => { const p = await ctx.newPage(); await p.goto(BASE + '/'); const html = (await p.content()).replace(/\u00a0|&nbsp;/g, ' '); await p.close(); return html; };
 
   console.log('Attivazione');
@@ -36,7 +37,7 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.fill('input[name=conferma]', PW1);
   await page.click('button[type=submit]');
   await page.waitForSelector('#menu a');
-  check(await page.isVisible('h1:has-text("Ciao Katy!")'), 'con il codice giusto entra nel pannello');
+  check(await page.isVisible('.hello h2:has-text("Katy")'), 'con il codice giusto entra nel pannello');
   check((await page.$$('.todo-list li')).length >= 3, 'mostra la lista delle cose da completare');
 
   console.log('Avviso');
@@ -121,7 +122,7 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.fill('.main input[autocomplete=new-password] >> nth=1', PW2);
   await page.click('.main form button[type=submit]');
   check((await toast()).includes('cambiata'), 'cambia la password');
-  await page.click('.top-act button');
+  await logout();
   await page.waitForSelector('input[name=password]');
   await page.fill('input[name=password]', PW1);
   await page.click('button[type=submit]');
@@ -130,7 +131,7 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.click('button[type=submit]');
   await page.waitForSelector('#menu a');
   check(true, 'la nuova password funziona');
-  await page.click('.top-act button');
+  await logout();
   for (let i = 0; i < 5; i++) {
     await page.fill('input[name=password]', 'sbagliata' + i);
     await page.click('button[type=submit]');

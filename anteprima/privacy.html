@@ -6,7 +6,7 @@
 <title>Privacy e cookie · Katy&#039;s Nails</title>
 <meta name="description" content="Informativa privacy e cookie del sito di Katy&#039;s Nails.">
 <link rel="canonical" href="http://anteprima.local/privacy.php">
-<meta name="theme-color" content="#FFEDF1">
+<meta name="theme-color" content="#FFF0F4">
 <meta name="format-detection" content="telephone=no">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
@@ -21,21 +21,23 @@
 <link rel="icon" type="image/png" sizes="32x32" href="../da-caricare/assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="../da-caricare/assets/img/icon-192.png">
 <link rel="apple-touch-icon" href="../da-caricare/assets/img/apple-touch-icon.png">
+<link rel="preload" href="../da-caricare/assets/fonts/fraunces-latin-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../da-caricare/assets/fonts/fraunces-latin-italic-300-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="../da-caricare/assets/fonts/outfit-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="../da-caricare/assets/css/site.css?v=1795290316">
+<link rel="stylesheet" href="../da-caricare/assets/css/site.css?v=1795294460">
 <script>document.documentElement.classList.add('js')</script>
 </head>
 <body><div style="background:#2E1F28;color:#fff;font:500 13px/1.4 system-ui,sans-serif;text-align:center;padding:8px 12px">Anteprima del sito · il pannello di gestione funziona solo quando il sito è online su un hosting con PHP</div>
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="index.html"><img src="../da-caricare/assets/img/logo.jpg" alt="" width="46" height="46"><span>Katy&#039;s Nails</span></a>
+    <a class="brand" href="index.html"><img src="../da-caricare/assets/img/logo.jpg" alt="" width="44" height="44"><span>Katy&#039;s Nails</span></a>
     <nav class="desk" aria-label="Sezioni del sito">
-      <a href="index.html#prova">Prova il colore</a><a href="index.html#servizi">Servizi</a><a href="index.html#listino">Prezzi</a><a href="index.html#lavori">Lavori</a><a href="index.html#katy">Chi sono</a><a href="index.html#prenota">Prenota</a>    </nav>
-    <a class="btn desk" href="index.html#prenota">Prenota</a>
+      <a href="index.html#prova">Prova il colore</a><a href="index.html#servizi">Servizi</a><a href="index.html#listino">Listino</a><a href="index.html#lavori">Lavori</a><a href="index.html#katy">Chi sono</a><a href="index.html#prenota">Prenota</a>    </nav>
+    <a class="btn small desk" href="index.html#prenota">Prenota</a>
     <details class="mmenu" id="mmenu">
-      <summary aria-label="Apri il menu"><i></i><i></i><i></i></summary>
+      <summary aria-label="Apri il menu"><i></i><i></i></summary>
       <nav aria-label="Menu">
-        <a href="index.html#prova">Prova il colore</a><a href="index.html#servizi">Servizi</a><a href="index.html#listino">Prezzi</a><a href="index.html#lavori">Lavori</a><a href="index.html#katy">Chi sono</a><a href="index.html#prenota">Prenota</a>        <a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Instagram</a>      </nav>
+        <a href="index.html#prova"><small>01</small>Prova il colore</a><a href="index.html#servizi"><small>02</small>Servizi</a><a href="index.html#listino"><small>03</small>Listino</a><a href="index.html#lavori"><small>04</small>Lavori</a><a href="index.html#katy"><small>05</small>Chi sono</a><a href="index.html#prenota"><small>06</small>Prenota</a>        <a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener"><small>↗</small>Instagram</a>      </nav>
     </details>
   </div>
 </header>
@@ -63,16 +65,32 @@
   <p style="margin-top:40px"><a class="btn white" href="index.html">← Torna al sito</a></p>
 </article>
 </main>
-<footer>
+<footer class="foot plum grain">
   <div class="wrap">
-    <img class="logo" src="../da-caricare/assets/img/logo.jpg" alt="Logo di Katy&#039;s Nails" width="88" height="88" loading="lazy">
-    <p class="big">Katy&#039;s Nails</p>
-    <p>Katy&#039;s Nails di Katiuscia Manias<br>Via Grazia Deledda 2a, Curcuris (OR)</p>
-    <p class="links">
-      <a href="tel:+393494136132">349 413 6132</a>
-      <a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Instagram</a>            <a href="privacy.html">Privacy</a>
-      <a href="../screenshots/pannello/pannello-1-inizio.jpg">Pannello (solo online)</a>
-    </p>
+    <p class="foot-mark" aria-hidden="true">Katy&#039;s Nails</p>
+    <div class="foot-grid">
+      <div>
+        <p class="foot-k">Lo studio</p>
+        <p>Katy&#039;s Nails<br>di Katiuscia Manias<br>Via Grazia Deledda 2a<br>Curcuris (OR)</p>
+              </div>
+      <div>
+        <p class="foot-k">Orari</p>
+        <ul class="foot-hours">
+          <li><span>Lun</span><span>chiuso</span></li><li><span>Mar–Ven</span><span>9:00–13:00 · 15:00–19:00</span></li><li><span>Sab</span><span>9:00–14:00</span></li><li><span>Dom</span><span>chiuso</span></li>        </ul>
+        <p class="foot-s">Solo su appuntamento</p>
+      </div>
+      <div>
+        <p class="foot-k">Contatti</p>
+        <ul class="foot-links">
+          <li><a href="tel:+393494136132">349 413 6132</a></li>
+          <li><a href="https://wa.me/393494136132?text=Ciao%20Katy%21%20Vorrei%20prenotare%20un%20appuntamento." target="_blank" rel="noopener">WhatsApp</a></li>
+          <li><a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Instagram</a></li>                            </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Katy&#039;s Nails</span>
+      <span><a href="privacy.html">Privacy e cookie</a> · <a href="../screenshots/pannello/pannello-1-inizio.jpg">Pannello (solo online)</a></span>
+    </div>
   </div>
 </footer>
 <div class="actionbar" aria-label="Contatti rapidi">
@@ -80,6 +98,6 @@
   <a class="ab-wa" href="https://wa.me/393494136132?text=Ciao%20Katy%21%20Vorrei%20prenotare%20un%20appuntamento." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>WhatsApp</a>
 </div>
 <a class="wa-float" href="https://wa.me/393494136132?text=Ciao%20Katy%21%20Vorrei%20prenotare%20un%20appuntamento." target="_blank" rel="noopener" aria-label="Scrivi a Katy&#039;s Nails su WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
-<script src="../da-caricare/assets/js/site.js?v=1795290381" defer></script>
+<script src="../da-caricare/assets/js/site.js?v=1795294156" defer></script>
 </body>
 </html>

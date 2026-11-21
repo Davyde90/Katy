@@ -49,10 +49,16 @@ function kn_content_file(): string
     return kn_data_dir() . '/content.json';
 }
 
-/** Legge i contenuti; se il file è rovinato prova l'ultimo backup. */
-function kn_content(bool $fresh = false): array
+/**
+ * Legge i contenuti; se il file è rovinato prova l'ultimo backup.
+ * Con $override si impongono contenuti non salvati (serve all'anteprima dal vivo del pannello).
+ */
+function kn_content(bool $fresh = false, ?array $override = null): array
 {
     static $cache = null;
+    if ($override !== null) {
+        return $cache = $override;
+    }
     if ($cache !== null && !$fresh) {
         return $cache;
     }

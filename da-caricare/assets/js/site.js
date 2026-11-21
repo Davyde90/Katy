@@ -243,6 +243,24 @@
     }
   }
 
+  /* ---------- servizi: la foto grande segue la riga su cui sei ---------- */
+  var svcStage = $('#svc-stage');
+  if (svcStage) {
+    var svcImgs = $$('img', svcStage), svcCap = $('#svc-stage-cap'), righe = $$('.svc');
+    var mostraSvc = function (riga) {
+      var src = riga.getAttribute('data-img');
+      righe.forEach(function (r) { r.classList.toggle('on', r === riga); });
+      svcImgs.forEach(function (im) { im.classList.toggle('on', im.getAttribute('data-img') === src); });
+      var t = $('h3', riga); if (svcCap && t) svcCap.textContent = t.textContent;
+    };
+    righe.forEach(function (r) {
+      r.addEventListener('mouseenter', function () { mostraSvc(r); });
+      r.addEventListener('focus', function () { mostraSvc(r); });
+      r.addEventListener('click', function () { mostraSvc(r); });
+    });
+    if (righe[0]) righe[0].classList.add('on');
+  }
+
   /* ---------- prima e dopo: si trascina col dito ---------- */
   $$('.ba').forEach(function (fig) {
     var r = $('.ba-range', fig);

@@ -8,6 +8,15 @@ const KN_WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><pat
 const KN_TEL_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
 const KN_PIN_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>';
 
+function kn_sezioni_menu(array $c): array
+{
+    $sezioni = ['prova' => 'Prova il colore', 'servizi' => 'Servizi', 'listino' => 'Listino', 'lavori' => 'Lavori', 'katy' => 'Chi sono', 'prenota' => 'Prenota'];
+    if (empty($c['prova']['attivo'])) {
+        unset($sezioni['prova']);
+    }
+    return $sezioni;
+}
+
 function kn_page_start(array $c, array $opt): void
 {
     $base = kn_base_url();
@@ -15,21 +24,18 @@ function kn_page_start(array $c, array $opt): void
     $title = $opt['title'] ?? ($c['seo']['titolo'] ?? $s['nome'] ?? '');
     $desc = $opt['desc'] ?? ($c['seo']['descrizione'] ?? '');
     $canonical = $base . '/' . ($opt['path'] ?? '');
-    $sezioni = ['prova' => 'Prova il colore', 'servizi' => 'Servizi', 'listino' => 'Prezzi', 'lavori' => 'Lavori', 'katy' => 'Chi sono', 'prenota' => 'Prenota'];
-    if (empty($c['prova']['attivo'])) {
-        unset($sezioni['prova']);
-    }
+    $sezioni = kn_sezioni_menu($c);
     ?>
 <!doctype html>
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<?php if (!empty($opt['base'])): ?><base href="<?= e(kn_base_url()) ?>/"><meta name="robots" content="noindex"><?php endif ?>
+<?php if (!empty($opt['base']) || !empty($GLOBALS['KN_ANTEPRIMA'])): ?><base href="<?= e(kn_base_url()) ?>/"><meta name="robots" content="noindex"><?php endif ?>
 <title><?= e($title) ?></title>
 <meta name="description" content="<?= e($desc) ?>">
 <link rel="canonical" href="<?= e($canonical) ?>">
-<meta name="theme-color" content="#FFEDF1">
+<meta name="theme-color" content="#FFF0F4">
 <meta name="format-detection" content="telephone=no">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">
@@ -44,9 +50,11 @@ function kn_page_start(array $c, array $opt): void
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon-192.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/fraunces-latin-normal-300-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/fraunces-latin-italic-300-700.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/outfit-latin-normal-300-800.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="<?= kn_asset('assets/css/site.css') ?>">
-<script>document.documentElement.classList.add('js')</script>
+<script>document.documentElement.classList.add('js'<?= !empty($GLOBALS['KN_ANTEPRIMA']) ? ", 'anteprima'" : '' ?>)</script>
 <?php if (!empty($opt['jsonld'])): ?>
 <script type="application/ld+json"><?= kn_json_ld($c, $base) ?></script>
 <?php endif ?>
@@ -55,18 +63,18 @@ function kn_page_start(array $c, array $opt): void
 <?php $avvisi = kn_avvisi($c); if ($avvisi): ?>
 <div class="notice" role="status"><?php foreach ($avvisi as $a): ?><p><?= e($a) ?></p><?php endforeach ?></div>
 <?php endif ?>
-<header class="nav">
+<header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="./"><img src="assets/img/logo.jpg" alt="" width="46" height="46"><span><?= e($s['nome'] ?? '') ?></span></a>
+    <a class="brand" href="./"><img src="assets/img/logo.jpg" alt="" width="44" height="44"><span><?= e($s['nome'] ?? '') ?></span></a>
     <nav class="desk" aria-label="Sezioni del sito">
       <?php foreach ($sezioni as $id => $nome): ?><a href="./#<?= $id ?>"><?= e($nome) ?></a><?php endforeach ?>
     </nav>
-    <a class="btn desk" href="./#prenota">Prenota</a>
+    <a class="btn small desk" href="./#prenota">Prenota</a>
     <details class="mmenu" id="mmenu">
-      <summary aria-label="Apri il menu"><i></i><i></i><i></i></summary>
+      <summary aria-label="Apri il menu"><i></i><i></i></summary>
       <nav aria-label="Menu">
-        <?php foreach ($sezioni as $id => $nome): ?><a href="./#<?= $id ?>"><?= e($nome) ?></a><?php endforeach ?>
-        <?php if (kn_instagram_url($c)): ?><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener">Instagram</a><?php endif ?>
+        <?php $k = 0; foreach ($sezioni as $id => $nome): $k++; ?><a href="./#<?= $id ?>"><small><?= sprintf('%02d', $k) ?></small><?= e($nome) ?></a><?php endforeach ?>
+        <?php if (kn_instagram_url($c)): ?><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><small>↗</small>Instagram</a><?php endif ?>
       </nav>
     </details>
   </div>
@@ -79,20 +87,51 @@ function kn_page_end(array $c): void
 {
     $s = $c['studio'] ?? [];
     $wa = kn_wa_url($c, 'Ciao Katy! Vorrei prenotare un appuntamento.');
+    $settimana = $c['orari']['settimana'] ?? [];
+    // orari riassunti: giorni consecutivi con lo stesso orario vengono raggruppati (Mar–Ven 9–13 · 15–19)
+    $gruppi = [];
+    foreach ([1, 2, 3, 4, 5, 6, 0] as $g) {
+        $t = kn_fasce_testo($settimana[(string) $g] ?? []);
+        if ($gruppi && end($gruppi)['t'] === $t) {
+            $gruppi[count($gruppi) - 1]['fine'] = $g;
+        } else {
+            $gruppi[] = ['inizio' => $g, 'fine' => $g, 't' => $t];
+        }
+    }
+    $abbr = fn(int $g) => mb_substr(KN_GIORNI[$g], 0, 3);
     ?>
 </main>
-<footer>
+<footer class="foot plum grain">
   <div class="wrap">
-    <img class="logo" src="assets/img/logo.jpg" alt="Logo di <?= e($s['nome'] ?? '') ?>" width="88" height="88" loading="lazy">
-    <p class="big"><?= e($s['nome'] ?? '') ?></p>
-    <p><?= e($s['nome'] ?? '') ?><?= !empty($s['titolare']) ? ' di ' . e($s['titolare']) : '' ?><br><?= e(kn_indirizzo($c, true)) ?><?= !empty($s['piva']) ? '<br>P.IVA ' . e($s['piva']) : '' ?></p>
-    <p class="links">
-      <a href="<?= e(kn_tel_url($c)) ?>"><?= e($s['telefono'] ?? '') ?></a>
-      <?php if (kn_instagram_url($c)): ?><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener">Instagram</a><?php endif ?>
-      <?php if (!empty($s['facebook'])): ?><a href="<?= e($s['facebook']) ?>" target="_blank" rel="noopener">Facebook</a><?php endif ?>
-      <a href="privacy.php">Privacy</a>
-      <a href="admin/" rel="nofollow">Area riservata</a>
-    </p>
+    <p class="foot-mark" aria-hidden="true"><?= e($s['nome'] ?? '') ?></p>
+    <div class="foot-grid">
+      <div>
+        <p class="foot-k">Lo studio</p>
+        <p><?= e($s['nome'] ?? '') ?><?= !empty($s['titolare']) ? '<br>di ' . e($s['titolare']) : '' ?><br><?= e($s['indirizzo'] ?? '') ?><br><?= e(trim((($s['cap'] ?? '') ? $s['cap'] . ' ' : '') . ($s['citta'] ?? '') . (!empty($s['provincia']) ? ' (' . $s['provincia'] . ')' : ''))) ?></p>
+        <?php if (!empty($s['piva'])): ?><p class="foot-s">P.IVA <?= e($s['piva']) ?></p><?php endif ?>
+      </div>
+      <div>
+        <p class="foot-k">Orari</p>
+        <ul class="foot-hours">
+          <?php foreach ($gruppi as $gr): ?><li><span><?= $gr['inizio'] === $gr['fine'] ? e($abbr($gr['inizio'])) : e($abbr($gr['inizio']) . '–' . $abbr($gr['fine'])) ?></span><span><?= e($gr['t']) ?></span></li><?php endforeach ?>
+        </ul>
+        <p class="foot-s">Solo su appuntamento</p>
+      </div>
+      <div>
+        <p class="foot-k">Contatti</p>
+        <ul class="foot-links">
+          <li><a href="<?= e(kn_tel_url($c)) ?>"><?= e($s['telefono'] ?? '') ?></a></li>
+          <li><a href="<?= e($wa) ?>" target="_blank" rel="noopener">WhatsApp</a></li>
+          <?php if (kn_instagram_url($c)): ?><li><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener">Instagram</a></li><?php endif ?>
+          <?php if (!empty($s['facebook'])): ?><li><a href="<?= e($s['facebook']) ?>" target="_blank" rel="noopener">Facebook</a></li><?php endif ?>
+          <?php if (!empty($s['email'])): ?><li><a href="mailto:<?= e($s['email']) ?>"><?= e($s['email']) ?></a></li><?php endif ?>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <?= date('Y') ?> <?= e($s['nome'] ?? '') ?></span>
+      <span><a href="privacy.php">Privacy e cookie</a> · <a href="admin/" rel="nofollow">Area riservata</a></span>
+    </div>
   </div>
 </footer>
 <div class="actionbar" aria-label="Contatti rapidi">
