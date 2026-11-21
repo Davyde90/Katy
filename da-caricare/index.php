@@ -16,14 +16,14 @@ $servizi = array_values(array_filter($c['servizi']['elenco'] ?? [], fn($x) => tr
 $galleria = $c['galleria']['foto'] ?? [];
 $heroFoto = $hero['foto'] ?: ($galleria[0]['file'] ?? '');
 $slides = [['src' => $heroFoto, 'cap' => $hero['foto_etichetta']]];
-foreach ($galleria as $g) { // le foto con la stellina "in apertura", scelte da Katy nel pannello
-    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6) {
+foreach ($galleria as $g) { // le foto con la stellina "in apertura", scelte da Katy nel pannello (solo verticali o quadrate: le orizzontali verrebbero ingrandite troppo)
+    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6 && $g['h'] >= $g['w'] * 0.9) {
         $slides[] = ['src' => $g['file'], 'cap' => $g['didascalia']];
     }
 }
 $secondaFoto = null; // la piccola foto sovrapposta in apertura: un'altra foto con la stellina
 foreach ($galleria as $g) {
-    if (!empty($g['apertura']) && $g['file'] !== $heroFoto) {
+    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && $g['h'] >= $g['w'] * 0.9 && !in_array($g['file'], array_column($slides, 'src'), true)) {
         $secondaFoto = $g;
         break;
     }

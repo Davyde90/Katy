@@ -120,15 +120,15 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
 .facts dt{font-family:var(--serif);font-size:clamp(20px,5.4vw,32px);font-weight:400;line-height:1;color:var(--ink);letter-spacing:-.02em}
 .facts dd{margin:6px 0 0;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);line-height:1.3}
 .hero-media{position:relative;padding:0 0 30px 0}
-.visual{position:relative;margin:0;border-radius:var(--r) var(--r) 120px 120px;overflow:hidden;aspect-ratio:4/5;background:var(--rosa);border:6px solid #fff;box-shadow:0 40px 70px -36px rgba(196,30,115,.55);isolation:isolate}
+.visual{position:relative;margin:0;border-radius:28px;overflow:hidden;aspect-ratio:4/5;background:var(--rosa);border:6px solid #fff;box-shadow:0 40px 70px -36px rgba(196,30,115,.55);isolation:isolate}
 .visual .slides{position:absolute;top:0;right:0;bottom:0;left:0}
 .visual .slides img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.06);transition:opacity 1.2s ease,transform 6s ease-out}
 .visual .slides img.on{opacity:1;transform:scale(1)}
 .visual .shine{position:absolute;top:0;right:0;bottom:0;left:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.28) 50%,transparent 60%) no-repeat;background-size:250% 100%;background-position:150% 0;animation:lucido 8s ease-in-out 2s infinite}
 @keyframes lucido{0%{background-position:150% 0}20%,100%{background-position:-60% 0}}
-.visual figcaption{position:absolute;right:34px;bottom:26px;max-width:60%;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2;transition:opacity .4s}
+.visual figcaption{position:absolute;right:20px;bottom:20px;max-width:60%;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2;transition:opacity .4s}
 .visual figcaption.fade{opacity:0}
-.visual-2{position:absolute;margin:0;width:34%;left:-6px;bottom:0;border-radius:14px;overflow:hidden;border:6px solid #fff;box-shadow:0 24px 40px -22px rgba(196,30,115,.55);aspect-ratio:1/1;background:var(--rosa)}
+.visual-2{position:absolute;margin:0;width:34%;left:-6px;bottom:0;border-radius:18px;overflow:hidden;border:6px solid #fff;box-shadow:0 24px 40px -22px rgba(196,30,115,.55);aspect-ratio:1/1;background:var(--rosa)}
 .visual-2 img{width:100%;height:100%;object-fit:cover}
 .hero-mark{position:absolute;left:0;right:0;bottom:-.12em;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(80px,18vw,230px);line-height:1;white-space:nowrap;text-align:center;color:transparent;-webkit-text-stroke:1px rgba(232,49,138,.28);pointer-events:none;user-select:none;letter-spacing:-.02em}
 @media (min-width:980px){
@@ -138,8 +138,8 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
   .cta{grid-auto-flow:column;gap:28px}
   .facts{max-width:520px}
   .hero-media{padding:0 0 40px 40px;display:flex;justify-content:flex-end}
-  .visual{max-width:520px;width:100%;transform:rotate(1.5deg)}
-  .visual-2{width:40%;left:0;bottom:0}
+  .visual{max-width:500px;width:100%;transform:none}
+  .visual-2{width:38%;left:0;bottom:10px}
 }
 
 /* nastro dei servizi */
@@ -311,8 +311,8 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
 .about{background:var(--crema-2)}
 .about-grid{display:grid;gap:36px;align-items:center}
 .portrait{position:relative;width:min(82%,380px);justify-self:center}
-.portrait::before{content:"";position:absolute;top:14px;right:-14px;bottom:-14px;left:14px;border-radius:999px 999px var(--r) var(--r);border:1px solid var(--rosa-2)}
-.portrait img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px var(--r) var(--r)}
+.portrait::before{content:"";position:absolute;top:14px;right:-14px;bottom:-14px;left:14px;border-radius:var(--r);border:1px solid var(--rosa-2)}
+.portrait img{position:relative;width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:var(--r)}
 .about h2{font-size:clamp(34px,8.6vw,58px);font-weight:400;margin-bottom:20px}
 .about h2 em{display:block;font-size:.72em;margin-bottom:8px}
 .about p{margin-bottom:14px;max-width:34em}

@@ -717,7 +717,11 @@
       put(grid, arr.map(function (g, i) {
         var cap = h('input', { type: 'text', value: g.didascalia || '', maxlength: 80, placeholder: 'Descrizione (facoltativa)', 'aria-label': 'Descrizione foto ' + (i + 1) });
         cap.addEventListener('input', function () { g.didascalia = cap.value; changed(); });
-        var star = h('button', { type: 'button', class: 'star' + (g.apertura ? ' on' : ''), 'aria-pressed': String(!!g.apertura), title: 'Mostra questa foto nella foto grande in apertura', onclick: function () { g.apertura = !g.apertura; changed(); paint(); } }, ico('star', 13), g.apertura ? 'In apertura' : 'In apertura');
+        var orizzontale = g.w && g.h && g.h < g.w * 0.9;
+        var star = h('button', { type: 'button', class: 'star' + (g.apertura ? ' on' : ''), 'aria-pressed': String(!!g.apertura), title: orizzontale ? 'Foto orizzontale: in apertura verrebbe ingrandita troppo, quindi non viene usata' : 'Mostra questa foto nella foto grande in apertura', onclick: function () {
+          if (orizzontale && !g.apertura) { toast('Questa foto è orizzontale: in apertura verrebbe ingrandita troppo. Per l\'apertura servono foto verticali.', true); return; }
+          g.apertura = !g.apertura; changed(); paint();
+        } }, ico('star', 13), g.apertura ? 'In apertura' : 'In apertura');
         return h('div', { class: 'gi', 'data-i': i },
           h('div', { class: 'gi-img', draggable: 'true' }, h('img', { src: url(g.thumb), alt: g.didascalia || '', loading: 'lazy' }), star, h('span', { class: 'n', text: String(i + 1) })),
           h('div', { class: 'gi-b' }, cap, h('div', { class: 'gi-a' },
