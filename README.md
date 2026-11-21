@@ -13,7 +13,9 @@ Apri `index.html` per confrontarle una accanto all'altra.
 
 Tutte e tre hanno il pulsante WhatsApp sempre visibile, il listino, la galleria con le foto di Instagram, la sezione "chi sono" e gli orari con il giorno di oggi evidenziato (A e C dicono anche se lo studio è aperto adesso).
 
-Gli screenshot di ogni bozza, da computer e da telefono, sono nella cartella `screenshots/`.
+Gli screenshot di ogni bozza, da computer e da telefono, sono nella cartella `screenshots/`. In `screenshots/telefono/` ci sono le schermate nitide, grandi come lo schermo di un telefono, divise per sezione: apertura, servizi, listino, lavori, contatti.
+
+**Per vedere le bozze dal vivo sul telefono:** nella repository su GitHub vai in Settings → Pages, scegli "Deploy from a branch", seleziona il branch `ccr-9f8208ca-rr8lfo` e la cartella `/ (root)`, poi salva. Dopo un paio di minuti le bozze sono online su `https://davyde90.github.io/Katy/` (attenzione: chiunque abbia il link può vederle).
 
 La prima serie di bozze (Campionario, Quaderno, Ricamo) è stata scartata: resta nella cronologia git, al commit `359c90a`.
 
