@@ -89,12 +89,10 @@ $c = [
             ['nome' => 'Bianco latte', 'colore' => '#F3EEE8'],
         ],
     ],
-    // esempio dimostrativo (sito/uploads/esempio-*.webp): Katy lo sostituisce dal pannello con foto vere
+    // vuoto: la sezione compare sul sito solo quando Katy carica coppie di foto vere dal pannello
     'prima_dopo' => [
         'intro' => 'Trascina il cursore per vedere la differenza.',
-        'elenco' => kn_upload_exists('uploads/esempio-prima.webp') && kn_upload_exists('uploads/esempio-dopo.webp')
-            ? [['titolo' => 'Esempio: da naturale a semipermanente salvia', 'prima' => 'uploads/esempio-prima.webp', 'dopo' => 'uploads/esempio-dopo.webp']]
-            : [],
+        'elenco' => [],
     ],
     'galleria' => [
         'intro' => 'Una parte dei più di 1.000 lavori pubblicati sul mio Instagram.',

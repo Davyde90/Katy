@@ -181,7 +181,6 @@
     if (nf < 8) out.push(['galleria', 'Carica altre foto dei tuoi lavori (ora sono ' + nf + ')']);
     if (!c.recensioni || !(c.recensioni.elenco || []).length) out.push(['recensioni', 'Aggiungi qualche recensione delle tue clienti']);
     if (!c.studio || !c.studio.facebook) out.push(['studio', 'Aggiungi il link della pagina Facebook, se la usi']);
-    if (JSON.stringify(c.prima_dopo || {}).indexOf('uploads/esempio-') !== -1) out.push(['prima_dopo', 'Sostituisci il "prima e dopo" di esempio con le tue foto vere']);
     return out;
   }
   function drawHome() {

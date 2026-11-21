@@ -17,7 +17,7 @@ Rispetto alla bozza C ci sono in più:
 - apertura viva: foto che si alternano (Katy le sceglie con la stellina nel pannello), riflesso lucido, cartellino aperto/chiuso sulla foto, numeri che contano, sezioni che compaiono scorrendo, colate di smalto animate
 - pagina "non trovata" con la grafica del sito
 - **Prova il colore**: la cliente tocca un colore e le unghie della foto cambiano davvero, con ombre, riflessi e glitter veri, lucido oppure opaco; poi prenota con quel colore su WhatsApp
-- **Prima e dopo**: due foto da confrontare trascinando col dito (ora c'è un esempio da sostituire con foto vere)
+- **Prima e dopo**: due foto da confrontare trascinando col dito. È pronta nel pannello e compare sul sito appena Katy carica la prima coppia di foto vere
 - galleria con foto ingrandibili da sfogliare col dito
 - avvisi in cima al sito, e chiusure per ferie che si annunciano da sole
 - cartellino "Aperto adesso / Chiuso · riapre martedì alle 9"
@@ -39,7 +39,7 @@ Schermate da telefono: [`screenshots/sito/`](screenshots/sito/) e [`screenshots/
 - [ ] Link alla pagina **Facebook** "Katy's nails"
 - [ ] Rileggere il testo **Chi sono** e le **domande frequenti**
 - [ ] **Prova il colore**: una foto vera della mano con smalto colorato uniforme (vedi `sito/LEGGIMI.md`) e i colori che Katy ha davvero sulla parete
-- [ ] **Prima e dopo**: 2–3 coppie di foto vere, stessa inquadratura e stessa luce, al posto dell'esempio
+- [ ] **Prima e dopo** (facoltativo): 2–3 coppie di foto vere con la stessa inquadratura e la stessa luce, da caricare dal pannello
 - [ ] Decidere se offrire il **buono regalo** (si spegne dal pannello)
 - [ ] Far rileggere la pagina **privacy** a chi segue la parte legale
 
