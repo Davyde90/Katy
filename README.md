@@ -23,6 +23,8 @@ Rispetto alla bozza C ci sono in più:
 
 Schermate da telefono: [`screenshots/sito/`](screenshots/sito/) e [`screenshots/pannello/`](screenshots/pannello/).
 
+**Anteprima senza server:** [`anteprima/index.html`](anteprima/index.html) è una copia statica del sito, da aprire dove il PHP non gira (githack, GitHub Pages). Il pannello lì non funziona. Quando cambiano i contenuti va rigenerata con `php tools/anteprima.php`.
+
 ## Da fare con Katy prima di andare online
 
 - [x] **Listino**: preso dal suo listino ufficiale (`LISTINO PREZZI SALONE`). Niente ricostruzione e niente pedicure; le note su riparazioni e supplementi sono in fondo al listino e nelle domande frequenti
