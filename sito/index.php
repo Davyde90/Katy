@@ -35,6 +35,9 @@ $faq = array_values(array_filter($c['faq']['elenco'] ?? [], fn($q) => trim($q['d
 $categorie = array_values(array_filter($c['listino']['categorie'] ?? [], fn($k) => !empty($k['voci'])));
 $noteListino = array_values(array_filter(array_map('trim', explode("\n", $c['listino']['note'] ?? ''))));
 $opzioni = array_values(array_filter($c['contatti']['opzioni'] ?? [])) ?: array_column($servizi, 'nome');
+$prova = $c['prova'] ?? [];
+$coloriProva = !empty($prova['attivo']) && is_file(__DIR__ . '/assets/img/prova/mappa.png') && is_file(__DIR__ . '/assets/img/prova/prova.json') ? array_values(array_filter($prova['colori'] ?? [], fn($x) => trim($x['nome']) !== '')) : [];
+$confronti = array_values(array_filter($c['prima_dopo']['elenco'] ?? [], fn($x) => $x['prima'] && $x['dopo']));
 
 // giorni in cui si può prenotare (lunedì → domenica)
 $giorniAperti = [];
@@ -81,6 +84,37 @@ kn_page_start($c, ['jsonld' => true]);
 </section>
 <svg class="drip" data-drip="#FFEDF1" viewBox="0 0 1440 140" preserveAspectRatio="xMidYMin slice" aria-hidden="true"></svg>
 
+<?php if ($coloriProva): ?>
+<section class="sec prova" id="prova">
+  <div class="wrap">
+    <div class="head rv"><h2>Prova il <span class="script">colore</span></h2><?php if (!empty($prova['testo'])): ?><p><?= e($prova['testo']) ?></p><?php endif ?></div>
+    <div class="stage-wrap rv">
+      <div class="stage" id="stage" data-finish="lucido" data-prova="<?= e((string) @file_get_contents(__DIR__ . '/assets/img/prova/prova.json')) ?>" data-mano="assets/img/prova/mano.webp" data-mappa="assets/img/prova/mappa.png">
+        <div class="layers">
+          <img class="l-mano" src="assets/img/prova/mano.webp" alt="Mano con smalto: tocca un colore per provarlo sulle unghie" width="710" height="944" loading="lazy">
+          <canvas class="l-tela" id="tela-a" width="710" height="944" aria-hidden="true"></canvas>
+          <canvas class="l-tela" id="tela-b" width="710" height="944" aria-hidden="true"></canvas>
+        </div>
+        <span class="stage-tag" aria-live="polite"><i id="tag-dot" style="background:<?= e($coloriProva[0]['colore']) ?>"></i><span id="tag-nome"><?= e($coloriProva[0]['nome']) ?></span></span>
+      </div>
+    </div>
+    <div class="prova-side">
+      <div class="palette rv" id="palette" role="radiogroup" aria-label="Colori da provare">
+        <?php foreach ($coloriProva as $i => $col): ?>
+        <button type="button" class="sw" role="radio" aria-checked="<?= $i === 0 ? 'true' : 'false' ?>" data-c="<?= e($col['colore']) ?>" data-n="<?= e($col['nome']) ?>" style="--c:<?= e($col['colore']) ?>"><i></i><span><?= e($col['nome']) ?></span></button>
+        <?php endforeach ?>
+        <button type="button" class="sw orig" role="radio" aria-checked="false" data-orig="1" data-n="Il lavoro vero (salvia + glitter)"><i></i><span>Il lavoro vero</span></button>
+      </div>
+      <div class="finish rv" role="group" aria-label="Finitura">
+        <button type="button" aria-pressed="true" data-f="lucido">Lucido</button><button type="button" aria-pressed="false" data-f="opaco">Opaco</button>
+      </div>
+      <a class="btn wa rv" id="prova-wa" href="<?= e(kn_wa_url($c)) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?><span>Prenota con <b id="prova-nome"><?= e($coloriProva[0]['nome']) ?></b></span></a>
+      <p class="hint rv">I colori sullo schermo sono indicativi: in studio li vedi dal vivo sulla parete degli smalti.</p>
+    </div>
+  </div>
+</section>
+<?php endif ?>
+
 <?php if ($servizi): ?>
 <section class="sec" id="servizi">
   <div class="wrap">
@@ -118,6 +152,28 @@ kn_page_start($c, ['jsonld' => true]);
     <?php if ($noteListino): ?>
     <div class="notes rv"><?php foreach ($noteListino as $nota): ?><p><?= e($nota) ?></p><?php endforeach ?></div>
     <?php endif ?>
+  </div>
+</section>
+<?php endif ?>
+
+<?php if ($confronti): ?>
+<section class="sec pd" id="prima-dopo">
+  <div class="wrap">
+    <div class="head rv"><h2>Prima e <span class="script">dopo</span></h2><?php if ($c['prima_dopo']['intro']): ?><p><?= e($c['prima_dopo']['intro']) ?></p><?php endif ?></div>
+    <div class="pd-list<?= count($confronti) > 1 ? ' many' : '' ?>">
+      <?php foreach ($confronti as $i => $x): ?>
+      <figure class="ba rv" style="--pos:50%">
+        <div class="ba-box">
+          <?= kn_img_tag($x['dopo'], 'Dopo: ' . $x['titolo'], 'class="ba-dopo" loading="lazy" width="800" height="800"') ?>
+          <?= kn_img_tag($x['prima'], 'Prima: ' . $x['titolo'], 'class="ba-prima" loading="lazy" width="800" height="800"') ?>
+          <span class="ba-lab prima">Prima</span><span class="ba-lab dopo">Dopo</span>
+          <span class="ba-line" aria-hidden="true"><span class="ba-knob"><svg viewBox="0 0 24 24" class="ico"><path fill="currentColor" d="M8.5 6 2.5 12l6 6V6Zm7 0v12l6-6-6-6Z"/></svg></span></span>
+          <input class="ba-range" type="range" min="0" max="100" value="50" aria-label="Trascina per confrontare prima e dopo<?= $x['titolo'] ? ': ' . e($x['titolo']) : '' ?>">
+        </div>
+        <?php if ($x['titolo']): ?><figcaption><?= e($x['titolo']) ?></figcaption><?php endif ?>
+      </figure>
+      <?php endforeach ?>
+    </div>
   </div>
 </section>
 <?php endif ?>

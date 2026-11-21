@@ -71,6 +71,8 @@ function kn_clean_value(array $f, $v)
             return filter_var($v, FILTER_VALIDATE_EMAIL) ? $v : '';
         case 'digits':
             return substr(kn_digits(is_scalar($v) ? (string) $v : ''), 0, $f['max'] ?? 20);
+        case 'color':
+            return is_string($v) && preg_match('/^#[0-9a-fA-F]{6}$/', $v) ? strtoupper($v) : '#E4557A';
         case 'stars':
             return max(1, min(5, (int) $v ?: 5));
         case 'tags':

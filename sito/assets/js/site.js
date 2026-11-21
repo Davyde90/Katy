@@ -3,6 +3,7 @@
   'use strict';
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var calma = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ---------- colate di smalto tra le sezioni (sempre uguali: seme fisso) ---------- */
   $$('svg[data-drip]').forEach(function (svg) {
@@ -45,6 +46,7 @@
       msg += servizio === 'Altro' ? ' Vorrei prenotare un appuntamento' : ' Vorrei prenotare: ' + servizio.toLowerCase();
       msg += giorno === 'il primo posto libero' ? ', il primo posto libero' : ', ' + giorno;
       if (momento !== 'indifferente') msg += ' ' + momento;
+      if (coloreScelto) msg += ', colore "' + coloreScelto + '"';
       return msg + '. Fammi sapere quando hai posto, grazie!';
     };
     var aggiorna = function () { $('#preview').textContent = testo(); };
@@ -100,7 +102,174 @@
     setInterval(mostra, 60000);
   }
 
-  var calma = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- prova il colore ----------
+     Ogni pixel dell'unghia nella foto è: colore dello smalto × luce + riflesso.
+     mappa.png (creata da tools/prova-colore.py) contiene luce, riflesso e forma; qui si rifà il conto
+     con il colore scelto, così curvatura, ombre, riflessi e glitter restano quelli veri della foto. */
+  var coloreScelto = '';
+  var stage = $('#stage');
+  if (stage) {
+    var pal = $('#palette'), provaWa = $('#prova-wa');
+    var tagNome = $('#tag-nome'), tagDot = $('#tag-dot'), provaNome = $('#prova-nome');
+    var tele = [$('#tela-a'), $('#tela-b')], sopra = 0;
+    var finitura = 'lucido', coloreAttuale = null, motore = null;
+    var waNum = (provaWa.getAttribute('href').match(/wa\.me\/(\d+)/) || [])[1] || '';
+    var aggiornaWa = function (nome) {
+      var t = nome
+        ? 'Ciao Katy! Sul sito ho provato il colore "' + nome + '"' + (finitura === 'opaco' ? ' opaco' : '') + ': vorrei prenotare con questo colore. Quando hai posto?'
+        : 'Ciao Katy! Vorrei prenotare un appuntamento.';
+      provaWa.href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent(t);
+    };
+
+    // conversioni sRGB <-> luce lineare (tabelle per andare veloci)
+    var A_LIN = new Float32Array(256), A_SRGB = new Uint8ClampedArray(4096);
+    for (var q = 0; q < 256; q++) { var v = q / 255; A_LIN[q] = v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+    for (q = 0; q < 4096; q++) { var l = q / 4095; A_SRGB[q] = Math.round(255 * (l <= 0.0031308 ? l * 12.92 : 1.055 * Math.pow(l, 1 / 2.4) - 0.055)); }
+    var hexLin = function (hex) { return [1, 3, 5].map(function (i) { return A_LIN[parseInt(hex.substr(i, 2), 16)]; }); };
+
+    var carica = function (src) {
+      return new Promise(function (ok, ko) { var im = new Image(); im.decoding = 'async'; im.onload = function () { ok(im); }; im.onerror = ko; im.src = src; });
+    };
+    var pixel = function (im) {
+      var c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight;
+      var x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(im, 0, 0);
+      return x.getImageData(0, 0, c.width, c.height);
+    };
+
+    var prepara = function () {
+      if (motore) return motore;
+      var info = JSON.parse(stage.getAttribute('data-prova') || '{}');
+      motore = Promise.all([carica(stage.getAttribute('data-mano')), carica(stage.getAttribute('data-mappa'))]).then(function (imgs) {
+        var base = pixel(imgs[0]), mappa = pixel(imgs[1]), d = mappa.data, bb = base.data;
+        var idx = [];
+        for (var p = 0; p < d.length; p += 4) if (d[p + 3] > 0) idx.push(p);
+        var n = idx.length, I = new Uint32Array(idx);
+        var luce = new Float32Array(n), morb = new Float32Array(n), rif = new Float32Array(n), alfa = new Float32Array(n);
+        var lr = new Float32Array(n), lg = new Float32Array(n), lb = new Float32Array(n);
+        for (var k = 0; k < n; k++) {
+          var o = I[k];
+          luce[k] = d[o] / 127.5; rif[k] = Math.pow(d[o + 1] / 255, 2); morb[k] = d[o + 2] / 127.5; alfa[k] = d[o + 3] / 255;
+          lr[k] = A_LIN[bb[o]]; lg[k] = A_LIN[bb[o + 1]]; lb[k] = A_LIN[bb[o + 2]];
+        }
+        return { base: base, I: I, n: n, luce: luce, morb: morb, rif: rif, alfa: alfa, lr: lr, lg: lg, lb: lb, sm: info.smalto || [0.19, 0.32, 0.32] };
+      });
+      return motore;
+    };
+
+    var dipingi = function (m, hex, tela) {
+      var t = hexLin(hex), opaco = finitura === 'opaco';
+      var out = new ImageData(new Uint8ClampedArray(m.base.data), m.base.width, m.base.height), D = out.data;
+      for (var k = 0; k < m.n; k++) {
+        var a = m.alfa[k], L = m.luce[k], R = m.rif[k];
+        var Lf = opaco ? 0.45 * L + 0.55 * m.morb[k] : L, Rf = opaco ? R * 0.06 : R;
+        var w = Math.min(1, Math.max(0, (a - 0.8) / 0.2));
+        var aL = a * L, extra = opaco ? a * (Lf - L) : 0, via = opaco ? a * R * 0.94 : 0;
+        // dentro: colore nuovo × luce + riflesso; sul bordo: si toglie lo smalto vecchio e si mette il nuovo
+        var r = w * (t[0] * Lf + Rf) + (1 - w) * (m.lr[k] + aL * (t[0] - m.sm[0]) + extra * t[0] - via);
+        var g = w * (t[1] * Lf + Rf) + (1 - w) * (m.lg[k] + aL * (t[1] - m.sm[1]) + extra * t[1] - via);
+        var b = w * (t[2] * Lf + Rf) + (1 - w) * (m.lb[k] + aL * (t[2] - m.sm[2]) + extra * t[2] - via);
+        var o = m.I[k];
+        D[o] = A_SRGB[Math.max(0, Math.min(4095, (r * 4095) | 0))];
+        D[o + 1] = A_SRGB[Math.max(0, Math.min(4095, (g * 4095) | 0))];
+        D[o + 2] = A_SRGB[Math.max(0, Math.min(4095, (b * 4095) | 0))];
+      }
+      tela.getContext('2d').putImageData(out, 0, 0);
+    };
+
+    var mostra = function (hex, animata) {
+      coloreAttuale = hex;
+      prepara().then(function (m) {
+        if (hex !== coloreAttuale) return;
+        var nuova = tele[1 - sopra], vecchia = tele[sopra];
+        dipingi(m, hex, nuova);
+        nuova.style.zIndex = 2; vecchia.style.zIndex = 1;
+        nuova.classList.toggle('entra', false);
+        if (animata && !calma && stage.classList.contains('pronto')) { void nuova.offsetWidth; nuova.classList.add('entra'); }
+        nuova.classList.add('su');
+        stage.classList.add('pronto');
+        sopra = 1 - sopra;
+      }).catch(function () { /* senza tela resta la foto originale */ });
+    };
+
+    var scegli = function (btn) {
+      $$('.sw', pal).forEach(function (b) { b.setAttribute('aria-checked', String(b === btn)); });
+      var orig = btn.hasAttribute('data-orig'), nome = btn.getAttribute('data-n');
+      stage.classList.toggle('orig', orig);
+      tagNome.textContent = nome;
+      if (orig) {
+        tagDot.style.background = '#8DB3AC';
+        provaNome.textContent = 'questo colore';
+        coloreScelto = 'salvia + glitter';
+        aggiornaWa('salvia con glitter');
+        if (form) form.dispatchEvent(new Event('change'));
+        return;
+      }
+      var c = btn.getAttribute('data-c');
+      tagDot.style.background = c;
+      provaNome.textContent = nome;
+      coloreScelto = nome;
+      aggiornaWa(nome);
+      if (form) form.dispatchEvent(new Event('change'));
+      mostra(c, true);
+    };
+    pal.addEventListener('click', function (e) { var b = e.target.closest('.sw'); if (b) scegli(b); });
+    pal.addEventListener('keydown', function (e) {
+      if (['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].indexOf(e.key) === -1) return;
+      e.preventDefault();
+      var tutti = $$('.sw', pal), i = tutti.indexOf(document.activeElement);
+      var n = tutti[(i + (e.key === 'ArrowRight' || e.key === 'ArrowDown' ? 1 : -1) + tutti.length) % tutti.length];
+      n.focus(); scegli(n);
+    });
+    $$('.finish button').forEach(function (b) {
+      b.addEventListener('click', function () {
+        finitura = b.getAttribute('data-f');
+        stage.setAttribute('data-finish', finitura);
+        $$('.finish button').forEach(function (x) { x.setAttribute('aria-pressed', String(x === b)); });
+        var sel = $('.sw[aria-checked="true"]', pal);
+        if (sel && !sel.hasAttribute('data-orig')) { aggiornaWa(sel.getAttribute('data-n')); mostra(sel.getAttribute('data-c'), false); }
+      });
+    });
+
+    // il primo colore si prepara quando la sezione sta per entrare nello schermo
+    var primo = $('.sw', pal);
+    if (primo) {
+      aggiornaWa(primo.getAttribute('data-n'));
+      var avvia = function () { mostra(primo.getAttribute('data-c'), false); };
+      if ('IntersectionObserver' in window) {
+        var oss = new IntersectionObserver(function (v) { if (v[0].isIntersecting) { oss.disconnect(); avvia(); } }, { rootMargin: '400px 0px' });
+        oss.observe(stage);
+      } else avvia();
+    }
+  }
+
+  /* ---------- prima e dopo: si trascina col dito ---------- */
+  $$('.ba').forEach(function (fig) {
+    var r = $('.ba-range', fig);
+    var metti = function (v) { fig.style.setProperty('--pos', v + '%'); };
+    r.addEventListener('input', function () { metti(r.value); fig.dataset.toccato = '1'; });
+    // la prima volta che si vede, il cursore si muove da solo per far capire che si può trascinare
+    if (!calma && 'IntersectionObserver' in window) {
+      var o = new IntersectionObserver(function (v) {
+        if (!v[0].isIntersecting) return;
+        o.disconnect();
+        var tappe = [[0, 50], [700, 22], [1500, 78], [2200, 50]], t0 = null;
+        var passo = function (t) {
+          if (fig.dataset.toccato) return;
+          if (t0 === null) t0 = t;
+          var e = t - t0, k = 1;
+          while (k < tappe.length - 1 && e > tappe[k][0]) k++;
+          var a = tappe[k - 1], b = tappe[k], q = Math.min(1, Math.max(0, (e - a[0]) / (b[0] - a[0])));
+          q = q < .5 ? 2 * q * q : 1 - Math.pow(-2 * q + 2, 2) / 2;
+          var val = a[1] + (b[1] - a[1]) * q;
+          metti(val); r.value = Math.round(val);
+          if (e < tappe[tappe.length - 1][0]) requestAnimationFrame(passo);
+        };
+        setTimeout(function () { requestAnimationFrame(passo); }, 400);
+      }, { threshold: 0.6 });
+      o.observe(fig);
+    }
+  });
 
   /* ---------- testata con ombra quando si scorre ---------- */
   var nav = $('.nav');

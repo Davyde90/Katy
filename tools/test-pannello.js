@@ -59,6 +59,17 @@ const iso = d => d.toISOString().slice(0, 10);
   const html1 = await site();
   check(html1.includes('da 41 €'), 'il nuovo prezzo è sul sito');
 
+  console.log('Prova il colore');
+  check((await site()).includes('id="prova"'), 'la sezione "Prova il colore" è sul sito');
+  await page.goto(BASE + '/admin/#prova');
+  await page.click('.list .item >> nth=0 >> header');
+  await page.fill('.list .item >> nth=0 >> input[placeholder="Es. Rosso ciliegia"]', 'Rosso Katy');
+  await page.fill('.list .item >> nth=0 >> input.hex', '#9a1020');
+  await page.click('#salva');
+  await toast('Salvato');
+  const hp = await site();
+  check(hp.includes('data-n="Rosso Katy"') && hp.includes('data-c="#9A1020"'), 'nome e colore cambiati dal pannello sono sul sito');
+
   console.log('Galleria');
   await page.goto(BASE + '/admin/#galleria');
   const prima = await page.$$eval('.gi', x => x.length);

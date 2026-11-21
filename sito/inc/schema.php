@@ -3,7 +3,7 @@
  * Cosa si può modificare dal pannello, sezione per sezione.
  * Lo stesso elenco serve al pannello per disegnare i moduli e al server per controllare i dati ricevuti.
  *
- * Tipi: text, textarea, toggle, date, select, image, url, digits, email, stars, tags, list, hours, gallery
+ * Tipi: text, textarea, toggle, date, select, image, url, digits, email, stars, tags, list, hours, gallery, color
  */
 
 $coloriCard = [
@@ -61,6 +61,20 @@ return [
         ],
     ],
     [
+        'key' => 'prova', 'titolo' => 'Prova il colore', 'descr' => 'Il gioco in cui le clienti colorano le unghie della foto e poi prenotano con quel colore.',
+        'fields' => [
+            ['k' => 'attivo', 't' => 'toggle', 'l' => 'Mostra la sezione sul sito'],
+            ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 40],
+            ['k' => 'testo', 't' => 'textarea', 'l' => 'Testo', 'max' => 260],
+            ['k' => 'colori', 't' => 'list', 'l' => 'Colori da provare', 'max' => 16, 'add' => 'Aggiungi colore', 'title' => 'nome',
+                'help' => 'Metti i colori che hai davvero sulla parete. Il primo è quello che si vede all\'inizio.',
+                'item' => [
+                    ['k' => 'nome', 't' => 'text', 'l' => 'Nome del colore', 'max' => 24, 'ph' => 'Es. Rosso ciliegia'],
+                    ['k' => 'colore', 't' => 'color', 'l' => 'Colore'],
+                ]],
+        ],
+    ],
+    [
         'key' => 'listino', 'titolo' => 'Listino prezzi', 'descr' => 'Tutti i prezzi, divisi per categoria.',
         'fields' => [
             ['k' => 'confermato', 't' => 'toggle', 'l' => 'I prezzi sono giusti e aggiornati'],
@@ -76,6 +90,19 @@ return [
                             ['k' => 'nota', 't' => 'text', 'l' => 'Nota (facoltativa)', 'max' => 60],
                             ['k' => 'prezzo', 't' => 'text', 'l' => 'Prezzo', 'max' => 20, 'ph' => 'Es. da 28 €'],
                         ]],
+                ]],
+        ],
+    ],
+    [
+        'key' => 'prima_dopo', 'titolo' => 'Prima e dopo', 'descr' => 'Due foto della stessa mano, prima e dopo il trattamento: sul sito si confrontano trascinando col dito. Se non ce ne sono, la sezione non compare.',
+        'fields' => [
+            ['k' => 'intro', 't' => 'textarea', 'l' => 'Frase di presentazione', 'max' => 200],
+            ['k' => 'elenco', 't' => 'list', 'l' => 'Confronti', 'max' => 8, 'add' => 'Aggiungi un prima e dopo', 'title' => 'titolo',
+                'help' => 'Scatta le due foto dalla stessa posizione e con la stessa luce: il confronto viene molto meglio.',
+                'item' => [
+                    ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 50, 'ph' => 'Es. Copertura in gel su unghie fragili'],
+                    ['k' => 'prima', 't' => 'image', 'l' => 'Foto prima'],
+                    ['k' => 'dopo', 't' => 'image', 'l' => 'Foto dopo'],
                 ]],
         ],
     ],

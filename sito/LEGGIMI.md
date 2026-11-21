@@ -12,6 +12,8 @@ Questo è il sito vero, nato dalla bozza C (Rosa lucido). Katy può aggiornarlo 
 |---|---|
 | Avviso | Una striscia in cima al sito (promozioni, novità), con data di scadenza |
 | Apertura | Titolo, frase, foto grande, numeri in evidenza |
+| Prova il colore | Accendere o spegnere la sezione, testi e colori della tavolozza (nome + colore) |
+| Prima e dopo | Coppie di foto prima/dopo da confrontare trascinando col dito |
 | Servizi | Le schede con foto, descrizione e prezzo "da" |
 | Listino prezzi | Categorie e voci, con il colore del pallino |
 | Galleria | Caricare foto dal telefono (anche tante insieme), descrizioni, ordine, eliminare |
@@ -43,6 +45,20 @@ Basta un hosting Linux base. Prima di comprare, controlla che abbia:
 **Non serve**: database MySQL, Node.js, WordPress. Lo spazio non è un problema: 1 GB basta per migliaia di foto, perché ognuna pesa 50–150 KB.
 
 Vanno bene, per esempio, i pacchetti base di Aruba, Register.it, Netsons o SiteGround. Controlla nella scheda dell'offerta la versione di PHP. Vercel, Netlify e GitHub Pages vanno bene solo per l'anteprima, perché non eseguono PHP.
+
+## Prova il colore: come funziona e come cambiare la foto
+
+La cliente tocca un colore e le unghie della foto cambiano colore. Ombre, curvatura, riflessi e glitter restano quelli veri, perché il sito non "dipinge sopra" ma sostituisce solo lo smalto, pixel per pixel. Lo script `tools/prova-colore.py` divide la foto in luce, riflesso e forma delle unghie (`assets/img/prova/mappa.png`), poi il browser rifà il calcolo con il colore scelto in pochi millisecondi. Con "Prenota con questo colore" il nome del colore arriva a Katy su WhatsApp, e finisce anche nel messaggio del modulo di prenotazione.
+
+La foto attuale è un ritaglio di uno screenshot di Instagram. Con una foto vera il risultato migliora molto. **Foto ideale:** mano ferma vicino a una finestra, luce naturale, smalto colorato e uniforme (non nude né bianco), sfondo di un altro colore, foto originale dal telefono e non uno screenshot.
+
+Per cambiarla (serve Python 3 con Pillow e NumPy, sul computer di chi segue il sito):
+
+```bash
+python3 tools/prova-colore.py foto-di-katy.jpg sito/assets/img/prova 120 210
+```
+
+Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–360): 120–210 per verde e azzurro, 300–360 per rosa e rosso, 20–50 per arancio. Poi carica online la cartella `assets/img/prova/`.
 
 ## Messa online
 

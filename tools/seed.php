@@ -69,6 +69,33 @@ $c = [
             ]],
         ],
     ],
+    // "Prova il colore": gli strati della foto sono in sito/assets/img/prova (tools/prova-colore.py)
+    'prova' => [
+        'attivo' => true,
+        'titolo' => 'Prova il colore',
+        'testo' => 'Tocca un colore e guardalo sulle unghie, lucido o opaco. Quando hai trovato quello giusto, prenota: il nome del colore arriva a Katy già scritto.',
+        'colori' => [
+            ['nome' => 'Rosso classico', 'colore' => '#B3121F'],
+            ['nome' => 'Bordeaux', 'colore' => '#5C1324'],
+            ['nome' => 'Fragola', 'colore' => '#E5587A'],
+            ['nome' => 'Rosa latte', 'colore' => '#F0D6D4'],
+            ['nome' => 'Nude', 'colore' => '#D2A193'],
+            ['nome' => 'Pesca', 'colore' => '#F29C7C'],
+            ['nome' => 'Lilla', 'colore' => '#B6A3D8'],
+            ['nome' => 'Acquamarina', 'colore' => '#5ED3C1'],
+            ['nome' => 'Petrolio', 'colore' => '#155E7C'],
+            ['nome' => 'Blu notte', 'colore' => '#1D2A4D'],
+            ['nome' => 'Nero', 'colore' => '#17151A'],
+            ['nome' => 'Bianco latte', 'colore' => '#F3EEE8'],
+        ],
+    ],
+    // esempio dimostrativo (sito/uploads/esempio-*.webp): Katy lo sostituisce dal pannello con foto vere
+    'prima_dopo' => [
+        'intro' => 'Trascina il cursore per vedere la differenza.',
+        'elenco' => kn_upload_exists('uploads/esempio-prima.webp') && kn_upload_exists('uploads/esempio-dopo.webp')
+            ? [['titolo' => 'Esempio: da naturale a semipermanente salvia', 'prima' => 'uploads/esempio-prima.webp', 'dopo' => 'uploads/esempio-dopo.webp']]
+            : [],
+    ],
     'galleria' => [
         'intro' => 'Una parte dei più di 1.000 lavori pubblicati sul mio Instagram.',
         'foto' => [$foto['corallo'], $foto['salvia'], $foto['french'], $foto['latte'], $foto['maglietta']],

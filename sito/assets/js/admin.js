@@ -181,6 +181,7 @@
     if (nf < 8) out.push(['galleria', 'Carica altre foto dei tuoi lavori (ora sono ' + nf + ')']);
     if (!c.recensioni || !(c.recensioni.elenco || []).length) out.push(['recensioni', 'Aggiungi qualche recensione delle tue clienti']);
     if (!c.studio || !c.studio.facebook) out.push(['studio', 'Aggiungi il link della pagina Facebook, se la usi']);
+    if (JSON.stringify(c.prima_dopo || {}).indexOf('uploads/esempio-') !== -1) out.push(['prima_dopo', 'Sostituisci il "prima e dopo" di esempio con le tue foto vere']);
     return out;
   }
   function drawHome() {
@@ -296,6 +297,7 @@
       case 'image': return imageField(f, obj);
       case 'list': return listField(f, obj);
       case 'hours': return hoursField(f, obj);
+      case 'color': return colorField(f, obj);
       case 'gallery': return galleryField(f, obj);
     }
     return h('p', { text: '?' });
@@ -364,6 +366,20 @@
     };
     paint();
     return h('div', { class: 'f' }, label(f), box, help(f));
+  }
+
+  function colorField(f, obj) {
+    var v = /^#[0-9a-f]{6}$/i.test(obj[f.k] || '') ? obj[f.k] : '#E4557A';
+    obj[f.k] = v;
+    var pick = h('input', { type: 'color', value: v, 'aria-label': f.l, class: 'color-pick' });
+    var hex = h('input', { type: 'text', class: 'hex', value: v.toUpperCase(), 'aria-label': f.l + ' (codice)', autocomplete: 'off', spellcheck: 'false', inputmode: 'text' });
+    pick.addEventListener('input', function () { obj[f.k] = pick.value.toUpperCase(); hex.value = obj[f.k]; changed(); });
+    hex.addEventListener('input', function () {
+      var x = hex.value.trim();
+      if (x.charAt(0) !== '#') x = '#' + x;
+      if (/^#[0-9a-f]{6}$/i.test(x)) { obj[f.k] = x.toUpperCase(); pick.value = x; changed(); }
+    });
+    return h('div', { class: 'f' }, label(f), h('div', { class: 'inline' }, pick, hex), help(f));
   }
 
   function starsField(f, obj) {

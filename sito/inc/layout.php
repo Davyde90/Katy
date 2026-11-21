@@ -15,7 +15,10 @@ function kn_page_start(array $c, array $opt): void
     $title = $opt['title'] ?? ($c['seo']['titolo'] ?? $s['nome'] ?? '');
     $desc = $opt['desc'] ?? ($c['seo']['descrizione'] ?? '');
     $canonical = $base . '/' . ($opt['path'] ?? '');
-    $sezioni = ['servizi' => 'Servizi', 'listino' => 'Prezzi', 'lavori' => 'Lavori', 'katy' => 'Chi sono', 'prenota' => 'Prenota e orari'];
+    $sezioni = ['prova' => 'Prova il colore', 'servizi' => 'Servizi', 'listino' => 'Prezzi', 'lavori' => 'Lavori', 'katy' => 'Chi sono', 'prenota' => 'Prenota'];
+    if (empty($c['prova']['attivo'])) {
+        unset($sezioni['prova']);
+    }
     ?>
 <!doctype html>
 <html lang="it">
