@@ -21,7 +21,7 @@ const iso = d => d.toISOString().slice(0, 10);
   page.on('pageerror', e => errors.push(e.message));
   page.on('dialog', d => d.accept());
   const toast = async (txt) => { const el = await page.waitForSelector(txt ? `#toast:not([hidden]):has-text("${txt}")` : '#toast:not([hidden])', { timeout: 15000 }).catch(() => null); const v = el ? await el.textContent() : ''; await page.evaluate(() => { document.getElementById('toast').hidden = true; }); return v; };
-  const site = async () => { const p = await ctx.newPage(); await p.goto(BASE + '/'); const html = await p.content(); await p.close(); return html; };
+  const site = async () => { const p = await ctx.newPage(); await p.goto(BASE + '/'); const html = (await p.content()).replace(/\u00a0|&nbsp;/g, ' '); await p.close(); return html; };
 
   console.log('Attivazione');
   await page.goto(BASE + '/admin/');
@@ -50,15 +50,14 @@ const iso = d => d.toISOString().slice(0, 10);
 
   console.log('Listino');
   await page.goto(BASE + '/admin/#listino');
-  await page.click('.switch');
   await page.click('.list .item >> nth=0 >> header');
   await page.click('.list .item >> nth=0 >> .list .item >> nth=0 >> header');
-  const prezzo = page.locator('.list .item >> nth=0 >> .list .item >> nth=0 >> input[placeholder="Es. 25 €"]');
-  await prezzo.fill('27 €');
+  const prezzo = page.locator('.list .item >> nth=0 >> .list .item >> nth=0 >> input[placeholder="Es. da 28 €"]');
+  await prezzo.fill('da 41 €');
   await page.click('#salva');
   await toast();
   const html1 = await site();
-  check(html1.includes('27 €'), 'il nuovo prezzo è sul sito');
+  check(html1.includes('da 41 €'), 'il nuovo prezzo è sul sito');
 
   console.log('Galleria');
   await page.goto(BASE + '/admin/#galleria');

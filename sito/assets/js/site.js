@@ -24,6 +24,14 @@
     svg.appendChild(p);
   });
 
+  /* ---------- menu da telefono: si chiude toccando una voce o fuori ---------- */
+  var mm = $('#mmenu');
+  if (mm) {
+    mm.addEventListener('click', function (e) { if (e.target.closest('a')) mm.open = false; });
+    document.addEventListener('click', function (e) { if (mm.open && !mm.contains(e.target)) mm.open = false; });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') mm.open = false; });
+  }
+
   /* ---------- prenotazione: il messaggio WhatsApp si scrive da solo ---------- */
   var form = $('#booker');
   if (form) {

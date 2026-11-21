@@ -27,7 +27,9 @@ function kn_config(): array
 /** Testo sicuro da stampare in HTML. */
 function e($s): string
 {
-    return htmlspecialchars((string) $s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    // spazi "che non vanno a capo": "40 €" e "da 40" restano sempre sulla stessa riga
+    $s = preg_replace(['/(\d) €/u', '/\b(da|Da) (\d)/u'], ["$1\u{00A0}€", "$1\u{00A0}$2"], (string) $s) ?? (string) $s;
+    return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }
 
 /** Percorso di un file statico con la data di modifica, così il browser prende sempre la versione nuova. */

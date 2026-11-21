@@ -20,10 +20,10 @@ foreach (['salvia' => 'Salvia con un dito glitter', 'corallo' => 'Rosa fragola l
 $c = [
     'avviso' => ['attivo' => false, 'testo' => '', 'fino_al' => ''],
     'hero' => [
-        'etichetta' => 'Nail studio a Curcuris (OR)',
-        'titolo' => 'Unghie belle,',
-        'titolo_script' => 'fatte da Katy.',
-        'sottotitolo' => 'Semipermanente, ricostruzione in gel, nail art e pedicure. Scegli il colore, al resto penso io.',
+        'etichetta' => 'Salone per la cura delle unghie · Curcuris',
+        'titolo' => 'Cura delle unghie,',
+        'titolo_script' => 'nei minimi dettagli.',
+        'sottotitolo' => 'Copertura in gel, semipermanente, smalto e decori a mano libera. Su appuntamento, una cliente alla volta.',
         'foto' => $foto['salvia']['file'],
         'foto_etichetta' => 'Salvia + glitter',
         'numeri' => [
@@ -32,35 +32,39 @@ $c = [
             ['valore' => 'Sempre', 'testo' => 'in formazione'],
         ],
     ],
+    // servizi e prezzi presi dal listino di Katy (LISTINO PREZZI SALONE)
     'servizi' => [
         'intro' => 'Ogni lavoro parte da una buona preparazione dell\'unghia: è quella che lo fa durare.',
         'elenco' => [
-            ['nome' => 'Semipermanente', 'descrizione' => 'Colore lucido e pieno che dura 2–3 settimane.', 'prezzo_da' => '25 €', 'foto' => $foto['corallo']['file'], 'colore' => 'rosa'],
-            ['nome' => 'Gel', 'descrizione' => 'Ricostruzione, refill e copertura per unghie forti.', 'prezzo_da' => '35 €', 'foto' => $foto['french']['file'], 'colore' => 'menta'],
-            ['nome' => 'Nail art', 'descrizione' => 'French, babyboomer, glitter e decori a mano.', 'prezzo_da' => '2 €', 'foto' => $foto['salvia']['file'], 'colore' => 'crema'],
-            ['nome' => 'Pedicure', 'descrizione' => 'Estetico o con semipermanente.', 'prezzo_da' => '30 €', 'foto' => $foto['latte']['file'], 'colore' => 'lilla'],
+            ['nome' => 'Copertura in gel', 'descrizione' => 'Rinforza e protegge l\'unghia naturale. Ritocco ogni 3–4 settimane.', 'prezzo' => 'da 40 €', 'foto' => $foto['french']['file'], 'colore' => 'rosa'],
+            ['nome' => 'Semipermanente', 'descrizione' => 'Rinforzato sulle mani, lucido e pieno. Anche sui piedi.', 'prezzo' => 'da 28 €', 'foto' => $foto['corallo']['file'], 'colore' => 'menta'],
+            ['nome' => 'Decori e nail art', 'descrizione' => 'A mano libera, Swarovski, polveri, stamping, french e babyboomer.', 'prezzo' => 'da 1 €', 'foto' => $foto['salvia']['file'], 'colore' => 'crema'],
+            ['nome' => 'Smalto mani e piedi', 'descrizione' => 'Smalto classico: scegli il colore dalla mia parete.', 'prezzo' => '18 €', 'foto' => $foto['parete']['file'], 'colore' => 'lilla'],
         ],
     ],
     'listino' => [
-        'confermato' => false,
+        'confermato' => true,
         'intro' => 'Per un lavoro particolare mandami la foto su WhatsApp: ti dico tempi e prezzo.',
+        'note' => "Riparazioni da 3 € a unghia: da 5 unghie in su si paga il prezzo della copertura.\nI trattamenti fatti da un'altra operatrice, o fatti dopo 4 settimane (non per causa del salone), hanno un supplemento da 5 €.",
         'categorie' => [
-            ['nome' => 'Mani', 'colore' => '#E4557A', 'voci' => [
-                ['nome' => 'Semipermanente', 'nota' => 'forma, cuticole e colore', 'prezzo' => '25 €'],
-                ['nome' => 'Ricostruzione in gel', 'nota' => 'allungamento con cartina', 'prezzo' => '50 €'],
-                ['nome' => 'Refill', 'nota' => 'ogni 3–4 settimane', 'prezzo' => '40 €'],
-                ['nome' => 'Copertura in gel', 'nota' => 'sull\'unghia naturale', 'prezzo' => '35 €'],
-                ['nome' => 'Rimozione', 'nota' => 'con trattamento rinforzante', 'prezzo' => '12 €'],
+            ['nome' => 'Gel', 'colore' => '#E4557A', 'voci' => [
+                ['nome' => 'Copertura gel', 'nota' => '', 'prezzo' => 'da 40 €'],
+                ['nome' => 'Ritocco gel corto', 'nota' => '', 'prezzo' => 'da 32 €'],
+                ['nome' => 'Ritocco gel medio', 'nota' => '', 'prezzo' => 'da 35 €'],
+                ['nome' => 'Ritocco gel lungo', 'nota' => '', 'prezzo' => 'da 38 €'],
             ]],
-            ['nome' => 'Piedi', 'colore' => '#8DB3AC', 'voci' => [
-                ['nome' => 'Pedicure estetico', 'nota' => '', 'prezzo' => '30 €'],
-                ['nome' => 'Pedicure con semipermanente', 'nota' => '', 'prezzo' => '40 €'],
-                ['nome' => 'Semipermanente piedi', 'nota' => 'senza pedicure', 'prezzo' => '22 €'],
+            ['nome' => 'Semipermanente e smalto', 'colore' => '#8DB3AC', 'voci' => [
+                ['nome' => 'Semipermanente rinforzato mani', 'nota' => '', 'prezzo' => 'da 28 €'],
+                ['nome' => 'Semipermanente piedi', 'nota' => '', 'prezzo' => 'da 30 €'],
+                ['nome' => 'Smalto mani o piedi', 'nota' => '', 'prezzo' => '18 €'],
+                ['nome' => 'Rimozione', 'nota' => '', 'prezzo' => '15 €'],
             ]],
-            ['nome' => 'Decori', 'colore' => '#A99BCB', 'voci' => [
-                ['nome' => 'Nail art', 'nota' => 'a unghia', 'prezzo' => 'da 2 €'],
-                ['nome' => 'French o babyboomer', 'nota' => '', 'prezzo' => '+5 €'],
-                ['nome' => 'Cromo, aurora, glitter', 'nota' => '', 'prezzo' => '+5 €'],
+            ['nome' => 'Extra', 'colore' => '#A99BCB', 'voci' => [
+                ['nome' => 'Decori a mano libera', 'nota' => 'a unghia', 'prezzo' => 'da 1 €'],
+                ['nome' => 'Swarovski', 'nota' => 'l\'uno', 'prezzo' => '0,50 €'],
+                ['nome' => 'Polveri, adesivi, stamping', 'nota' => 'a unghia', 'prezzo' => '1 €'],
+                ['nome' => 'French o babyboomer', 'nota' => 'supplemento', 'prezzo' => '+5 €'],
+                ['nome' => 'Riparazioni', 'nota' => 'a unghia', 'prezzo' => 'da 3 €'],
             ]],
         ],
     ],
@@ -79,14 +83,15 @@ $c = [
     'buono' => [
         'attivo' => true,
         'titolo' => 'Regala un trattamento',
-        'testo' => 'Un buono per semipermanente, ricostruzione o pedicure: scrivimi su WhatsApp, scegliamo insieme il trattamento e lo prepari in un attimo per un compleanno, una festa o solo per coccolare qualcuno.',
+        'testo' => 'Un buono per una copertura in gel, un semipermanente o uno smalto: scrivimi su WhatsApp, scegliamo insieme il trattamento e lo prepari in un attimo per un compleanno, una festa o solo per coccolare qualcuno.',
     ],
     'faq' => ['elenco' => [
-        ['domanda' => 'Quanto dura il semipermanente?', 'risposta' => 'In media 2–3 settimane. Dipende dalle tue unghie e da quanto usi le mani: lavori in casa senza guanti e prodotti per pulire lo consumano prima.'],
+        ['domanda' => 'Che differenza c\'è tra semipermanente e copertura in gel?', 'risposta' => 'Il semipermanente è uno smalto che si asciuga con la lampada: colora e protegge l\'unghia naturale. La copertura in gel è più spessa e resistente: rinforza le unghie fragili mantenendo la tua lunghezza, e si ritocca ogni 3–4 settimane.'],
+        ['domanda' => 'Ogni quanto va fatto il ritocco del gel?', 'risposta' => 'Entro 4 settimane. Dopo, l\'unghia è cresciuta troppo e serve più lavoro: per questo, se non dipende dal salone, c\'è un supplemento da 5 €.'],
+        ['domanda' => 'Mi si è rotta un\'unghia, cosa faccio?', 'risposta' => 'Scrivimi: le riparazioni partono da 3 € a unghia. Se sono da sistemare 5 unghie o più, si paga il prezzo della copertura.'],
+        ['domanda' => 'Posso venire se le unghie me le ha fatte un\'altra?', 'risposta' => 'Certo. Prima però il lavoro va sistemato o tolto, quindi c\'è un supplemento da 5 €.'],
         ['domanda' => 'Il semipermanente rovina le unghie?', 'risposta' => 'No, se viene messo e tolto nel modo giusto. Il danno arriva quando si strappa o si lima troppo: per questo la rimozione la faccio sempre io, con il prodotto apposito.'],
-        ['domanda' => 'Che differenza c\'è tra semipermanente e gel?', 'risposta' => 'Il semipermanente è uno smalto che si asciuga con la lampada: sottile, colora e protegge l\'unghia naturale. Il gel è più spesso e resistente: serve per allungare (ricostruzione) o rinforzare le unghie fragili (copertura).'],
         ['domanda' => 'Posso portare la foto di un lavoro che mi piace?', 'risposta' => 'Certo! Mandamela su WhatsApp quando prenoti: così ti dico tempi e prezzo e preparo i colori.'],
-        ['domanda' => 'E se non posso venire?', 'risposta' => 'Avvisami almeno 24 ore prima, così posso dare il posto a un\'altra cliente.'],
     ]],
     'orari' => [
         'confermati' => false,
@@ -102,6 +107,7 @@ $c = [
         'titolo_script' => 'ti aspetto!',
         'titolo' => 'Prenota ora',
         'testo' => 'Scegli cosa ti serve e quando preferisci: il messaggio per WhatsApp si scrive da solo. Se sto lavorando non rispondo subito, ma ti richiamo appena finisco.',
+        'opzioni' => ['Copertura in gel', 'Ritocco gel', 'Semipermanente mani', 'Semipermanente piedi', 'Smalto', 'Riparazione'],
     ],
     'studio' => [
         'nome' => 'Katy\'s Nails',
@@ -119,8 +125,8 @@ $c = [
         'piva' => '',
     ],
     'seo' => [
-        'titolo' => 'Katy\'s Nails · Nail studio a Curcuris (OR)',
-        'descrizione' => 'Semipermanente, ricostruzione in gel, nail art e pedicure a Curcuris (Oristano). Su appuntamento: prenota su WhatsApp al 349 413 6132.',
+        'titolo' => 'Katy\'s Nails · Salone per la cura delle unghie a Curcuris (OR)',
+        'descrizione' => 'Copertura in gel, semipermanente, smalto e nail art a Curcuris (Oristano). Su appuntamento: prenota su WhatsApp al 349 413 6132.',
     ],
 ];
 

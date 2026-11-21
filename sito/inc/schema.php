@@ -54,7 +54,7 @@ return [
                 'item' => [
                     ['k' => 'nome', 't' => 'text', 'l' => 'Nome', 'max' => 40],
                     ['k' => 'descrizione', 't' => 'textarea', 'l' => 'Descrizione breve', 'max' => 140],
-                    ['k' => 'prezzo_da', 't' => 'text', 'l' => 'Prezzo "da"', 'max' => 16, 'ph' => 'Es. 25 €'],
+                    ['k' => 'prezzo', 't' => 'text', 'l' => 'Prezzo', 'max' => 20, 'ph' => 'Es. da 40 €'],
                     ['k' => 'foto', 't' => 'image', 'l' => 'Foto'],
                     ['k' => 'colore', 't' => 'select', 'l' => 'Colore della scheda', 'opts' => $coloriCard],
                 ]],
@@ -64,7 +64,8 @@ return [
         'key' => 'listino', 'titolo' => 'Listino prezzi', 'descr' => 'Tutti i prezzi, divisi per categoria.',
         'fields' => [
             ['k' => 'confermato', 't' => 'toggle', 'l' => 'I prezzi sono giusti e aggiornati'],
-            ['k' => 'intro', 't' => 'textarea', 'l' => 'Nota sotto il titolo', 'max' => 240],
+            ['k' => 'intro', 't' => 'textarea', 'l' => 'Frase sotto il titolo', 'max' => 240],
+            ['k' => 'note', 't' => 'textarea', 'l' => 'Note in fondo al listino', 'max' => 600, 'rows' => 4, 'help' => 'Supplementi, riparazioni, regole. Una nota per riga.'],
             ['k' => 'categorie', 't' => 'list', 'l' => 'Categorie', 'max' => 8, 'add' => 'Aggiungi categoria', 'title' => 'nome',
                 'item' => [
                     ['k' => 'nome', 't' => 'text', 'l' => 'Nome categoria', 'max' => 30],
@@ -73,7 +74,7 @@ return [
                         'item' => [
                             ['k' => 'nome', 't' => 'text', 'l' => 'Trattamento', 'max' => 50],
                             ['k' => 'nota', 't' => 'text', 'l' => 'Nota (facoltativa)', 'max' => 60],
-                            ['k' => 'prezzo', 't' => 'text', 'l' => 'Prezzo', 'max' => 16, 'ph' => 'Es. 25 €'],
+                            ['k' => 'prezzo', 't' => 'text', 'l' => 'Prezzo', 'max' => 20, 'ph' => 'Es. da 28 €'],
                         ]],
                 ]],
         ],
@@ -149,6 +150,7 @@ return [
             ['k' => 'titolo_script', 't' => 'text', 'l' => 'Saluto in corsivo', 'max' => 30],
             ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 40],
             ['k' => 'testo', 't' => 'textarea', 'l' => 'Testo', 'max' => 260],
+            ['k' => 'opzioni', 't' => 'tags', 'l' => 'Cosa si può scegliere quando si prenota', 'max' => 10, 'maxlen' => 30, 'help' => 'Compaiono come pulsanti nel modulo di prenotazione. "Altro" viene aggiunto da solo.'],
         ],
     ],
     [

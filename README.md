@@ -12,7 +12,8 @@ Gira in PHP, senza database: va bene qualsiasi hosting italiano economico. Istru
 Rispetto alla bozza C ci sono in più:
 
 - pannello di gestione con backup automatici e ripristino
-- prenotazione guidata: Katy riceve su WhatsApp un messaggio già scritto ("Sono Giulia, vorrei pedicure, sabato di mattina")
+- prenotazione guidata: Katy riceve su WhatsApp un messaggio già scritto ("Sono Giulia, vorrei prenotare: ritocco gel, sabato di mattina")
+- grafica da telefono rifatta: menu, barra fissa Chiama/WhatsApp, servizi a righe, icone vere, controllata a 320, 360, 390 e 414 px
 - galleria con foto ingrandibili da sfogliare col dito
 - avvisi in cima al sito, e chiusure per ferie che si annunciano da sole
 - cartellino "Aperto adesso / Chiuso · riapre martedì alle 9"
@@ -24,13 +25,13 @@ Schermate da telefono: [`screenshots/sito/`](screenshots/sito/) e [`screenshots/
 
 ## Da fare con Katy prima di andare online
 
-- [ ] **Prezzi**: confermarli nel pannello (sezione Listino) e spuntare "I prezzi sono giusti"
-- [ ] **Orari**: confermarli (sezione Orari e ferie) e spuntare "Gli orari sono giusti"
+- [x] **Listino**: preso dal suo listino ufficiale (`LISTINO PREZZI SALONE`). Niente ricostruzione e niente pedicure; le note su riparazioni e supplementi sono in fondo al listino e nelle domande frequenti
+- [ ] **Orari**: confermarli nel pannello (sezione Orari e ferie) e spuntare "Gli orari sono giusti"
 - [ ] **Partita IVA**: obbligatoria sul sito di un'attività
-- [ ] **Foto originali** in alta risoluzione: quelle di adesso sono ritagli di uno screenshot di Instagram
+- [ ] **Foto originali** in alta risoluzione: quelle di adesso sono ritagli di uno screenshot di Instagram. Mancano anche foto di semipermanente piedi e di decori a mano libera
 - [ ] Verificare che il **349 413 6132** sia anche su WhatsApp
 - [ ] Link alla pagina **Facebook** "Katy's nails"
-- [ ] Rileggere le **domande frequenti** (soprattutto la regola sul preavviso di 24 ore) e il testo **Chi sono**
+- [ ] Rileggere il testo **Chi sono** e le **domande frequenti**
 - [ ] Decidere se offrire il **buono regalo** (si spegne dal pannello)
 - [ ] Far rileggere la pagina **privacy** a chi segue la parte legale
 
