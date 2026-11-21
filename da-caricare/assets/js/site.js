@@ -96,7 +96,7 @@
       var s = calcola();
       stato.textContent = s.t; stato.className = 'status ' + (s.si ? 'si' : 'no'); stato.hidden = false;
       var hs = $('#hero-status');
-      if (hs) { hs.textContent = s.t.replace('Chiuso adesso · ', 'Chiuso · '); hs.className = 'status live ' + (s.si ? 'si' : 'no'); hs.hidden = false; }
+      if (hs) { $('span', hs).textContent = s.t.replace(' · ', ', '); hs.className = 'hero-open up ' + (s.si ? 'si' : 'no'); hs.hidden = false; }
     };
     mostra();
     setInterval(mostra, 60000);

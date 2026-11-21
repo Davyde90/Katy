@@ -76,6 +76,7 @@ kn_page_start($c, ['jsonld' => true]);
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="kicker up" style="--d:0"><?= KN_PIN_ICON ?><span><?= e($hero['etichetta']) ?></span></p>
+      <p class="hero-open up" style="--d:0" id="hero-status" hidden><i></i><span></span><a href="#prenota">Orari</a></p>
       <h1><span class="up" style="--d:1"><?= e($hero['titolo']) ?></span> <em class="script up" style="--d:2"><?= e($hero['titolo_script']) ?></em></h1>
       <p class="lead up" style="--d:3"><?= e($hero['sottotitolo']) ?></p>
       <div class="cta up" style="--d:4">
@@ -93,7 +94,6 @@ kn_page_start($c, ['jsonld' => true]);
       <figure class="visual" data-slides="<?= e(json_encode(array_slice($slides, 1), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
         <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="800" height="1000" fetchpriority="high"') ?></div>
         <span class="shine" aria-hidden="true"></span>
-        <span class="status live" id="hero-status" hidden></span>
         <figcaption<?= $hero['foto_etichetta'] ? '' : ' hidden' ?>><span id="hero-cap"><?= e($hero['foto_etichetta']) ?></span></figcaption>
       </figure>
       <?php if ($secondaFoto): ?>

@@ -103,7 +103,12 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
 /* ---------- apertura ---------- */
 .hero{background:radial-gradient(70% 60% at 100% 15%,rgba(232,49,138,.22),transparent 70%),radial-gradient(50% 45% at 0% 100%,rgba(255,157,188,.55),transparent 70%),radial-gradient(40% 30% at 50% 0%,rgba(255,255,255,.7),transparent 70%),var(--crema);padding:26px 0 70px;overflow:hidden}
 .hero-grid{display:grid;gap:34px}
-.hero .kicker{margin-bottom:22px}
+.hero .kicker{margin-bottom:12px}
+.hero-open{display:inline-flex;align-items:center;gap:9px;margin:0 0 22px;padding:7px 12px 7px 10px;border-radius:999px;background:rgba(255,255,255,.75);border:1px solid rgba(232,49,138,.18);font-size:13.5px;font-weight:400;color:var(--ink)}
+.hero-open i{width:9px;height:9px;border-radius:50%;background:var(--dot,#bbb);flex:none;box-shadow:0 0 0 3px color-mix(in srgb,var(--dot,#bbb) 22%,transparent)}
+.hero-open.si{--dot:var(--verde)}.hero-open.no{--dot:var(--fragola)}
+.hero-open a{color:var(--muted);text-decoration:none;border-bottom:1px solid currentColor;font-size:12.5px;margin-left:4px}
+.hero-open a:hover{color:var(--ink)}
 .hero h1{font-size:clamp(46px,12.5vw,118px);font-weight:400;margin-bottom:22px}
 .hero h1 span,.hero h1 em{display:block}
 .hero h1 em{margin-top:.02em;font-size:.94em}
@@ -120,7 +125,6 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
 .visual .slides img.on{opacity:1;transform:scale(1)}
 .visual .shine{position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 40%,rgba(255,255,255,.28) 50%,transparent 60%) no-repeat;background-size:250% 100%;background-position:150% 0;animation:lucido 8s ease-in-out 2s infinite}
 @keyframes lucido{0%{background-position:150% 0}20%,100%{background-position:-60% 0}}
-.visual .live{position:absolute;left:14px;top:14px;z-index:2;margin:0}
 .visual figcaption{position:absolute;right:34px;bottom:26px;max-width:60%;padding:8px 14px;border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink);font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;z-index:2;transition:opacity .4s}
 .visual figcaption.fade{opacity:0}
 .visual-2{position:absolute;margin:0;width:34%;left:-6px;bottom:0;border-radius:14px;overflow:hidden;border:6px solid #fff;box-shadow:0 24px 40px -22px rgba(196,30,115,.55);aspect-ratio:1/1;background:var(--rosa)}
@@ -398,8 +402,6 @@ details[open] .q-i::after{transform:translate(-50%,-50%) rotate(0)}
 .status{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:6px 14px;font-weight:500;font-size:12px;letter-spacing:.08em;text-transform:uppercase;background:rgba(255,255,255,.14);margin-bottom:8px}
 .status::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--dot,#bbb);flex:none}
 .status.si{--dot:#5BEBA8}.status.no{--dot:#FFB3CC}
-.visual .status{background:rgba(255,255,255,.95);color:var(--ink)}
-.visual .status.si{--dot:var(--verde)}.visual .status.no{--dot:var(--fragola)}
 .hours{width:100%;border-collapse:collapse;margin:6px 0 18px;font-size:15px}
 .hours th{text-align:left;font-weight:300;padding:9px 8px 9px 0;color:rgba(255,255,255,.78)}
 .hours td{text-align:right;padding:9px 0;font-variant-numeric:tabular-nums}
