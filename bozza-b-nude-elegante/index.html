@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Katy's Nails · Studio di onicotecnica a Curcuris</title>
+<meta name="description" content="Katy's Nails, studio di onicotecnica a Curcuris (OR): semipermanente, ricostruzione in gel, nail art e pedicure su appuntamento. Tel. 349 413 6132.">
+<link rel="stylesheet" href="../fonts/bodoni-moda.css">
+<link rel="stylesheet" href="../fonts/jost.css">
+<link rel="stylesheet" href="../fonts/yellowtail.css">
+<style>
+:root{
+  --avorio:#FBF7F2;
+  --nude:#F2E5DC;
+  --cipria:#E7CFC6;
+  --rosa-antico:#B6807E;
+  --petrolio:#155E7C;
+  --scuro:#1B3B48;
+  --text:#2E3B40;
+  --muted:#7A7471;
+  --line:rgba(182,128,126,.45);
+  --serif:'Bodoni Moda', 'Didot', Georgia, serif;
+  --sans:'Jost', system-ui, sans-serif;
+  --script:'Yellowtail', cursive;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;overflow-x:clip}
+body{margin:0;background:var(--avorio);color:var(--text);font-family:var(--sans);font-weight:300;font-size:18px;line-height:1.7}
+a{color:inherit}
+img{display:block;max-width:100%}
+.wrap{max-width:1200px;margin:0 auto;padding:0 18px}
+@media (min-width:760px){.wrap{padding:0 36px}}
+:focus-visible{outline:1.5px solid var(--scuro);outline-offset:4px}
+.caps{font-size:12px;font-weight:400;letter-spacing:.28em;text-transform:uppercase}
+h1,h2,h3{font-family:var(--serif);font-weight:400;color:var(--scuro);font-optical-sizing:auto}
+em{font-style:italic}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:16px 30px;background:var(--scuro);color:#fff;text-decoration:none;font-weight:400;font-size:13px;letter-spacing:.24em;text-transform:uppercase;transition:background .25s}
+.btn:hover{background:var(--petrolio)}
+.btn.line{background:transparent;color:var(--scuro);box-shadow:inset 0 0 0 1px var(--scuro)}
+.btn.line:hover{background:var(--scuro);color:#fff}
+.link{font-size:13px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--rosa-antico);padding-bottom:4px}
+
+/* barra info */
+.info{background:var(--scuro);color:#EBDDD5;text-align:center;padding:9px 12px;font-size:11px}
+.info span+span::before{content:"·";margin:0 12px;opacity:.6}
+@media (max-width:640px){.info .opt{display:none}}
+
+/* testata */
+.nav{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:14px;padding:18px 0;border-bottom:1px solid var(--line)}
+.nav nav{display:none;gap:28px;align-items:center}
+.nav nav a{text-decoration:none;font-size:12px;letter-spacing:.24em;text-transform:uppercase}
+.nav nav a:hover{color:var(--rosa-antico)}
+.nav nav.r{justify-content:flex-end}
+.brand{display:flex;flex-direction:column;align-items:center;text-decoration:none;gap:6px}
+.brand img{width:62px;height:62px;border-radius:50%;background:#fff;box-shadow:0 0 0 1px var(--line),0 0 0 6px var(--avorio),0 0 0 7px var(--line)}
+.nav .mobile-cta{justify-self:end}
+@media (min-width:980px){.nav nav{display:flex}.nav .mobile-cta{display:none}}
+@media (max-width:979px){.nav{grid-template-columns:auto 1fr auto}.brand{flex-direction:row;gap:12px}.brand .caps{font-size:11px}}
+
+/* hero */
+.hero{text-align:center;padding:60px 0 0;background:linear-gradient(var(--avorio) 0 58%,var(--nude) 58%)}
+.hero .caps{color:var(--rosa-antico)}
+.hero h1{font-size:clamp(64px,13vw,170px);line-height:.86;margin:18px 0 .32em;letter-spacing:-.02em}
+.hero h1 em{color:var(--rosa-antico)}
+.hero .serv{font-size:clamp(14px,1.6vw,16px);letter-spacing:.3em;text-transform:uppercase;margin:0 0 30px}
+.hero .serv span{white-space:nowrap}
+.hero .serv i{font-style:normal;color:var(--rosa-antico);margin:0 4px}
+.hero .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:56px}
+.triptych{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:clamp(10px,2vw,26px);align-items:end;max-width:1000px;margin:0 auto}
+.triptych figure{margin:0;position:relative}
+.triptych img{width:100%;aspect-ratio:3/4.4;object-fit:cover;border-radius:999px 999px 0 0}
+.triptych figure:nth-child(2) img{aspect-ratio:3/4.6}
+.triptych figure:nth-child(1),.triptych figure:nth-child(3){margin-bottom:40px}
+.triptych figure::after{content:"";position:absolute;inset:-9px -9px 9px -9px;border:1px solid var(--rosa-antico);border-radius:999px 999px 0 0;border-bottom:0;pointer-events:none}
+.triptych figcaption{position:absolute;bottom:-34px;left:0;right:0;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+
+/* manifesto */
+.manifesto{background:var(--nude);padding:110px 0 100px;text-align:center}
+.manifesto p.big{font-family:var(--serif);font-size:clamp(28px,3.8vw,46px);line-height:1.25;color:var(--scuro);max-width:24em;margin:0 auto 18px}
+.manifesto p.big em{color:var(--rosa-antico)}
+.sign{font-family:var(--script);font-size:46px;color:var(--rosa-antico);line-height:1}
+
+/* intestazioni */
+.sec{padding:110px 0}
+.title{text-align:center;margin:0 auto 64px;max-width:640px}
+.title .caps{color:var(--rosa-antico);display:block;margin-bottom:10px}
+.title h2{font-size:clamp(42px,6vw,72px);line-height:1;margin:0}
+.title h2 em{color:var(--rosa-antico)}
+.title p{color:var(--muted);margin:18px 0 0}
+.orn{display:block;width:120px;height:14px;margin:20px auto 0}
+
+/* servizi a zig zag */
+.svc{display:grid;gap:30px;align-items:center;margin-bottom:90px}
+.svc:last-child{margin-bottom:0}
+@media (min-width:860px){.svc{grid-template-columns:1fr 1fr;gap:80px}.svc:nth-child(even) .ph{order:2}}
+.svc .ph{position:relative;max-width:470px;width:100%;justify-self:center}
+.svc .ph img,.svc .ph .blank{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:999px 999px 0 0}
+.svc .ph::before{content:"";position:absolute;inset:-12px 8px 12px -8px;border:1px solid var(--rosa-antico);border-radius:999px 999px 0 0;pointer-events:none}
+.svc .blank{background:var(--cipria);display:grid;place-items:center}
+.svc .blank svg{width:36%;height:auto}
+.svc .num{font-family:var(--serif);font-style:italic;font-size:72px;line-height:1;color:var(--cipria)}
+.svc h3{font-size:clamp(34px,4vw,48px);line-height:1.05;margin:4px 0 16px}
+.svc p{margin:0 0 22px;max-width:28em}
+.svc .price{display:flex;align-items:baseline;gap:18px;flex-wrap:wrap;padding:16px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:24px;max-width:28em}
+.svc .price span{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted)}
+.svc .price b{font-family:var(--serif);font-weight:400;font-size:30px;color:var(--scuro)}
+
+/* listino come un menu */
+.menu-wrap{background:var(--nude)}
+.menu{background:var(--avorio);max-width:860px;margin:0 auto;padding:60px 22px;position:relative;outline:1px solid var(--line);outline-offset:-12px}
+.menu::after{content:"";position:absolute;inset:18px;border:1px solid var(--line);pointer-events:none}
+@media (min-width:760px){.menu{padding:80px 80px}}
+.menu .title{margin-bottom:40px}
+.menu h3{font-style:italic;font-size:30px;text-align:center;color:var(--rosa-antico);margin:34px 0 10px}
+.item{display:flex;align-items:baseline;gap:12px;padding:10px 0}
+.item .n{font-weight:400}
+.item .n small{display:block;font-weight:300;font-size:14px;color:var(--muted);line-height:1.4}
+.item .d{flex:1;border-bottom:1px dotted var(--rosa-antico);transform:translateY(-6px);min-width:16px}
+.item .p{font-family:var(--serif);font-size:22px;white-space:nowrap;color:var(--scuro)}
+.menu .note{text-align:center;font-size:14px;color:var(--muted);margin:34px 0 0}
+
+/* galleria a scorrimento */
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:min(72%,300px);gap:18px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 18px 18px;scrollbar-width:thin}
+@media (min-width:760px){.strip{padding:0 36px 18px}}
+@media (min-width:1200px){.strip{grid-auto-flow:row;grid-template-columns:repeat(5,1fr);overflow:visible;max-width:1200px;margin:0 auto}}
+.strip figure{margin:0;scroll-snap-align:start}
+.strip img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:180px 180px 0 0}
+.strip figcaption{font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-top:12px;text-align:center}
+.after-strip{text-align:center;margin-top:46px}
+
+/* chi sono */
+.about{display:grid;gap:60px;align-items:center}
+@media (min-width:900px){.about{grid-template-columns:1.1fr .9fr;gap:90px}}
+.about h2{font-size:clamp(40px,5vw,64px);line-height:1.02;margin:10px 0 24px}
+.about h2 em{color:var(--rosa-antico)}
+.about p{margin:0 0 16px}
+.about .caps{color:var(--rosa-antico)}
+.about .ph{position:relative;max-width:440px;width:100%;justify-self:center;isolation:isolate}
+.about .ph img{width:100%;aspect-ratio:4/5.2;object-fit:cover;border-radius:999px 999px 0 0}
+.about .ph::before{content:"";position:absolute;inset:16px -16px -16px 16px;background:var(--nude);border-radius:999px 999px 0 0;z-index:-1}
+.values{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:30px;border-top:1px solid var(--line)}
+.values div{padding:16px 10px 16px 0;border-bottom:1px solid var(--line)}
+.values b{display:block;font-family:var(--serif);font-weight:400;font-size:22px;color:var(--scuro);line-height:1.2}
+.values span{font-size:14px;color:var(--muted)}
+
+/* contatti */
+.contact{background:var(--scuro);color:#EFE3DB;text-align:center}
+.contact .title h2{color:#fff}
+.contact .title .caps{color:var(--cipria)}
+.contact .title h2 em{color:var(--cipria)}
+.cols3{display:grid;gap:40px;text-align:center}
+@media (min-width:860px){.cols3{grid-template-columns:repeat(3,1fr)}}
+.cols3 h3{color:#fff;font-style:italic;font-size:28px;margin:0 0 12px}
+.cols3 p{margin:0}
+.cols3 a{color:#fff}
+.tel{font-family:var(--serif);font-size:34px;text-decoration:none}
+.hours{margin:0 auto;border-collapse:collapse;font-size:16px}
+.hours td{padding:4px 10px}
+.hours td:first-child{text-align:right;color:var(--cipria)}
+.hours td:last-child{text-align:left;font-variant-numeric:tabular-nums}
+.hours tr.today td{color:#fff;font-weight:500}
+.contact .cta{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:60px}
+.contact .btn{background:var(--cipria);color:var(--scuro)}
+.contact .btn:hover{background:#fff}
+.contact .btn.line{background:transparent;color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.6)}
+
+footer{padding:50px 0 40px;text-align:center;font-size:14px;color:var(--muted)}
+footer img{width:84px;height:84px;border-radius:50%;margin:0 auto 16px;background:#fff;box-shadow:0 0 0 1px var(--line),0 0 0 6px var(--avorio),0 0 0 7px var(--line)}
+
+.todo{text-decoration:underline dashed #C08A00 1.5px;text-underline-offset:4px}
+.wa{position:fixed;right:18px;bottom:18px;z-index:30;width:58px;height:58px;border-radius:50%;background:#25D366;display:grid;place-items:center;box-shadow:0 12px 24px -8px rgba(0,0,0,.35)}
+.wa svg{width:30px;height:30px}
+.draft{display:block;margin:20px auto 0;width:max-content;background:var(--scuro);color:#fff;font-size:12px;padding:6px 10px;text-decoration:none;letter-spacing:.04em}
+@media (min-width:900px){.draft{position:fixed;left:10px;bottom:10px;margin:0;z-index:30}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+
+<div class="info caps"><span class="opt">Via Grazia Deledda 2a, Curcuris</span><span><a href="tel:+393494136132" style="text-decoration:none">349 413 6132</a></span><span>Solo su appuntamento</span></div>
+
+<div class="wrap">
+  <header class="nav">
+    <nav aria-label="Sezioni"><a href="#servizi">Servizi</a><a href="#listino">Listino</a><a href="#lavori">Lavori</a></nav>
+    <a class="brand" href="#"><img src="../assets/logo-katys-nails.jpg" alt=""><span class="caps">Katy's Nails</span></a>
+    <nav class="r" aria-label="Altre sezioni"><a href="#katy">Chi sono</a><a href="#contatti">Contatti</a><a class="btn" style="padding:12px 20px" href="#contatti">Prenota</a></nav>
+    <a class="btn mobile-cta" style="padding:11px 16px;font-size:11px" href="#contatti">Prenota</a>
+  </header>
+</div>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="caps">Studio di onicotecnica · Curcuris</p>
+    <h1>Katy's <em>Nails</em></h1>
+    <p class="serv"><span>Semipermanente</span> <i>·</i> <span>Gel</span> <i>·</i> <span>Nail art</span> <i>·</i> <span>Pedicure</span></p>
+    <div class="cta"><a class="btn js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota su WhatsApp</a><a class="btn line" href="#servizi">I servizi</a></div>
+    <div class="triptych">
+      <figure><img src="../assets/ig-latte.jpg" alt="Unghie rosa latte" style="object-position:62% 50%"><figcaption>Rosa latte</figcaption></figure>
+      <figure><img src="../assets/ig-salvia.jpg" alt="Semipermanente salvia con un'unghia glitter" style="object-position:55% 40%"><figcaption>Salvia e glitter</figcaption></figure>
+      <figure><img src="../assets/ig-french.jpg" alt="French sottile" style="object-position:34% 50%"><figcaption>French</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section class="manifesto">
+  <div class="wrap">
+    <p class="big">Unghie curate con calma, <em>una cliente alla volta</em>, nel mio piccolo studio di Curcuris.</p>
+    <span class="sign">Katy</span>
+  </div>
+</section>
+
+<section class="sec" id="servizi">
+  <div class="wrap">
+    <div class="title"><span class="caps">Cosa faccio</span><h2>I <em>servizi</em></h2>
+      <svg class="orn" viewBox="0 0 120 14" aria-hidden="true"><path d="M0,7 H48 M72,7 H120" stroke="#B6807E" stroke-width="1"/><path d="M60,1 C64,4 64,10 60,13 C56,10 56,4 60,1Z" fill="none" stroke="#B6807E" stroke-width="1"/></svg></div>
+
+    <article class="svc"><div class="ph"><img src="../assets/ig-corallo.jpg" alt="Semipermanente rosa fragola" loading="lazy" style="object-position:28% 50%"></div>
+      <div><div class="num">01</div><h3>Semipermanente</h3><p>Colore pieno e lucido che dura 2–3 settimane senza scheggiarsi. Prima preparo l'unghia naturale (forma, cuticole e base), poi scegli il colore dalla mia parete di smalti.</p>
+      <div class="price"><span>Mani</span><b class="todo">25 €</b><span>Piedi</span><b class="todo">22 €</b></div><a class="link js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota questo servizio</a></div></article>
+
+    <article class="svc"><div class="ph"><img src="../assets/ig-french.jpg" alt="Ricostruzione in gel con french" loading="lazy" style="object-position:36% 50%"></div>
+      <div><div class="num">02</div><h3>Ricostruzione in gel</h3><p>Allungamento con cartina, forma e lunghezza come le vuoi tu: mandorla, squadrata, ovale. Il refill va fatto ogni 3–4 settimane.</p>
+      <div class="price"><span>Ricostruzione</span><b class="todo">50 €</b><span>Refill</span><b class="todo">40 €</b></div><a class="link js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota questo servizio</a></div></article>
+
+    <article class="svc"><div class="ph"><img src="../assets/ig-salvia.jpg" alt="Nail art con glitter" loading="lazy" style="object-position:60% 45%"></div>
+      <div><div class="num">03</div><h3>Nail art</h3><p>French, babyboomer, glitter e decori a mano libera. Hai visto un lavoro che ti piace? Mandami la foto e lo rifacciamo sulle tue unghie.</p>
+      <div class="price"><span>A unghia</span><b class="todo">da 2 €</b><span>French</span><b class="todo">+5 €</b></div><a class="link js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota questo servizio</a></div></article>
+
+    <article class="svc"><div class="ph"><div class="blank"><svg viewBox="0 0 60 100" aria-hidden="true" fill="none" stroke="#1B3B48" stroke-width="1.3"><rect x="22" y="4" width="16" height="30" rx="3"/><path d="M18,34 H42 V42 H18Z"/><path d="M12,42 H48 C52,42 54,46 54,50 V88 C54,93 50,96 45,96 H15 C10,96 6,93 6,88 V50 C6,46 8,42 12,42Z"/><path d="M14,54 V82" stroke="#B6807E"/></svg></div></div>
+      <div><div class="num">04</div><h3>Pedicure</h3><p>Pedicure estetico con cura delle cuticole e smalto, oppure con semipermanente che dura tutta l'estate al mare.</p>
+      <div class="price"><span>Pedicure</span><b class="todo">30 €</b><span>Con semi</span><b class="todo">40 €</b></div><a class="link js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Prenota questo servizio</a></div></article>
+  </div>
+</section>
+
+<section class="sec menu-wrap" id="listino">
+  <div class="wrap">
+    <div class="menu">
+      <div class="title"><span class="caps">Prezzi</span><h2>Il <em>listino</em></h2></div>
+      <h3>Mani</h3>
+      <div class="item"><span class="n">Semipermanente<small>forma, cuticole e colore</small></span><span class="d"></span><span class="p todo">25 €</span></div>
+      <div class="item"><span class="n">Ricostruzione in gel<small>allungamento con cartina</small></span><span class="d"></span><span class="p todo">50 €</span></div>
+      <div class="item"><span class="n">Refill<small>ogni 3–4 settimane</small></span><span class="d"></span><span class="p todo">40 €</span></div>
+      <div class="item"><span class="n">Copertura in gel<small>sull'unghia naturale</small></span><span class="d"></span><span class="p todo">35 €</span></div>
+      <div class="item"><span class="n">Rimozione<small>con trattamento rinforzante</small></span><span class="d"></span><span class="p todo">12 €</span></div>
+      <h3>Piedi</h3>
+      <div class="item"><span class="n">Pedicure estetico</span><span class="d"></span><span class="p todo">30 €</span></div>
+      <div class="item"><span class="n">Pedicure con semipermanente</span><span class="d"></span><span class="p todo">40 €</span></div>
+      <h3>Decorazioni</h3>
+      <div class="item"><span class="n">Nail art<small>a unghia</small></span><span class="d"></span><span class="p todo">da 2 €</span></div>
+      <div class="item"><span class="n">French o babyboomer</span><span class="d"></span><span class="p todo">+5 €</span></div>
+      <p class="note">Prezzi <span class="todo">da confermare</span> · Su appuntamento</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="lavori" style="padding-bottom:90px">
+  <div class="wrap"><div class="title"><span class="caps">Dal mio Instagram</span><h2>I <em>lavori</em></h2></div></div>
+  <div class="strip">
+    <figure><img src="../assets/ig-salvia.jpg" alt="Salvia con glitter" loading="lazy"><figcaption>Salvia e glitter</figcaption></figure>
+    <figure><img src="../assets/ig-corallo.jpg" alt="Rosa fragola" loading="lazy" style="object-position:30% 50%"><figcaption>Fragola</figcaption></figure>
+    <figure><img src="../assets/ig-french.jpg" alt="French" loading="lazy" style="object-position:36% 50%"><figcaption>French</figcaption></figure>
+    <figure><img src="../assets/ig-latte.jpg" alt="Rosa latte" loading="lazy" style="object-position:62% 50%"><figcaption>Rosa latte</figcaption></figure>
+    <figure><img src="../assets/ig-maglietta.jpg" alt="La maglietta ricamata dello studio" loading="lazy" style="object-position:50% 5%"><figcaption>Lo studio</figcaption></figure>
+  </div>
+  <div class="after-strip"><a class="link" href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Più di 1.000 lavori su @katys.nails.studio90</a></div>
+</section>
+
+<section class="sec" id="katy">
+  <div class="wrap about">
+    <div>
+      <span class="caps">Chi sono</span>
+      <h2>Onicotecnica, <em>in continua formazione</em></h2>
+      <p>Mi chiamo Katiuscia, per tutte Katy. Nel mio studio di Curcuris lavoro su appuntamento: niente sala d'attesa piena, solo il tempo che serve per fare un lavoro fatto bene.</p>
+      <p class="todo">[Due righe vere: da quanti anni lavora, i corsi fatti, il lavoro che preferisce.]</p>
+      <div class="values">
+        <div><b>Prodotti professionali</b><span>scelti e provati</span></div>
+        <div><b>Strumenti sterilizzati</b><span>ogni volta</span></div>
+        <div><b>Una cliente alla volta</b><span>con calma</span></div>
+        <div><b>Sempre aggiornata</b><span>corsi e tecniche nuove</span></div>
+      </div>
+      <p class="sign" style="margin-top:30px">Katy</p>
+    </div>
+    <div class="ph"><img src="../assets/ig-parete.jpg" alt="Katy davanti alla parete di smalti dello studio" loading="lazy"></div>
+  </div>
+</section>
+
+<section class="sec contact" id="contatti">
+  <div class="wrap">
+    <div class="title"><span class="caps">Contatti</span><h2>Prenota il tuo <em>appuntamento</em></h2></div>
+    <div class="cols3">
+      <div><h3>Dove</h3><p>Via Grazia Deledda 2a<br>Curcuris (OR)</p><p style="margin-top:12px"><a class="link" style="color:#fff" href="https://www.google.com/maps/search/?api=1&query=Via+Grazia+Deledda+2a+Curcuris+OR" target="_blank" rel="noopener">Apri in Maps</a></p></div>
+      <div><h3>Orari</h3><table class="hours" id="hours"></table></div>
+      <div><h3>Prenota</h3><p>Chiamami o scrivimi su WhatsApp</p><p style="margin-top:6px"><a class="tel" href="tel:+393494136132">349 413 6132</a></p></div>
+    </div>
+    <div class="cta"><a class="btn js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener">Scrivimi su WhatsApp</a><a class="btn line" href="tel:+393494136132">Chiama</a></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="../assets/logo-katys-nails.jpg" alt="Logo Katy's Nails">
+    <p>Katy's Nails di Katiuscia Manias · Via Grazia Deledda 2a, Curcuris (OR) · P.IVA <span class="todo">00000000000</span><br>
+    <a href="https://www.instagram.com/katys.nails.studio90/" target="_blank" rel="noopener">Instagram</a> · <a href="#" class="todo">Facebook</a> · <a href="#">Privacy</a> · <a href="#">Cookie</a></p>
+    <a class="draft" href="../">Bozza B · Nude elegante</a>
+  </div>
+</footer>
+
+<a class="wa js-wa" href="https://wa.me/393494136132" target="_blank" rel="noopener" aria-label="Scrivi a Katy su WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6a9.4 9.4 0 0 0-8.1 14.2L2.6 21.4l4.7-1.2A9.4 9.4 0 1 0 12 2.6z" fill="none" stroke="#fff" stroke-width="1.6"/><path d="M9.2 7.4c.3-.6.6-.6.9-.6h.7c.2 0 .5 0 .7.5l.9 2.2c.1.2.1.5-.1.7l-.6.7c-.2.2-.2.5 0 .8.5.9 1.3 1.7 2.2 2.3.3.2.6.2.8 0l.7-.7c.2-.2.5-.3.7-.2l2.2 1c.4.2.4.4.4.6 0 .5-.2 1.1-.6 1.5-.6.6-1.5.8-2.4.5-1.6-.5-3.1-1.4-4.3-2.6-1.2-1.2-2.1-2.7-2.6-4.3-.3-.9-.1-1.8.4-2.4z" fill="#fff"/></svg></a>
+
+<script>
+// ===== DATI DA CONFERMARE =====
+const WHATSAPP = "393494136132"; // dalla bio Instagram: verificare che sia su WhatsApp
+const ORARI = { // 0 = domenica; fasce orarie [apertura, chiusura]
+  0: [], 1: [],
+  2: [["09:00","13:00"],["15:00","19:00"]], 3: [["09:00","13:00"],["15:00","19:00"]],
+  4: [["09:00","13:00"],["15:00","19:00"]], 5: [["09:00","13:00"],["15:00","19:00"]],
+  6: [["09:00","14:00"]]
+};
+// ===============================
+const GIORNI = ["Domenica","Lunedì","Martedì","Mercoledì","Giovedì","Venerdì","Sabato"];
+const fmt = t => t.replace(/^0/, "");
+const oggi = new Date().getDay();
+document.getElementById("hours").innerHTML = [1,2,3,4,5,6,0].map(d => {
+  const f = ORARI[d], txt = f.length ? f.map(([a,b]) => `${fmt(a)}–${fmt(b)}`).join(" · ") : "chiuso";
+  return `<tr class="${d===oggi?"today":""}"><td>${GIORNI[d]}</td><td class="todo">${txt}</td></tr>`;
+}).join("");
+const msg = encodeURIComponent("Ciao Katy! Vorrei prenotare un appuntamento.");
+document.querySelectorAll(".js-wa").forEach(a => a.href = `https://wa.me/${WHATSAPP}?text=${msg}`);
+</script>
+</body>
+</html>
