@@ -41,6 +41,9 @@ function kn_clean_fields(array $fields, $data): array
     $data = is_array($data) ? $data : [];
     $out = [];
     foreach ($fields as $f) {
+        if ($f['t'] === 'note') { // solo testo di aiuto nel pannello: non si salva
+            continue;
+        }
         $out[$f['k']] = kn_clean_value($f, $data[$f['k']] ?? null);
     }
     return $out;
@@ -71,6 +74,12 @@ function kn_clean_value(array $f, $v)
             return filter_var($v, FILTER_VALIDATE_EMAIL) ? $v : '';
         case 'digits':
             return substr(kn_digits(is_scalar($v) ? (string) $v : ''), 0, $f['max'] ?? 20);
+        case 'gverify': // codice di Google Search Console: si può incollare anche tutta la riga <meta ...>
+            $v = kn_clean_text($v, 400);
+            if (preg_match('/content=["\']([^"\']+)["\']/', $v, $m)) {
+                $v = $m[1];
+            }
+            return substr(preg_replace('/[^A-Za-z0-9_\-]/', '', $v) ?? '', 0, $f['max'] ?? 120);
         case 'color':
             return is_string($v) && preg_match('/^#[0-9a-fA-F]{6}$/', $v) ? strtoupper($v) : '#E4557A';
         case 'stars':

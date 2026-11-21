@@ -39,6 +39,25 @@ function kn_asset(string $path): string
     return e($path . (is_file($file) ? '?v=' . filemtime($file) : ''));
 }
 
+function kn_is_https(): bool
+{
+    return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+}
+
+/**
+ * Intestazioni di sicurezza per tutte le pagine (sito e pannello). Valgono anche dove il server
+ * non legge i file .htaccess. HSTS parte solo quando il sito è già in HTTPS.
+ */
+function kn_security_headers(): void
+{
+    header('X-Content-Type-Options: nosniff');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()');
+    if (kn_is_https()) {
+        header('Strict-Transport-Security: max-age=31536000; includeSubDomains');
+    }
+}
+
 function kn_data_dir(): string
 {
     return rtrim(kn_config()['data_dir'], '/');
@@ -228,7 +247,7 @@ function kn_base_url(): string
     if ($u !== '') {
         return $u;
     }
-    $https = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
+    $https = kn_is_https();
     $host = preg_replace('/[^a-z0-9.\-:]/i', '', $_SERVER['HTTP_HOST'] ?? 'localhost');
     $dir = rtrim(str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/')), '/');
     if (str_ends_with($dir, '/admin')) {
@@ -262,10 +281,46 @@ function kn_thumb(string $path): string
     return $t !== $path && kn_upload_exists($t) ? $t : $path;
 }
 
-/** Dati strutturati per Google (scheda attività locale). */
+/** Coordinate dello studio, se inserite nel pannello (accetta anche la virgola decimale). */
+function kn_geo(array $c): ?array
+{
+    $s = $c['studio'] ?? [];
+    $lat = str_replace(',', '.', trim((string) ($s['lat'] ?? '')));
+    $lng = str_replace(',', '.', trim((string) ($s['lng'] ?? '')));
+    if (!is_numeric($lat) || !is_numeric($lng) || abs((float) $lat) > 90 || abs((float) $lng) > 180) {
+        return null;
+    }
+    return ['lat' => round((float) $lat, 6), 'lng' => round((float) $lng, 6)];
+}
+
+/** "Ales, Mogoro e Oristano": elenco in italiano. */
+function kn_elenco(array $voci): string
+{
+    $voci = array_values(array_filter(array_map('trim', $voci)));
+    if (count($voci) < 2) {
+        return implode('', $voci);
+    }
+    $ultimo = array_pop($voci);
+    return implode(', ', $voci) . ' e ' . $ultimo;
+}
+
+/** Prezzo del listino in forma leggibile da Google: "da 40 €" → prezzo minimo, "18 €" → prezzo fisso. */
+function kn_prezzo_ld(string $p): array
+{
+    $t = str_replace(["\u{00A0}", ','], [' ', '.'], trim($p));
+    if (!preg_match('/^(da\s+)?(\d+(?:\.\d+)?)\s*€$/iu', $t, $m)) {
+        return [];
+    }
+    $spec = ['@type' => 'PriceSpecification', 'priceCurrency' => 'EUR'];
+    $spec[$m[1] !== '' ? 'minPrice' : 'price'] = (float) $m[2];
+    return $spec;
+}
+
+/** Dati strutturati per Google (scheda attività locale, con zona servita e listino). */
 function kn_json_ld(array $c, string $base): string
 {
     $s = $c['studio'] ?? [];
+    $seo = $c['seo'] ?? [];
     $mappa = [1 => 'Monday', 2 => 'Tuesday', 3 => 'Wednesday', 4 => 'Thursday', 5 => 'Friday', 6 => 'Saturday', 0 => 'Sunday'];
     $ore = [];
     foreach ($c['orari']['settimana'] ?? [] as $g => $fasce) {
@@ -273,14 +328,43 @@ function kn_json_ld(array $c, string $base): string
             $ore[] = ['@type' => 'OpeningHoursSpecification', 'dayOfWeek' => $mappa[(int) $g], 'opens' => $f[0], 'closes' => $f[1]];
         }
     }
+    $immagini = [$base . '/assets/img/og.jpg'];
+    foreach (array_slice($c['galleria']['foto'] ?? [], 0, 3) as $g) {
+        $immagini[] = $base . '/' . $g['file'];
+    }
+    $zona = [];
+    foreach ($seo['paesi'] ?? [] as $paese) {
+        $zona[] = ['@type' => 'City', 'name' => $paese];
+    }
+    if (!empty($s['provincia'])) {
+        $zona[] = ['@type' => 'AdministrativeArea', 'name' => 'Provincia di ' . kn_nome_provincia($s['provincia'])];
+    }
+    $offerte = [];
+    foreach ($c['listino']['categorie'] ?? [] as $cat) {
+        foreach ($cat['voci'] ?? [] as $v) {
+            if (trim($v['nome'] ?? '') === '') {
+                continue;
+            }
+            $off = ['@type' => 'Offer', 'itemOffered' => ['@type' => 'Service', 'name' => $v['nome'], 'serviceType' => $cat['nome'] ?? '']];
+            if ($spec = kn_prezzo_ld((string) ($v['prezzo'] ?? ''))) {
+                $off['priceSpecification'] = $spec;
+            }
+            $offerte[] = $off;
+        }
+    }
     $ld = [
         '@context' => 'https://schema.org',
         '@type' => 'NailSalon',
+        '@id' => $base . '/#studio',
         'name' => $s['nome'] ?? '',
+        'description' => $seo['descrizione'] ?? '',
+        'slogan' => trim(($c['hero']['titolo'] ?? '') . ' ' . ($c['hero']['titolo_script'] ?? '')),
         'url' => $base . '/',
-        'image' => $base . '/assets/img/og.jpg',
+        'image' => $immagini,
         'logo' => $base . '/assets/img/logo.jpg',
         'telephone' => '+39 ' . ($s['telefono'] ?? ''),
+        'priceRange' => '€€',
+        'currenciesAccepted' => 'EUR',
         'address' => array_filter([
             '@type' => 'PostalAddress',
             'streetAddress' => $s['indirizzo'] ?? '',
@@ -295,5 +379,24 @@ function kn_json_ld(array $c, string $base): string
     if (!empty($s['email'])) {
         $ld['email'] = $s['email'];
     }
+    if (!empty($s['titolare'])) {
+        $ld['founder'] = ['@type' => 'Person', 'name' => $s['titolare']];
+    }
+    if ($geo = kn_geo($c)) {
+        $ld['geo'] = ['@type' => 'GeoCoordinates', 'latitude' => $geo['lat'], 'longitude' => $geo['lng']];
+    }
+    if ($zona) {
+        $ld['areaServed'] = $zona;
+    }
+    if ($offerte) {
+        $ld['hasOfferCatalog'] = ['@type' => 'OfferCatalog', 'name' => 'Listino prezzi', 'itemListElement' => $offerte];
+    }
     return json_encode($ld, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG);
+}
+
+/** "OR" → "Oristano" (le province sarde e le più comuni; per le altre resta la sigla). */
+function kn_nome_provincia(string $sigla): string
+{
+    $m = ['OR' => 'Oristano', 'CA' => 'Cagliari', 'SS' => 'Sassari', 'NU' => 'Nuoro', 'SU' => 'Sud Sardegna', 'OT' => 'Olbia-Tempio', 'OG' => 'Ogliastra', 'VS' => 'Medio Campidano', 'CI' => 'Carbonia-Iglesias'];
+    return $m[strtoupper($sigla)] ?? strtoupper($sigla);
 }

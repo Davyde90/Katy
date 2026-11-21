@@ -25,6 +25,10 @@ function kn_page_start(array $c, array $opt): void
     $desc = $opt['desc'] ?? ($c['seo']['descrizione'] ?? '');
     $canonical = $base . '/' . ($opt['path'] ?? '');
     $sezioni = kn_sezioni_menu($c);
+    $geo = kn_geo($c);
+    kn_security_headers();
+    header('X-Frame-Options: SAMEORIGIN'); // il sito può stare in una cornice solo nel proprio pannello (anteprima dal vivo)
+    header("Content-Security-Policy: frame-ancestors 'self'; object-src 'none'");
     ?>
 <!doctype html>
 <html lang="it">
@@ -47,6 +51,10 @@ function kn_page_start(array $c, array $opt): void
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
+<?php if (!empty($s['citta'])): ?><meta name="geo.placename" content="<?= e($s['citta']) ?>"><?php endif ?>
+<?php if (!empty($s['provincia'])): ?><meta name="geo.region" content="IT-<?= e(strtoupper($s['provincia'])) ?>"><?php endif ?>
+<?php if ($geo): ?><meta name="geo.position" content="<?= $geo['lat'] ?>;<?= $geo['lng'] ?>"><meta name="ICBM" content="<?= $geo['lat'] ?>, <?= $geo['lng'] ?>"><?php endif ?>
+<?php if (!empty($c['seo']['verifica_google'])): ?><meta name="google-site-verification" content="<?= e($c['seo']['verifica_google']) ?>"><?php endif ?>
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/png" sizes="192x192" href="assets/img/icon-192.png">
 <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">

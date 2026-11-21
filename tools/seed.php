@@ -21,7 +21,7 @@ foreach (['salvia' => 'Salvia con un dito glitter', 'corallo' => 'Rosa fragola l
 $c = [
     'avviso' => ['attivo' => false, 'testo' => '', 'fino_al' => ''],
     'hero' => [
-        'etichetta' => 'Salone per la cura delle unghie · Curcuris (OR)',
+        'etichetta' => 'Salone per la cura delle unghie · Curcuris (Oristano)',
         'titolo' => 'Cura delle unghie,',
         'titolo_script' => 'nei minimi dettagli.',
         'sottotitolo' => 'Copertura in gel, semipermanente, smalto e decori a mano libera. Su appuntamento, una cliente alla volta.',
@@ -154,10 +154,15 @@ $c = [
         'facebook' => '',
         'maps' => '',
         'piva' => '',
+        'lat' => '39.7500',
+        'lng' => '8.8333',
     ],
     'seo' => [
-        'titolo' => 'Katy\'s Nails · Salone per la cura delle unghie a Curcuris (OR)',
-        'descrizione' => 'Copertura in gel, semipermanente, smalto e nail art a Curcuris (Oristano). Su appuntamento: prenota su WhatsApp al 349 413 6132.',
+        'titolo' => 'Katy\'s Nails · Unghie gel e semipermanente a Curcuris (Oristano)',
+        'descrizione' => 'Onicotecnica a Curcuris, in Marmilla (Oristano): copertura in gel, semipermanente, smalto e nail art. Su appuntamento, una cliente alla volta. Prenota su WhatsApp.',
+        'zona' => 'Lo studio è a Curcuris, in Alta Marmilla, a circa mezz\'ora d\'auto da Oristano.',
+        'paesi' => ['Ales', 'Gonnosnò', 'Simala', 'Pompu', 'Morgongiori', 'Usellus', 'Mogoro', 'Uras', 'Terralba', 'Sanluri', 'Oristano'],
+        'verifica_google' => '',
     ],
 ];
 

@@ -405,6 +405,7 @@ details[open] .q-i::after{transform:translate(-50%,-50%) rotate(0)}
 .hours tr+tr th,.hours tr+tr td{border-top:1px solid var(--line-light)}
 .hours tr.today th,.hours tr.today td{font-weight:600;color:#fff}
 .closures{font-size:13.5px;color:rgba(255,255,255,.75);margin:-6px 0 16px}
+.box .zona{margin:16px 0 12px;font-size:14px;line-height:1.55;color:rgba(255,255,255,.82)}
 .box .link-arrow{color:#fff}
 @media (min-width:760px){
   .steps{grid-template-columns:repeat(3,1fr);gap:0 30px;margin-bottom:50px}

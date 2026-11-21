@@ -363,6 +363,9 @@ kn_page_start($c, ['jsonld' => true]);
         <?php $prossime = array_filter($c['orari']['chiusure'] ?? [], fn($ch) => ($ch['al'] ?: $ch['dal']) >= date('Y-m-d')); if ($prossime): ?>
         <p class="closures">Chiusure: <?= e(implode(' · ', array_map(fn($ch) => ($ch['dal'] === ($ch['al'] ?: $ch['dal']) ? kn_data_it($ch['dal']) : kn_data_it($ch['dal']) . '–' . kn_data_it($ch['al'])) . ($ch['motivo'] ? ' (' . $ch['motivo'] . ')' : ''), $prossime))) ?></p>
         <?php endif ?>
+        <?php $paesi = array_values(array_filter($c['seo']['paesi'] ?? [])); if (!empty($c['seo']['zona']) || $paesi): ?>
+        <p class="zona"><?= e($c['seo']['zona'] ?? '') ?><?= $paesi ? ' ' . e('Le mie clienti arrivano anche da ' . kn_elenco($paesi) . '.') : '' ?></p>
+        <?php endif ?>
         <a class="link-arrow" href="<?= e(kn_maps_url($c)) ?>" target="_blank" rel="noopener">Indicazioni stradali</a>
       </aside>
     </div>

@@ -75,7 +75,7 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 3. Le cartelle `data/` e `uploads/` devono essere scrivibili da PHP (permessi 755, o 775 se l'hosting lo richiede).
 4. Attiva il certificato **HTTPS**, gratuito su quasi tutti gli hosting (Let's Encrypt). Poi in `.htaccess` togli il `#` dalle due righe del redirect verso https.
 5. Apri `https://tuodominio/admin/` con Katy: inserisce il codice di attivazione e sceglie **lei** la sua password. Da quel momento il codice non serve più.
-6. In `robots.txt` scrivi l'indirizzo vero della sitemap, poi aggiungi il sito a [Google Search Console](https://search.google.com/search-console).
+6. Aggiungi il sito a [Google Search Console](https://search.google.com/search-console) (vedi "Farsi trovare su Google" qui sotto). `robots.txt` e `sitemap.xml` si generano da soli con l'indirizzo giusto.
 
 **Se l'hosting usa Nginx** (i file `.htaccess` non valgono): blocca nella configurazione l'accesso a `/inc/` e `/data/`, e l'esecuzione di script in `/uploads/`. La password è comunque al sicuro, perché è salvata come hash dentro un file `.php`.
 
@@ -83,10 +83,23 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 
 Carica i file nuovi **tranne** `data/` e `uploads/`: lì dentro ci sono i contenuti e le foto di Katy. Per un backup completo del sito bastano proprio queste due cartelle.
 
+## Farsi trovare su Google
+
+Il sito è già pronto per Google: titolo e descrizione si cambiano dal pannello (sezione "Google e condivisioni"), i dati dello studio escono anche in formato leggibile dalle macchine (schema.org `NailSalon`, con indirizzo, orari, coordinate, zona servita e listino), `sitemap.xml` e `robots.txt` si generano da soli, le foto della galleria sono nella sitemap per Google Immagini. Quello che il codice non può fare da solo, in ordine di importanza:
+
+1. **Scheda Google Business Profile** (gratis, su [business.google.com](https://business.google.com)): è quella che compare nella mappa quando si cerca "unghie Oristano". Nome, indirizzo e telefono devono essere **identici** a quelli del sito; categoria principale "Centro estetico per unghie" (nail salon); orari uguali a quelli del sito; tante foto; link al sito. Google manda una cartolina o un codice per verificare l'indirizzo.
+2. **Recensioni su Google**: sono il fattore che più decide chi compare per primo nella mappa. Katy può mandare alle clienti il link "lascia una recensione" della scheda. Le recensioni vere si possono poi copiare nella sezione Recensioni del sito.
+3. **Search Console**: aggiungi il sito con il metodo "Tag HTML" e incolla la riga che ti dà nel pannello, campo "Codice di verifica di Google Search Console". Poi in Search Console invia la sitemap: `https://tuodominio/sitemap.xml`. Da lì si vede per quali ricerche compare il sito.
+4. **Zona servita**: nel pannello, "Dove si trova lo studio" e "Paesi da cui arrivano le clienti" sono i testi con cui il sito dice a Google e alle persone che lo studio serve anche Oristano e i paesi vicini. Vanno tenuti veri: paesi da cui le clienti arrivano davvero.
+5. **Instagram**: link al sito nella bio e, ogni tanto, nei post. Tutti i link che puntano al sito aiutano.
+
+Onestamente: per la ricerca "unghie Oristano" la mappa di Google privilegia i saloni dentro Oristano città; uno studio a Curcuris compare più facilmente per "provincia di Oristano", "Marmilla", i paesi vicini e, nei risultati normali, per il nome e per i servizi. La scheda Google con buone recensioni è ciò che può portarlo anche nella mappa.
+
 ## Sicurezza, in breve
 
-- Password salvata come hash (bcrypt), mai in chiaro. Dopo 5 tentativi sbagliati l'accesso si blocca per 15 minuti.
+- Password salvata come hash (bcrypt), mai in chiaro. Dopo 5 tentativi sbagliati da uno stesso indirizzo l'accesso si blocca per 15 minuti; oltre 30 tentativi sbagliati in totale, da qualunque indirizzo, si blocca per tutti per 15 minuti (ferma chi prova cambiando indirizzo).
 - Sessione con cookie `HttpOnly` e `SameSite=Strict`, token anti-CSRF su ogni modifica, Content-Security-Policy sul pannello.
+- Intestazioni di sicurezza su tutte le pagine, mandate da PHP (quindi anche senza `.htaccess`): `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'self'`; con HTTPS attivo parte anche HSTS (un anno).
 - Ogni foto caricata viene ridisegnata da zero: si perdono i dati nascosti (posizione GPS inclusa) e non può passare nessun file che non sia un'immagine. Le foto vengono ridotte a 1600 px e salvate in WebP. Già sul telefono vengono rimpicciolite, così il caricamento è veloce anche in 4G.
 - Tutto quello che arriva dal pannello viene controllato campo per campo (`inc/sanitize.php`, con le regole di `inc/schema.php`).
 - Il sito pubblico non usa cookie né statistiche: non serve il banner dei cookie.

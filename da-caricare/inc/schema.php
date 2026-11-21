@@ -201,13 +201,19 @@ return [
             ['k' => 'facebook', 't' => 'url', 'l' => 'Link pagina Facebook'],
             ['k' => 'maps', 't' => 'url', 'l' => 'Link Google Maps (facoltativo)', 'help' => 'Se lo lasci vuoto il sito cerca l\'indirizzo da solo.'],
             ['k' => 'piva', 't' => 'digits', 'l' => 'Partita IVA', 'max' => 11, 'help' => 'Obbligatoria sul sito di un\'attività.'],
+            ['k' => 'lat', 't' => 'text', 'l' => 'Latitudine (facoltativa)', 'max' => 12, 'ph' => 'Es. 39.7500'],
+            ['k' => 'lng', 't' => 'text', 'l' => 'Longitudine (facoltativa)', 'max' => 12, 'ph' => 'Es. 8.8333', 'help' => 'Le coordinate precise dello studio: su Google Maps tieni premuto sul punto esatto e copiale. Aiutano Google a metterlo sulla mappa.'],
         ],
     ],
     [
-        'key' => 'seo', 'titolo' => 'Google e condivisioni', 'descr' => 'Come appare il sito nei risultati di Google e quando lo condividi su WhatsApp.',
+        'key' => 'seo', 'titolo' => 'Google e condivisioni', 'descr' => 'Come appare il sito su Google e quando lo condividi su WhatsApp, e da quali paesi vuoi farti trovare.',
         'fields' => [
-            ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 70],
-            ['k' => 'descrizione', 't' => 'textarea', 'l' => 'Descrizione', 'max' => 170],
+            ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo su Google', 'max' => 70, 'help' => 'Massimo 60-65 caratteri perché si legga intero. Metti cosa fai e dove: è la riga blu dei risultati.'],
+            ['k' => 'descrizione', 't' => 'textarea', 'l' => 'Descrizione su Google', 'max' => 170, 'help' => 'Le due righe grigie sotto il titolo. Nomina i servizi, il paese e la provincia.'],
+            ['k' => 'zona', 't' => 'textarea', 'l' => 'Dove si trova lo studio', 'max' => 220, 'help' => 'Una frase che compare nella sezione Prenota, accanto agli orari. Scrivi la zona e la distanza dalle città vicine: è così che chi cerca "unghie Oristano" capisce che sei raggiungibile.'],
+            ['k' => 'paesi', 't' => 'tags', 'l' => 'Paesi da cui arrivano le clienti', 'max' => 14, 'maxlen' => 30, 'help' => 'Compaiono nella sezione Prenota e vengono comunicati a Google come zona servita. Metti i paesi veri, in ordine di vicinanza.'],
+            ['k' => 'verifica_google', 't' => 'gverify', 'l' => 'Codice di verifica di Google Search Console', 'max' => 120, 'help' => 'Serve una volta sola. Su search.google.com/search-console aggiungi il sito, scegli "Tag HTML" e incolla qui tutta la riga che ti dà: il sito tiene solo il codice.'],
+            ['k' => 'guida', 't' => 'note', 'l' => 'Per comparire su Google Maps', 'text' => "La cosa che conta di più è la scheda gratuita Google Business Profile (business.google.com): stesso nome, indirizzo e telefono di questo sito, categoria «Centro estetico per unghie», orari, tante foto e il link al sito.\n\nPoi chiedi alle clienti contente una recensione su Google: le recensioni decidono chi compare per primo nella mappa.\n\nMetti il link del sito nella bio di Instagram e nei post."],
         ],
     ],
 ];

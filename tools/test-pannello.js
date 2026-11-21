@@ -116,6 +116,18 @@ const iso = d => d.toISOString().slice(0, 10);
     const r = await page.request.get(BASE + p);
     check(r.status() === 403 || (await r.text()).trim() === '', p + ' non è leggibile dal browser');
   }
+  const hd = (await page.request.get(BASE + '/')).headers();
+  check(hd['x-content-type-options'] === 'nosniff' && /frame-ancestors/.test(hd['content-security-policy'] || '') && hd['referrer-policy'], 'il sito manda le intestazioni di sicurezza');
+
+  console.log('Google');
+  const robots = await page.request.get(BASE + '/robots.txt');
+  check(robots.status() === 200 && /^Sitemap: https?:\/\/.+\/sitemap\.xml$/m.test(await robots.text()), 'robots.txt indica la sitemap');
+  const mappa = await page.request.get(BASE + '/sitemap.xml');
+  check(mappa.status() === 200 && /<image:loc>/.test(await mappa.text()), 'la sitemap contiene le foto');
+  const ld = (await site()).match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  let ldOk = false;
+  try { const j = JSON.parse(ld[1]); ldOk = j['@type'] === 'NailSalon' && j.areaServed.length > 1 && j.geo && j.hasOfferCatalog.itemListElement.length > 5; } catch (e) {}
+  check(ldOk, 'i dati per Google (NailSalon, zona servita, listino) sono validi');
   await page.goto(BASE + '/admin/#sicurezza');
   await page.fill('.main input[autocomplete=current-password]', PW1);
   await page.fill('.main input[autocomplete=new-password] >> nth=0', PW2);

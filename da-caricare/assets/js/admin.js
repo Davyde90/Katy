@@ -467,6 +467,8 @@
       case 'hours': return hoursField(f, obj);
       case 'color': return colorField(f, obj);
       case 'gallery': return galleryField(f, obj);
+      case 'gverify': return inputField(f, obj);
+      case 'note': return h('div', { class: 'f note' }, h('span', { class: 'l' }, h('span', { text: f.l })), h('div', { class: 'note-box' }, String(f.text || '').split('\n\n').map(function (p) { return h('p', { text: p }); })));
     }
     return h('p', { text: '?' });
   }

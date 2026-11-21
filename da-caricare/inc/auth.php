@@ -7,13 +7,9 @@ declare(strict_types=1);
  */
 
 const KN_SESSION_DAYS = 14;
-const KN_MAX_TENTATIVI = 5;
-const KN_FINESTRA_TENTATIVI = 900; // 15 minuti
-
-function kn_is_https(): bool
-{
-    return (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || (($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https');
-}
+const KN_MAX_TENTATIVI = 5;          // per singolo indirizzo IP
+const KN_MAX_TENTATIVI_TOTALI = 30;  // da tutti gli indirizzi insieme: ferma anche chi cambia IP di continuo
+const KN_FINESTRA_TENTATIVI = 900;   // 15 minuti
 
 function kn_session_start(): void
 {
@@ -130,7 +126,9 @@ function kn_attempts(): array
 
 function kn_too_many_attempts(): bool
 {
-    return count(kn_attempts()[kn_client_key()] ?? []) >= KN_MAX_TENTATIVI;
+    $all = kn_attempts();
+    $totali = array_sum(array_map('count', $all));
+    return count($all[kn_client_key()] ?? []) >= KN_MAX_TENTATIVI || $totali >= KN_MAX_TENTATIVI_TOTALI;
 }
 
 function kn_record_failure(): void

@@ -6,8 +6,8 @@ if (preg_match('#^/(inc|data)(/|$)#', $path) || preg_match('#^/uploads/.*\.(php\
     http_response_code(403);
     exit('Vietato');
 }
-if ($path === '/sitemap.xml') {
-    require $_SERVER['DOCUMENT_ROOT'] . '/sitemap.php';
+if ($path === '/sitemap.xml' || $path === '/robots.txt') {
+    require $_SERVER['DOCUMENT_ROOT'] . '/' . ($path === '/sitemap.xml' ? 'sitemap.php' : 'robots.php');
     return true;
 }
 return false;

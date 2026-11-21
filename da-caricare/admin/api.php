@@ -8,9 +8,9 @@ require_once __DIR__ . '/../inc/auth.php';
 require_once __DIR__ . '/../inc/sanitize.php';
 require_once __DIR__ . '/../inc/images.php';
 
+kn_security_headers();
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store');
-header('X-Content-Type-Options: nosniff');
 
 function kn_out(array $data, int $code = 200): never
 {
