@@ -24,14 +24,14 @@ if ($pagina === null) {
 
 $_SERVER['HTTP_HOST'] = 'anteprima.local';
 $_SERVER['SCRIPT_NAME'] = '/index.php';
-chdir("$root/sito");
+chdir("$root/da-caricare");
 ob_start();
-require "$root/sito/$pagina.php";
+require "$root/da-caricare/$pagina.php";
 $html = ob_get_clean();
 
-// percorsi: dalla cartella anteprima/ ai file veri in sito/
-$html = preg_replace('#\b(src|href|data-full|data-mano|data-mappa)="(assets|uploads)/#', '$1="../sito/$2/', $html);
-$html = str_replace(['&quot;uploads/', '&quot;assets/'], ['&quot;../sito/uploads/', '&quot;../sito/assets/'], $html); // percorsi dentro i dati JSON (foto dell'apertura)
+// percorsi: dalla cartella anteprima/ ai file veri in da-caricare/
+$html = preg_replace('#\b(src|href|data-full|data-mano|data-mappa)="(assets|uploads)/#', '$1="../da-caricare/$2/', $html);
+$html = str_replace(['&quot;uploads/', '&quot;assets/'], ['&quot;../da-caricare/uploads/', '&quot;../da-caricare/assets/'], $html); // percorsi dentro i dati JSON (foto dell'apertura)
 $html = str_replace(['href="./#', 'href="./"', 'href="privacy.php"'], ['href="index.html#', 'href="index.html"', 'href="privacy.html"'], $html);
 $html = str_replace('href="admin/" rel="nofollow">Area riservata</a>', 'href="../screenshots/pannello/pannello-1-inizio.jpg">Pannello (solo online)</a>', $html);
 $html = preg_replace('#<body>#', '<body><div style="background:#2E1F28;color:#fff;font:500 13px/1.4 system-ui,sans-serif;text-align:center;padding:8px 12px">Anteprima del sito · il pannello di gestione funziona solo quando il sito è online su un hosting con PHP</div>', $html, 1);

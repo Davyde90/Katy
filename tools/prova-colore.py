@@ -2,7 +2,7 @@
 Prepara "Prova il colore" partendo da una foto di mano con smalto in tinta unita.
 
 Come funziona: nella foto ogni pixel dell'unghia è  colore dello smalto × luce  + riflesso bianco.
-Lo script separa questi pezzi; il sito poi rifà il calcolo con il colore scelto (assets/js/site.js),
+Lo script separa questi pezzi; il sito poi rifà il calcolo con il colore scelto (da-caricare/assets/js/site.js),
 così ombre, curvatura, riflessi e glitter restano quelli veri della foto.
 
 Crea nella cartella di uscita:

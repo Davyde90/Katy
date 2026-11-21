@@ -1,8 +1,8 @@
 # dati locali del pannello: non vanno su GitHub
-sito/inc/config.php
-sito/data/auth.php
-sito/data/sessions/
-sito/data/tentativi.json
-sito/data/backup/*.json
-sito/data/.lock
-sito/data/*.tmp
+da-caricare/inc/config.php
+da-caricare/data/auth.php
+da-caricare/data/sessions/
+da-caricare/data/tentativi.json
+da-caricare/data/backup/*.json
+da-caricare/data/.lock
+da-caricare/data/*.tmp

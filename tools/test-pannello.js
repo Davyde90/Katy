@@ -1,7 +1,7 @@
 /*
  * Prova completa del pannello con un browser vero (Playwright).
  * Va lanciata su una COPIA del sito, perché modifica i contenuti:
- *   cp -a sito/. /tmp/prova/ && php -S 127.0.0.1:8081 -t /tmp/prova tools/dev-router.php
+ *   cp -a da-caricare/. /tmp/prova/ && php -S 127.0.0.1:8081 -t /tmp/prova tools/dev-router.php
  *   SETUP_CODE=... FOTO=/percorso/foto.jpg FINTA=/percorso/finta.jpg node tools/test-pannello.js http://127.0.0.1:8081
  */
 const { chromium } = require('playwright');

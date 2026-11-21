@@ -55,7 +55,7 @@ La foto attuale è un ritaglio di uno screenshot di Instagram. Con una foto vera
 Per cambiarla (serve Python 3 con Pillow e NumPy, sul computer di chi segue il sito):
 
 ```bash
-python3 tools/prova-colore.py foto-di-katy.jpg sito/assets/img/prova 120 210
+python3 tools/prova-colore.py foto-di-katy.jpg da-caricare/assets/img/prova 120 210
 ```
 
 Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–360): 120–210 per verde e azzurro, 300–360 per rosa e rosso, 20–50 per arancio. Poi carica online la cartella `assets/img/prova/`.
@@ -64,7 +64,7 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 
 **Serve:** un hosting con PHP 8.1 o più recente e l'estensione GD, cioè quasi tutti (Aruba, Register.it, SiteGround, Netsons…). È consigliato Apache, perché le regole di sicurezza sono nei file `.htaccess`.
 
-1. Carica via FTP il **contenuto** della cartella `sito/` nella cartella pubblica dell'hosting (di solito `www/`, `public_html/` o `htdocs/`).
+1. Carica via FTP il **contenuto** della cartella `da-caricare/` nella cartella pubblica dell'hosting (di solito `www/`, `public_html/` o `htdocs/`).
 2. In `inc/` copia `config.example.php` in `config.php` e imposta:
    - `setup_code`: un codice di almeno 12 caratteri a caso. Serve una volta sola, per attivare il pannello.
    - `site_url`: l'indirizzo del sito, per esempio `https://www.katysnails.it`.
@@ -91,15 +91,15 @@ Carica i file nuovi **tranne** `data/` e `uploads/`: lì dentro ci sono i conten
 
 ```bash
 php tools/seed.php                                   # rigenera i contenuti di partenza (sovrascrive!)
-php -S 127.0.0.1:8080 -t sito tools/dev-router.php   # sito su http://127.0.0.1:8080, pannello su /admin
+php -S 127.0.0.1:8080 -t da-caricare tools/dev-router.php   # sito su http://127.0.0.1:8080, pannello su /admin
 ```
 
-Per provare il pannello crea `sito/inc/config.php` con un `setup_code`. Il test completo con browser (`tools/test-pannello.js`, 25 controlli) va lanciato su una **copia** del sito, perché modifica i contenuti: le istruzioni sono in cima al file.
+Per provare il pannello crea `da-caricare/inc/config.php` con un `setup_code`. Il test completo con browser (`tools/test-pannello.js`, 29 controlli) va lanciato su una **copia** del sito, perché modifica i contenuti: le istruzioni sono in cima al file.
 
 ## Struttura
 
 ```
-sito/
+da-caricare/
 ├── index.php, privacy.php, sitemap.php, robots.txt, .htaccess
 ├── admin/            pannello (index.php = accesso e interfaccia, api.php = salvataggi e foto)
 ├── inc/              codice PHP (lib, schema dei contenuti, controlli, accesso, foto) — non pubblico
