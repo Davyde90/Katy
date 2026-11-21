@@ -82,10 +82,6 @@ const iso = d => d.toISOString().slice(0, 10);
   check((await site()).match(/class="shot/g).length === prima + 1, 'la foto compare sul sito');
   const nSlides = h => ((h.match(/data-slides="([^"]*)"/) || [, ''])[1].match(/&quot;src&quot;/g) || []).length;
   const slidesPrima = nSlides(await site());
-  // in apertura vanno solo foto verticali: ne carico una e metto la stellina a quella
-  await page.setInputFiles('.uploader input[type=file]', [process.env.FOTO_V || process.env.FOTO]);
-  await toast('aggiunta');
-  await page.waitForTimeout(400);
   await page.click('.gi >> nth=0 >> .star');
   check(await page.getAttribute('.gi >> nth=0 >> .star', 'aria-pressed') === 'true', 'la stellina "in apertura" si accende');
   await page.click('#salva');

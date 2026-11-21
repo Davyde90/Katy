@@ -95,8 +95,6 @@
     var mostra = function () {
       var s = calcola();
       stato.textContent = s.t; stato.className = 'status ' + (s.si ? 'si' : 'no'); stato.hidden = false;
-      var hs = $('#hero-status');
-      if (hs) { $('span', hs).textContent = s.t.replace(' · ', ', '); hs.className = 'hero-open up ' + (s.si ? 'si' : 'no'); hs.hidden = false; }
     };
     mostra();
     setInterval(mostra, 60000);
@@ -303,13 +301,13 @@
     var extra = JSON.parse(vis.getAttribute('data-slides') || '[]');
     if (extra.length) {
       var box = $('.slides', vis), heroCap = $('#hero-cap'), fig = $('figcaption', vis);
-      var lista = [{ el: $('img', box), cap: heroCap ? heroCap.textContent : '' }];
+      var lista = [{ el: $('img', box), cap: heroCap ? heroCap.textContent : '', r: parseFloat(getComputedStyle(vis).getPropertyValue('--ratio')) || 0.8 }];
       window.addEventListener('load', function () {
         extra.forEach(function (x) {
           var im = new Image();
           im.src = x.src; im.alt = x.cap || ''; im.decoding = 'async';
           box.appendChild(im);
-          lista.push({ el: im, cap: x.cap || '' });
+          lista.push({ el: im, cap: x.cap || '', r: x.r });
         });
         var i = 0;
         setInterval(function () {
@@ -318,6 +316,7 @@
           if (!lista[dopo].el.complete) return;
           lista[i].el.classList.toggle('on', false);
           lista[dopo].el.classList.toggle('on', true);
+          if (lista[dopo].r) vis.style.setProperty('--ratio', lista[dopo].r); // il riquadro si adatta alla foto
           i = dopo;
           if (fig && heroCap) {
             var testo = lista[i].cap;

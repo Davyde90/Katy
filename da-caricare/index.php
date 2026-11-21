@@ -15,19 +15,21 @@ $hero = $c['hero'];
 $servizi = array_values(array_filter($c['servizi']['elenco'] ?? [], fn($x) => trim($x['nome']) !== ''));
 $galleria = $c['galleria']['foto'] ?? [];
 $heroFoto = $hero['foto'] ?: ($galleria[0]['file'] ?? '');
-$slides = [['src' => $heroFoto, 'cap' => $hero['foto_etichetta']]];
-foreach ($galleria as $g) { // le foto con la stellina "in apertura", scelte da Katy nel pannello (solo verticali o quadrate: le orizzontali verrebbero ingrandite troppo)
-    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6 && $g['h'] >= $g['w'] * 0.9) {
-        $slides[] = ['src' => $g['file'], 'cap' => $g['didascalia']];
-    }
-}
-$secondaFoto = null; // la piccola foto sovrapposta in apertura: un'altra foto con la stellina
+// foto dell'apertura: la principale più quelle con la stellina. Ogni foto porta le sue proporzioni:
+// il riquadro si adatta (verticale, quadrato o orizzontale) invece di ingrandire la foto per riempirlo.
+$heroDim = ['w' => 4, 'h' => 5];
 foreach ($galleria as $g) {
-    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && $g['h'] >= $g['w'] * 0.9 && !in_array($g['file'], array_column($slides, 'src'), true)) {
-        $secondaFoto = $g;
-        break;
+    if ($g['file'] === $heroFoto && !empty($g['w']) && !empty($g['h'])) {
+        $heroDim = ['w' => (int) $g['w'], 'h' => (int) $g['h']];
     }
 }
+$slides = [['src' => $heroFoto, 'cap' => $hero['foto_etichetta'], 'w' => $heroDim['w'], 'h' => $heroDim['h']]];
+foreach ($galleria as $g) {
+    if (!empty($g['apertura']) && $g['file'] !== $heroFoto && count($slides) < 6) {
+        $slides[] = ['src' => $g['file'], 'cap' => $g['didascalia'], 'w' => (int) ($g['w'] ?: 4), 'h' => (int) ($g['h'] ?: 5)];
+    }
+}
+$kn_ratio = fn(array $x) => max(0.75, min(1.5, $x['w'] / max(1, $x['h']))); // tra 3:4 e 3:2, così il riquadro non diventa mai una striscia
 // galleria senza buchi: la prima foto diventa grande solo se riempie la griglia a 4 colonne,
 // altrimenti la scheda Instagram si allarga fino a fine riga
 $nFoto = min(count($galleria), 11);
@@ -76,7 +78,6 @@ kn_page_start($c, ['jsonld' => true]);
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="kicker up" style="--d:0"><?= KN_PIN_ICON ?><span><?= e($hero['etichetta']) ?></span></p>
-      <p class="hero-open up" style="--d:0" id="hero-status" hidden><i></i><span></span><a href="#prenota">Orari</a></p>
       <h1><span class="up" style="--d:1"><?= e($hero['titolo']) ?></span> <em class="script up" style="--d:2"><?= e($hero['titolo_script']) ?></em></h1>
       <p class="lead up" style="--d:3"><?= e($hero['sottotitolo']) ?></p>
       <div class="cta up" style="--d:4">
@@ -90,15 +91,12 @@ kn_page_start($c, ['jsonld' => true]);
       <?php endif ?>
     </div>
     <?php if ($heroFoto): ?>
-    <div class="hero-media pop">
-      <figure class="visual" data-slides="<?= e(json_encode(array_slice($slides, 1), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
-        <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="800" height="1000" fetchpriority="high"') ?></div>
+    <div class="hero-media pop" style="--ratio-min:<?= round(min(array_map($kn_ratio, $slides)), 4) ?>">
+      <figure class="visual" style="--ratio:<?= round($kn_ratio($slides[0]), 4) ?>" data-slides="<?= e(json_encode(array_map(fn($x) => ['src' => $x['src'], 'cap' => $x['cap'], 'r' => round($kn_ratio($x), 4)], array_slice($slides, 1)), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)) ?>">
+        <div class="slides"><?= kn_img_tag($heroFoto, $hero['foto_etichetta'] ?: 'Un lavoro di ' . $s['nome'], 'class="on" width="' . $heroDim['w'] . '" height="' . $heroDim['h'] . '" fetchpriority="high"') ?></div>
         <span class="shine" aria-hidden="true"></span>
         <figcaption<?= $hero['foto_etichetta'] ? '' : ' hidden' ?>><span id="hero-cap"><?= e($hero['foto_etichetta']) ?></span></figcaption>
       </figure>
-      <?php if ($secondaFoto): ?>
-      <figure class="visual-2"><?= kn_img_tag($secondaFoto['thumb'], $secondaFoto['didascalia'], 'width="400" height="400" loading="lazy"') ?></figure>
-      <?php endif ?>
     </div>
     <?php endif ?>
   </div>
