@@ -10,6 +10,10 @@ if (!$c) {
     exit('Sito in aggiornamento, torna tra qualche minuto.');
 }
 
+if (isset($_GET['stagione'])) { // anteprima di un tema: ?stagione=natale (oppure "nessuna")
+    $GLOBALS['KN_STAGIONE_FORZA'] = (string) $_GET['stagione'];
+}
+$stagione = kn_stagione_attiva($c);
 $s = $c['studio'];
 $hero = $c['hero'];
 $servizi = array_values(array_filter($c['servizi']['elenco'] ?? [], fn($x) => trim($x['nome']) !== ''));
@@ -47,6 +51,10 @@ $opzioni = array_values(array_filter($c['contatti']['opzioni'] ?? [])) ?: array_
 $passi = array_values(array_filter($c['contatti']['passi'] ?? [], fn($x) => trim($x['titolo']) !== ''));
 $prova = $c['prova'] ?? [];
 $coloriProva = !empty($prova['attivo']) && is_file(__DIR__ . '/assets/img/prova/mappa.png') && is_file(__DIR__ . '/assets/img/prova/prova.json') ? array_values(array_filter($prova['colori'] ?? [], fn($x) => trim($x['nome']) !== '')) : [];
+$coloriFesta = $stagione && $coloriProva && ($c['stagione']['colori'] ?? true) ? $stagione['colori'] : [];
+if ($coloriFesta) { // i colori della festa davanti a quelli di Katy, segnati con la stellina
+    $coloriProva = array_merge(array_map(fn($x) => $x + ['festa' => true], $coloriFesta), $coloriProva);
+}
 $confronti = array_values(array_filter($c['prima_dopo']['elenco'] ?? [], fn($x) => $x['prima'] && $x['dopo']));
 $ticker = array_values(array_unique(array_filter(array_merge(array_column($servizi, 'nome'), array_map(fn($k) => $k['nome'], $categorie)))));
 
@@ -75,6 +83,7 @@ kn_page_start($c, ['jsonld' => true]);
 ?>
 
 <section class="hero grain" id="inizio">
+  <?= kn_festa_decoro($stagione, $c) ?>
   <div class="wrap hero-grid">
     <div class="hero-text">
       <p class="kicker up" style="--d:0"><?= KN_PIN_ICON ?><span><?= e($hero['etichetta']) ?></span></p>
@@ -126,9 +135,10 @@ kn_page_start($c, ['jsonld' => true]);
       </div>
       <div class="prova-side">
         <p class="label rv">Scegli il colore</p>
+        <?php if ($coloriFesta): ?><p class="palette-note rv">★ Con la stellina: i colori di <?= e($stagione['nome']) ?></p><?php endif ?>
         <div class="palette rv" id="palette" role="radiogroup" aria-label="Colori da provare">
           <?php foreach ($coloriProva as $i => $col): ?>
-          <button type="button" class="sw" role="radio" aria-checked="<?= $i === 0 ? 'true' : 'false' ?>" data-c="<?= e($col['colore']) ?>" data-n="<?= e($col['nome']) ?>" style="--c:<?= e($col['colore']) ?>"><i></i><span><?= e($col['nome']) ?></span></button>
+          <button type="button" class="sw<?= !empty($col['festa']) ? ' festa' : '' ?>" role="radio" aria-checked="<?= $i === 0 ? 'true' : 'false' ?>" data-c="<?= e($col['colore']) ?>" data-n="<?= e($col['nome']) ?>" style="--c:<?= e($col['colore']) ?>"><i></i><span><?= e($col['nome']) ?></span></button>
           <?php endforeach ?>
           <button type="button" class="sw orig" role="radio" aria-checked="false" data-orig="1" data-n="Il lavoro vero (salvia + glitter)"><i></i><span>Il lavoro vero</span></button>
         </div>

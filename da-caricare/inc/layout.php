@@ -26,12 +26,13 @@ function kn_page_start(array $c, array $opt): void
     $canonical = $base . '/' . ($opt['path'] ?? '');
     $sezioni = kn_sezioni_menu($c);
     $geo = kn_geo($c);
+    $st = kn_stagione_attiva($c);
     kn_security_headers();
     header('X-Frame-Options: SAMEORIGIN'); // il sito può stare in una cornice solo nel proprio pannello (anteprima dal vivo)
     header("Content-Security-Policy: frame-ancestors 'self'; object-src 'none'");
     ?>
 <!doctype html>
-<html lang="it">
+<html lang="it"<?= $st ? ' data-stagione="' . e($st['id']) . '"' : '' ?>>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -39,7 +40,7 @@ function kn_page_start(array $c, array $opt): void
 <title><?= e($title) ?></title>
 <meta name="description" content="<?= e($desc) ?>">
 <link rel="canonical" href="<?= e($canonical) ?>">
-<meta name="theme-color" content="#FFF0F4">
+<meta name="theme-color" content="<?= e($st['crema'] ?? '#FFF0F4') ?>">
 <meta name="format-detection" content="telephone=no">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="it_IT">

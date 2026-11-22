@@ -90,6 +90,24 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.setInputFiles('.uploader input[type=file]', [process.env.FINTA]);
   check((await toast('Formato')).includes('Formato non supportato'), 'rifiuta un file che non è una foto');
 
+  console.log('Feste e stagioni');
+  await page.goto(BASE + '/admin/#stagione');
+  await page.selectOption('.main select >> nth=0', 'manuale');
+  await page.selectOption('.main select >> nth=1', 'natale');
+  await page.click('#salva');
+  check((await toast()).includes('alvat'), 'salva il tema scelto a mano');
+  let html = await site();
+  check(html.includes('data-stagione="natale"') && html.includes('class="festa festa-neve"') && html.includes('Rosso Natale') && html.includes('Buone feste'), 'il sito si veste di Natale: colori, neve, colori delle unghie e auguri');
+  html = (await page.request.get(BASE + '/?stagione=pasqua')).text ? await (await page.request.get(BASE + '/?stagione=pasqua')).text() : '';
+  check(html.includes('data-stagione="pasqua"') && html.includes('festa-petali'), 'con ?stagione=pasqua si vede in anteprima un altro tema');
+  html = await (await page.request.get(BASE + '/?stagione=nessuna')).text();
+  check(!html.includes('data-stagione'), 'con ?stagione=nessuna il sito è normale');
+  await page.goto(BASE + '/admin/#stagione');
+  await page.selectOption('.main select >> nth=0', 'spenta');
+  await page.click('#salva'); await toast();
+  html = await site();
+  check(!html.includes('data-stagione') && !html.includes('Rosso Natale'), 'con le feste spente il sito torna normale');
+
   console.log('Orari e ferie');
   await page.goto(BASE + '/admin/#orari');
   await page.click('button.add');

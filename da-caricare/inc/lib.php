@@ -220,11 +220,131 @@ function kn_data_it(string $ymd, bool $anno = false): string
     return (int) date('j', $t) . ' ' . KN_MESI[(int) date('n', $t) - 1] . ($anno ? ' ' . date('Y', $t) : '');
 }
 
-/** Avviso da mostrare in cima: quello scritto da Katy oppure la prossima chiusura (entro 21 giorni). */
+/* ---------- feste e stagioni ---------- */
+
+function kn_stagioni(): array
+{
+    static $s = null;
+    return $s ??= require __DIR__ . '/stagioni.php';
+}
+
+/** Data di Pasqua (algoritmo di Meeus/Jones/Butcher). */
+function kn_pasqua(int $anno): string
+{
+    $a = $anno % 19;
+    $b = intdiv($anno, 100);
+    $c = $anno % 100;
+    $d = intdiv($b, 4);
+    $e = $b % 4;
+    $f = intdiv($b + 8, 25);
+    $g = intdiv($b - $f + 1, 3);
+    $h = (19 * $a + $b - $d - $g + 15) % 30;
+    $i = intdiv($c, 4);
+    $k = $c % 4;
+    $l = (32 + 2 * $e + 2 * $i - $h - $k) % 7;
+    $m = intdiv($a + 11 * $h + 22 * $l, 451);
+    $mese = intdiv($h + $l - 7 * $m + 114, 31);
+    $giorno = ($h + $l - 7 * $m + 114) % 31 + 1;
+    return sprintf('%04d-%02d-%02d', $anno, $mese, $giorno);
+}
+
+/** Periodo [dal, al] di una festa, per l'anno in cui comincia (Natale finisce l'anno dopo). */
+function kn_stagione_periodo(array $def, int $anno): array
+{
+    if (isset($def['pasqua'])) {
+        $p = strtotime(kn_pasqua($anno));
+        return [date('Y-m-d', strtotime(sprintf('%+d days', $def['pasqua'][0]), $p)), date('Y-m-d', strtotime(sprintf('%+d days', $def['pasqua'][1]), $p))];
+    }
+    return [$anno . '-' . $def['dal'], ($def['al'] < $def['dal'] ? $anno + 1 : $anno) . '-' . $def['al']];
+}
+
+/**
+ * La festa in corso secondo le impostazioni del pannello: automatica (calendario), scelta a mano o spenta.
+ * Per vedere un tema in anteprima: ?stagione=natale (o "nessuna") sulla pagina del sito.
+ */
+function kn_stagione_attiva(array $c): ?array
+{
+    static $cache = false;
+    if ($cache !== false) {
+        return $cache;
+    }
+    $tutte = kn_stagioni();
+    $imp = $c['stagione'] ?? [];
+    $modo = $imp['modo'] ?? 'auto';
+    $forza = $GLOBALS['KN_STAGIONE_FORZA'] ?? null;
+    $id = null;
+    $fino = '';
+    if ($forza !== null) {
+        $id = isset($tutte[$forza]) ? $forza : null;
+    } elseif ($modo === 'manuale') {
+        $id = isset($tutte[$imp['tema'] ?? '']) ? $imp['tema'] : null;
+    } elseif ($modo === 'auto') {
+        $oggi = date('Y-m-d');
+        $anno = (int) date('Y');
+        foreach ($tutte as $k => $def) {
+            foreach ([$anno - 1, $anno] as $y) {
+                [$dal, $al] = kn_stagione_periodo($def, $y);
+                if ($oggi >= $dal && $oggi <= $al) {
+                    $id = $k;
+                    $fino = $al;
+                    break 2;
+                }
+            }
+        }
+    }
+    return $cache = $id === null ? null : $tutte[$id] + ['id' => $id, 'fino' => $fino];
+}
+
+/** Per il pannello: la festa in corso e la prossima in calendario. */
+function kn_stagione_info(array $c): array
+{
+    $att = kn_stagione_attiva($c);
+    $oggi = date('Y-m-d');
+    $anno = (int) date('Y');
+    $prossima = null;
+    foreach (kn_stagioni() as $k => $def) {
+        foreach ([$anno, $anno + 1] as $y) {
+            [$dal, $al] = kn_stagione_periodo($def, $y);
+            if ($dal > $oggi && ($prossima === null || $dal < $prossima['dal'])) {
+                $prossima = ['id' => $k, 'nome' => $def['nome'], 'dal' => $dal, 'al' => $al];
+            }
+        }
+    }
+    return [
+        'modo' => $c['stagione']['modo'] ?? 'auto',
+        'attiva' => $att ? ['id' => $att['id'], 'nome' => $att['nome'], 'fino' => $att['fino']] : null,
+        'prossima' => $prossima,
+    ];
+}
+
+/** Le decorazioni animate in apertura (neve, cuori, petali…): posizioni fisse, calcolate dal nome del tema. */
+function kn_festa_decoro(?array $st, array $c): string
+{
+    if (!$st || !($c['stagione']['decorazioni'] ?? true)) {
+        return '';
+    }
+    $tipo = $st['decoro'];
+    $n = ['neve' => 26, 'cuori' => 16, 'petali' => 18, 'sole' => 14, 'pipistrelli' => 6][$tipo] ?? 16;
+    $colori = $st['decoro_colori'] ?? [];
+    $out = '';
+    for ($i = 0; $i < $n; $i++) {
+        $h = crc32($st['id'] . '/' . $i);
+        $r = fn(int $shift, int $mod) => (($h >> $shift) & 0x3FF) % $mod;
+        $out .= '<i style="--x:' . $r(0, 101) . '%;--y:' . (8 + $r(3, 80)) . '%;--s:' . (6 + $r(6, 11)) . 'px;--d:-' . ($r(9, 180) / 10) . 's;--t:' . (9 + $r(12, 9)) . 's;--sx:' . ($r(15, 160) - 80) . 'px'
+            . ($colori ? ';--c:' . $colori[$i % count($colori)] : '') . '"></i>';
+    }
+    return '<div class="festa festa-' . e($tipo) . '" aria-hidden="true">' . $out . '</div>';
+}
+
+/** Avviso da mostrare in cima: gli auguri della festa in corso, quello scritto da Katy, la prossima chiusura (entro 21 giorni). */
 function kn_avvisi(array $c): array
 {
     $out = [];
     $oggi = date('Y-m-d');
+    $st = kn_stagione_attiva($c);
+    if ($st && ($c['stagione']['auguri'] ?? true) && !empty($st['auguri'])) {
+        $out[] = $st['auguri'];
+    }
     $a = $c['avviso'] ?? [];
     if (!empty($a['attivo']) && trim($a['testo'] ?? '') !== '' && (empty($a['fino_al']) || $a['fino_al'] >= $oggi)) {
         $out[] = $a['testo'];

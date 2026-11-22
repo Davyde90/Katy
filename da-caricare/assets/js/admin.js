@@ -158,12 +158,12 @@
     { t: '', keys: ['inizio'] },
     { t: 'La pagina', keys: ['avviso', 'hero', 'prova', 'servizi', 'listino', 'prima_dopo', 'galleria', 'chi_sono', 'recensioni', 'buono', 'faq'] },
     { t: 'Lo studio', keys: ['orari', 'contatti', 'studio'] },
-    { t: 'Il sito', keys: ['seo', 'sicurezza'] }
+    { t: 'Il sito', keys: ['stagione', 'seo', 'sicurezza'] }
   ];
   var TITOLI = { inizio: 'Inizio', sicurezza: 'Password e backup' };
   S.schema.forEach(function (s) { TITOLI[s.key] = s.titolo; if (!GRUPPI.some(function (g) { return g.keys.indexOf(s.key) !== -1; })) GRUPPI[1].keys.push(s.key); });
   var VOCI = [].concat.apply([], GRUPPI.map(function (g) { return g.keys; })).filter(function (k) { return TITOLI[k]; });
-  var ANCORE = { avviso: 'inizio', hero: 'inizio', prova: 'prova', servizi: 'servizi', listino: 'listino', prima_dopo: 'prima-dopo', galleria: 'lavori', chi_sono: 'katy', recensioni: 'recensioni', buono: 'regalo', faq: 'domande', orari: 'prenota', contatti: 'prenota', studio: 'prenota', seo: 'inizio' };
+  var ANCORE = { avviso: 'inizio', hero: 'inizio', prova: 'prova', servizi: 'servizi', listino: 'listino', prima_dopo: 'prima-dopo', galleria: 'lavori', chi_sono: 'katy', recensioni: 'recensioni', buono: 'regalo', faq: 'domande', orari: 'prenota', contatti: 'prenota', studio: 'prenota', seo: 'inizio', stagione: 'inizio' };
 
   function drawMenu() {
     var m = $('#menu');
@@ -223,6 +223,7 @@
       S.content[S.current] = r.dati;
       S.content.aggiornato = r.aggiornato;
       S.backups = r.backups;
+      if (r.stagione) boot.stagione = r.stagione;
       S.draft = clone(r.dati);
       S.saving = false;
       setDirty(false);
@@ -342,6 +343,12 @@
     var c = fut[0];
     return (c.dal === (c.al || c.dal) ? dataIt(c.dal, true) : dataIt(c.dal, true) + ' – ' + dataIt(c.al, true)) + (c.motivo ? ' · ' + c.motivo : '');
   }
+  function temaTesto() {
+    var st = boot.stagione || {};
+    if (st.attiva) return st.attiva.nome + (st.modo === 'manuale' ? ' (scelto a mano)' : st.attiva.fino ? ', fino al ' + dataIt(st.attiva.fino, true) : '');
+    if (st.modo === 'spenta') return 'Normale (feste spente)';
+    return st.prossima ? 'Normale · ' + st.prossima.nome + ' dal ' + dataIt(st.prossima.dal, true) : 'Normale';
+  }
   function drawHome() {
     var c = S.content, todo = checks(), fatto = TOT_CHECK - todo.length, st = statoAdesso();
     var n = function (a) { return (a || []).length; };
@@ -363,6 +370,7 @@
           h('div', { class: 'kv', style: 'margin-top:14px' },
             h('div', null, h('span', { text: 'Prossima chiusura' }), h('span', { text: prossimaChiusura() })),
             h('div', null, h('span', { text: 'Avviso in cima al sito' }), h('span', { text: c.avviso && c.avviso.attivo && c.avviso.testo ? 'Acceso' : 'Spento' })),
+            h('div', null, h('span', { text: 'Tema del sito' }), h('a', { href: '#stagione', text: temaTesto() })),
             h('div', null, h('span', { text: 'Ultimo salvataggio' }), h('span', { text: c.aggiornato ? dataIt(c.aggiornato) : '—' })),
             h('div', null, h('span', { text: 'Versioni salvate' }), h('span', { text: S.backups.length + ' backup' }))
           )

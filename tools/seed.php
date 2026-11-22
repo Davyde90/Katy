@@ -157,6 +157,7 @@ $c = [
         'lat' => '39.7500',
         'lng' => '8.8333',
     ],
+    'stagione' => ['modo' => 'auto', 'tema' => 'natale', 'decorazioni' => true, 'colori' => true, 'auguri' => true],
     'seo' => [
         'titolo' => 'Katy\'s Nails · Unghie gel e semipermanente a Curcuris (Oristano)',
         'descrizione' => 'Onicotecnica a Curcuris, in Marmilla (Oristano): copertura in gel, semipermanente, smalto e nail art. Su appuntamento, una cliente alla volta. Prenota su WhatsApp.',

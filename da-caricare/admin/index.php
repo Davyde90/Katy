@@ -151,6 +151,7 @@ $csrf = $modo === 'pannello' ? kn_csrf() : '';
     'content' => $c,
     'backups' => kn_backups(),
     'https' => kn_is_https(),
+    'stagione' => kn_stagione_info($c),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 <script src="../<?= kn_asset('assets/js/admin.js') ?>"></script>
 <?php endif ?>

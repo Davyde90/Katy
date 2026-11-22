@@ -48,7 +48,7 @@ try {
             $c = kn_content(true);
             $c[$sec['key']] = kn_clean_fields($sec['fields'], $body['dati'] ?? []);
             kn_save_content($c);
-            kn_out(['ok' => true, 'dati' => $c[$sec['key']], 'aggiornato' => date('c'), 'backups' => kn_backups()]);
+            kn_out(['ok' => true, 'dati' => $c[$sec['key']], 'aggiornato' => date('c'), 'backups' => kn_backups(), 'stagione' => kn_stagione_info($c)]);
 
         case 'anteprima':
             // la pagina del sito con i dati NON ancora salvati di una sezione (anteprima dal vivo nel pannello)

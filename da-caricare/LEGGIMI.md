@@ -83,6 +83,12 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 
 Carica i file nuovi **tranne** `data/` e `uploads/`: lì dentro ci sono i contenuti e le foto di Katy. Per un backup completo del sito bastano proprio queste due cartelle.
 
+## Feste e stagioni
+
+Dal pannello (sezione "Feste e stagioni") il sito si veste a festa: Natale, San Valentino, Pasqua, Estate e Halloween. Ogni tema cambia i colori di tutto il sito, mette una decorazione animata leggera in apertura (neve, cuori, petali, scintille di sole, pipistrelli), una striscia con gli auguri in cima e aggiunge cinque colori di stagione, con la stellina, in "Prova il colore". Katy sceglie se i temi si accendono **da soli** nel loro periodo (Natale dal 1 dicembre al 6 gennaio, San Valentino dal 1 al 14 febbraio, Pasqua dalle tre settimane prima fino a Pasquetta, Estate dal 15 giugno al 31 agosto, Halloween dal 20 al 31 ottobre), **a mano**, o **mai**. Decorazioni, auguri e colori si spengono uno per uno.
+
+Per vedere un tema prima del suo periodo: `https://tuodominio/?stagione=natale` (oppure `valentino`, `pasqua`, `estate`, `halloween`, `nessuna`). I colori di ogni tema sono in `assets/css/site.css` (regole `:root[data-stagione=...]`), le date, i colori delle unghie e gli auguri in `inc/stagioni.php`.
+
 ## Farsi trovare su Google
 
 Il sito è già pronto per Google: titolo e descrizione si cambiano dal pannello (sezione "Google e condivisioni"), i dati dello studio escono anche in formato leggibile dalle macchine (schema.org `NailSalon`, con indirizzo, orari, coordinate, zona servita e listino), `sitemap.xml` e `robots.txt` si generano da soli, le foto della galleria sono nella sitemap per Google Immagini. Quello che il codice non può fare da solo, in ordine di importanza:

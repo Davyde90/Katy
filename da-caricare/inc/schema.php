@@ -206,6 +206,21 @@ return [
         ],
     ],
     [
+        'key' => 'stagione', 'titolo' => 'Feste e stagioni', 'descr' => 'Il sito si veste a festa: colori, decorazioni in apertura, auguri in cima e i colori delle unghie di stagione in "Prova il colore".',
+        'fields' => [
+            ['k' => 'modo', 't' => 'select', 'l' => 'Quando si accende', 'opts' => [
+                ['v' => 'auto', 'l' => 'Da sola, seguendo il calendario delle feste'],
+                ['v' => 'manuale', 'l' => 'Scelgo io il tema da mostrare adesso'],
+                ['v' => 'spenta', 'l' => 'Mai: il sito resta sempre normale'],
+            ]],
+            ['k' => 'tema', 't' => 'select', 'l' => 'Tema (quando lo scegli tu)', 'opts' => array_map(fn($k, $d) => ['v' => $k, 'l' => $d['nome'] . ' — ' . $d['descr']], array_keys(require __DIR__ . '/stagioni.php'), require __DIR__ . '/stagioni.php')],
+            ['k' => 'decorazioni', 't' => 'toggle', 'l' => 'Decorazioni animate in apertura (neve, cuori, petali…)', 'help' => 'Leggere, solo nella prima schermata. Chi ha impostato "riduci animazioni" sul telefono non le vede.'],
+            ['k' => 'colori', 't' => 'toggle', 'l' => 'Aggiungi i colori della festa in "Prova il colore"', 'help' => 'Cinque colori di stagione, con la stellina, davanti ai tuoi.'],
+            ['k' => 'auguri', 't' => 'toggle', 'l' => 'Striscia con gli auguri in cima al sito', 'help' => 'Se preferisci scrivere tu il testo, spegnila e usa la sezione Avviso.'],
+            ['k' => 'calendario', 't' => 'note', 'l' => 'Calendario delle feste', 'text' => "Natale: dal 1 dicembre al 6 gennaio · San Valentino: dal 1 al 14 febbraio · Pasqua: dalle tre settimane prima fino a Pasquetta · Estate: dal 15 giugno al 31 agosto · Halloween: dal 20 al 31 ottobre.\n\nPer vedere un tema prima che arrivi: scegli «Scelgo io il tema», guarda l'anteprima dal vivo e poi rimetti «Da sola» senza salvare."],
+        ],
+    ],
+    [
         'key' => 'seo', 'titolo' => 'Google e condivisioni', 'descr' => 'Come appare il sito su Google e quando lo condividi su WhatsApp, e da quali paesi vuoi farti trovare.',
         'fields' => [
             ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo su Google', 'max' => 70, 'help' => 'Massimo 60-65 caratteri perché si legga intero. Metti cosa fai e dove: è la riga blu dei risultati.'],
