@@ -1,0 +1,51 @@
+plugins {
+    id 'com.android.application'
+}
+
+// La chiave di firma NON sta nel repository: si passa con due variabili d'ambiente.
+//   KN_KEYSTORE=/percorso/katisnails-pannello.keystore  KN_KEYSTORE_PASSWORD=...  gradle assembleRelease
+def ks = System.getenv('KN_KEYSTORE')
+def kp = System.getenv('KN_KEYSTORE_PASSWORD')
+
+android {
+    namespace 'it.katisnails.pannello'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'it.katisnails.pannello'
+        minSdk 24
+        targetSdk 35
+        versionCode 1
+        versionName '1.0'
+    }
+
+    signingConfigs {
+        release {
+            if (ks && kp) {
+                storeFile file(ks)
+                storePassword kp
+                keyAlias 'pannello'
+                keyPassword kp
+            }
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            signingConfig signingConfigs.release
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+}
+
+configurations.all {
+    // la 2.6 di androidbrowserhelper tira dentro una androidx.browser "alpha" che vuole l'SDK 36: restiamo sulle versioni stabili
+    resolutionStrategy.force 'androidx.browser:browser:1.8.0'
+}
+
+dependencies {
+    implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
+}

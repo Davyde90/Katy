@@ -23,6 +23,12 @@ AddDefaultCharset UTF-8
 <FilesMatch "(^\.|\.(json|md|lock|tmp|example\.php)$)">
   Require all denied
 </FilesMatch>
+# eccezione: il file che collega l'app Android al sito (dentro .well-known/)
+<Files "assetlinks.json">
+  Require all granted
+</Files>
+AddType application/manifest+json .webmanifest
+AddType application/json .json
 
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"

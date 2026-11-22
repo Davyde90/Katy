@@ -71,7 +71,7 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 1. Carica via FTP il **contenuto** della cartella `da-caricare/` nella cartella pubblica dell'hosting (di solito `www/`, `public_html/` o `htdocs/`).
 2. In `inc/` copia `config.example.php` in `config.php` e imposta:
    - `setup_code`: un codice di almeno 12 caratteri a caso. Serve una volta sola, per attivare il pannello.
-   - `site_url`: l'indirizzo del sito, per esempio `https://www.katysnails.it`.
+   - `site_url`: l'indirizzo del sito, per esempio `https://katisnails.it`.
 3. Le cartelle `data/` e `uploads/` devono essere scrivibili da PHP (permessi 755, o 775 se l'hosting lo richiede).
 4. Attiva il certificato **HTTPS**, gratuito su quasi tutti gli hosting (Let's Encrypt). Poi in `.htaccess` togli il `#` dalle due righe del redirect verso https.
 5. Apri `https://tuodominio/admin/` con Katy: inserisce il codice di attivazione e sceglie **lei** la sua password. Da quel momento il codice non serve più.
@@ -82,6 +82,23 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 ## Aggiornare il codice in futuro
 
 Carica i file nuovi **tranne** `data/` e `uploads/`: lì dentro ci sono i contenuti e le foto di Katy. Per un backup completo del sito bastano proprio queste due cartelle.
+
+## Il pannello come app sul telefono
+
+Il pannello è anche un'app. Due modi, che valgono entrambi solo con il sito in **HTTPS**:
+
+1. **Senza installare niente (Android e iPhone).** Aprire `https://katisnails.it/admin/` in Chrome o Safari e scegliere "Aggiungi a schermata Home" / "Installa app". Compare l'icona di Katy's Nails, si apre a tutto schermo e la fotocamera per i QR funziona. È la strada più semplice e si aggiorna da sola.
+2. **L'APK per Android** (`app-android/`, file `PannelloKaty.apk`): è una "Trusted Web Activity", cioè una piccola app che apre il pannello con il motore di Chrome, a tutto schermo e senza barra dell'indirizzo. Sul telefono di Katy: aprire l'APK (da WhatsApp o dai file), consentire l'installazione da questa origine, installare. Tenendo premuta l'icona compaiono le scorciatoie "Leggi un buono", "Buoni regalo" e "Aggiungi foto". Serve Chrome installato (sui Samsung c'è).
+
+Perché l'app non mostri la barra dell'indirizzo, sul sito deve esserci il file `.well-known/assetlinks.json` (è nella cartella `da-caricare/`, va caricato come tutto il resto; `.htaccess` lo rende leggibile) con l'impronta della chiave con cui l'APK è firmato. Se l'APK viene rifirmato con un'altra chiave, va aggiornata anche l'impronta nel file.
+
+**Per ricostruire l'APK** (solo chi sviluppa): servono Java 17 o 21, Gradle 8.9+ e l'Android SDK (piattaforma 35, build-tools 35). Dalla cartella `app-android/`:
+
+```bash
+ANDROID_HOME=/percorso/sdk KN_KEYSTORE=/percorso/katisnails-pannello.keystore KN_KEYSTORE_PASSWORD=... gradle assembleRelease
+```
+
+Il file `.keystore` e la sua password **non stanno nel repository**: vanno conservati a parte, perché un aggiornamento dell'app si installa sopra il precedente solo se è firmato con la stessa chiave. A ogni nuova versione aumentare `versionCode` in `app/build.gradle`.
 
 ## Buoni regalo digitali
 

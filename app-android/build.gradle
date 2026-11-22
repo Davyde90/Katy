@@ -1,0 +1,5 @@
+// App Android del pannello di Katy's Nails: una Trusted Web Activity che apre https://katisnails.it/admin/
+// a tutto schermo con il motore di Chrome (fotocamera, caricamento foto, sessione: tutto come nel browser).
+plugins {
+    id 'com.android.application' version '8.7.3' apply false
+}

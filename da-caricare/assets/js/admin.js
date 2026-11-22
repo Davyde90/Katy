@@ -4,6 +4,7 @@
   'use strict';
 
   var boot = JSON.parse(document.getElementById('boot').textContent);
+  if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function () {}); // per installare il pannello come app
   var S = { csrf: boot.csrf, schema: boot.schema, content: boot.content, backups: boot.backups, current: null, draft: null, dirty: false, saving: false };
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -660,6 +661,11 @@
         loop();
       })
       .catch(function (er) { stato.textContent = 'Non riesco ad aprire la fotocamera (' + (er && er.name === 'NotAllowedError' ? 'permesso negato' : (er && er.message) || er) + '). Scrivi il codice qui sotto.'; });
+  }
+
+  if (/[?&]scan=1/.test(location.search)) { // scorciatoia dell'app "Leggi un buono"
+    history.replaceState(null, '', location.pathname + '#buoni');
+    setTimeout(openScanner, 500);
   }
 
   /* ---------- una sezione del sito ---------- */

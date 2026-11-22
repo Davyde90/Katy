@@ -75,7 +75,11 @@ $csrf = $modo === 'pannello' ? kn_csrf() : '';
 <title>Pannello · <?= e($nome) ?></title>
 <link rel="icon" type="image/png" href="../assets/img/favicon-32.png">
 <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#FFF4F7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pannello Katy">
 <link rel="stylesheet" href="../<?= kn_asset('assets/css/admin.css') ?>">
 </head>
 <body class="<?= $modo === 'pannello' ? 'app' : 'gate' ?>">
