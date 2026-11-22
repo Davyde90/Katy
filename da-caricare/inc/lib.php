@@ -90,7 +90,24 @@ function kn_content(bool $fresh = false, ?array $override = null): array
             }
         }
     }
-    return $cache = is_array($data) ? $data : [];
+    return $cache = is_array($data) ? kn_completa($data) : [];
+}
+
+/** Aggiunge ai contenuti i campi che mancano (sezioni e campi nuovi rispetto al content.json salvato). */
+function kn_completa(array $c): array
+{
+    foreach (require __DIR__ . '/defaults.php' as $sez => $campi) {
+        if (!isset($c[$sez]) || !is_array($c[$sez])) {
+            $c[$sez] = $campi;
+            continue;
+        }
+        foreach ($campi as $k => $v) {
+            if (!array_key_exists($k, $c[$sez])) {
+                $c[$sez][$k] = $v;
+            }
+        }
+    }
+    return $c;
 }
 
 /** Salva in modo sicuro: prima copia la versione attuale nei backup, poi sostituisce il file in un colpo solo. */

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Pannello Katy</string>
-    <string name="assetStatements">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://katysnails.it\"}}]</string>
+    <string name="assetStatements">[{\"relation\": [\"delegate_permission/common.handle_all_urls\"], \"target\": {\"namespace\": \"web\", \"site\": \"https://www.katysnails.it\"}}]</string>
     <string name="scorciatoia_qr">Leggi un buono</string>
     <string name="scorciatoia_buoni">Buoni regalo</string>
     <string name="scorciatoia_foto">Aggiungi foto</string>

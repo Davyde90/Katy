@@ -96,6 +96,23 @@ try {
         case 'pulisci':
             kn_out(['ok' => true, 'eliminate' => kn_cleanup_uploads(kn_content(true))]);
 
+        case 'versione': // quali file del sito sono vecchi o mancano rispetto all'elenco in inc/versione.php
+            $v = is_file(__DIR__ . '/../inc/versione.php') ? require __DIR__ . '/../inc/versione.php' : null;
+            if (!$v) {
+                kn_out(['errore' => 'Manca il file inc/versione.php: ricarica anche la cartella inc/.'], 400);
+            }
+            $mancanti = [];
+            $vecchi = [];
+            foreach ($v['file'] as $rel => $sha) {
+                $p = KN_ROOT . '/' . $rel;
+                if (!is_file($p)) {
+                    $mancanti[] = $rel;
+                } elseif (hash_file('sha256', $p) !== $sha) {
+                    $vecchi[] = $rel;
+                }
+            }
+            kn_out(['ok' => true, 'data' => $v['data'], 'totale' => count($v['file']), 'mancanti' => $mancanti, 'vecchi' => $vecchi, 'php' => PHP_VERSION, 'server' => (string) ($_SERVER['SERVER_SOFTWARE'] ?? ''), 'https' => kn_is_https(), 'host' => (string) ($_SERVER['HTTP_HOST'] ?? '')]);
+
         case 'statistiche':
             kn_out(['ok' => true] + kn_stats_per_pannello());
 

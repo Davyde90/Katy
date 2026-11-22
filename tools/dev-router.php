@@ -6,8 +6,8 @@ if (preg_match('#^/(inc|data)(/|$)#', $path) && !preg_match('#^/\.well-known/#',
     http_response_code(403);
     exit('Vietato');
 }
-if ($path === '/sitemap.xml' || $path === '/robots.txt') {
-    require $_SERVER['DOCUMENT_ROOT'] . '/' . ($path === '/sitemap.xml' ? 'sitemap.php' : 'robots.php');
+if ($path === '/sitemap.xml' || $path === '/robots.txt' || $path === '/.well-known/assetlinks.json') {
+    require $_SERVER['DOCUMENT_ROOT'] . '/' . ($path === '/sitemap.xml' ? 'sitemap.php' : ($path === '/robots.txt' ? 'robots.php' : 'assetlinks.php'));
     return true;
 }
 return false;

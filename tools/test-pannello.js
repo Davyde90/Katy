@@ -210,6 +210,12 @@ const iso = d => d.toISOString().slice(0, 10);
   const hd = (await page.request.get(BASE + '/')).headers();
   check(hd['x-content-type-options'] === 'nosniff' && /frame-ancestors/.test(hd['content-security-policy'] || '') && hd['referrer-policy'], 'il sito manda le intestazioni di sicurezza');
 
+  console.log('Aggiornamento');
+  const ver = await page.evaluate(async () => (await fetch('api.php?azione=versione', { method: 'POST', headers: { 'X-CSRF-Token': JSON.parse(document.getElementById('boot').textContent).csrf, 'Content-Type': 'application/json' }, body: '{}' })).json());
+  check(ver.ok && ver.totale > 40 && ver.vecchi.length === 0 && ver.mancanti.length === 0, 'il controllo dei file dice che il sito è aggiornato (' + ver.totale + ' file, versione ' + ver.data + ')');
+  const alnk = await page.request.get(BASE + '/.well-known/assetlinks.json');
+  check(alnk.status() === 200 && (await alnk.text()).includes('it.katysnails.pannello'), 'assetlinks.json per l\'app viene servito');
+
   console.log('Google');
   const robots = await page.request.get(BASE + '/robots.txt');
   check(robots.status() === 200 && /^Sitemap: https?:\/\/.+\/sitemap\.xml$/m.test(await robots.text()), 'robots.txt indica la sitemap');

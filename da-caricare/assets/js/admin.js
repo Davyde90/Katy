@@ -434,8 +434,25 @@
           }));
         }))
       : h('p', { class: 'muted', text: 'Ancora nessun backup: ne viene creato uno a ogni salvataggio.' });
+    var verBox = h('div', { class: 'muted', text: 'Controllo in corso…' });
+    var controlla = function () {
+      put(verBox, [h('p', { class: 'muted', text: 'Controllo in corso…' })]);
+      api('versione', {}).then(function (r) {
+        var righe = [h('div', { class: 'kv' },
+          h('div', null, h('span', { text: 'Versione dei file' }), h('span', { text: r.data })),
+          h('div', null, h('span', { text: 'File controllati' }), h('span', { text: (r.totale - r.mancanti.length - r.vecchi.length) + ' su ' + r.totale + ' aggiornati' })),
+          h('div', null, h('span', { text: 'Server' }), h('span', { text: (r.server || '—').split(' ')[0] + ' · PHP ' + r.php + (r.https ? ' · HTTPS' : ' · senza HTTPS') })))];
+        if (!r.mancanti.length && !r.vecchi.length) righe.push(h('p', { class: 'ok', text: 'Tutti i file del sito sono aggiornati alla versione ' + r.data + '.' }));
+        if (r.vecchi.length) righe.push(h('p', { class: 'warn', text: 'File vecchi, da ricaricare (' + r.vecchi.length + '): ' + r.vecchi.join(', ') }));
+        if (r.mancanti.length) righe.push(h('p', { class: 'warn', text: 'File che mancano sul server (' + r.mancanti.length + '): ' + r.mancanti.join(', ') }));
+        righe.push(h('p', { class: 'help', style: 'margin-top:10px', text: 'L\'elenco è in inc/versione.php: se anche quello è vecchio, il controllo confronta con una versione vecchia. La data qui sopra deve essere quella dell\'ultimo aggiornamento ricevuto.' }));
+        put(verBox, righe);
+      }).catch(function (er) { put(verBox, [h('p', { class: 'warn', text: er.message })]); });
+    };
+    controlla();
     put(main, [
       h('div', { class: 'page-h' }, h('h2', { text: 'Password e backup' }), h('p', { text: 'A ogni salvataggio il sito tiene una copia della versione precedente: se sbagli qualcosa puoi tornare indietro.' })),
+      h('section', { class: 'card', id: 'versione' }, h('div', { class: 'card-h' }, h('div', null, h('h3', { text: 'Aggiornamento del sito' }), h('p', { text: 'Confronta i file sul server con l\'ultima versione: dice cosa va ricaricato.' })), h('button', { type: 'button', class: 'btn ghost small', text: 'Controlla di nuovo', onclick: controlla })), verBox),
       h('section', { class: 'card' }, h('h3', { text: 'Torna a una versione precedente' }), list),
       h('section', { class: 'card' }, h('h3', { text: 'Cambia password' }), pwForm),
       h('section', { class: 'card' }, h('h3', { text: 'Pulizia' }),
