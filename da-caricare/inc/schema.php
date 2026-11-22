@@ -140,11 +140,12 @@ return [
         ],
     ],
     [
-        'key' => 'buono', 'titolo' => 'Buono regalo', 'descr' => 'La sezione per regalare un trattamento.',
+        'key' => 'buono', 'titolo' => 'Buono regalo', 'descr' => 'La sezione del sito per regalare un trattamento. I buoni digitali veri si creano in "Buoni regalo", sotto "Lo studio".',
         'fields' => [
             ['k' => 'attivo', 't' => 'toggle', 'l' => 'Mostra la sezione sul sito'],
             ['k' => 'titolo', 't' => 'text', 'l' => 'Titolo', 'max' => 60],
             ['k' => 'testo', 't' => 'textarea', 'l' => 'Testo', 'max' => 300],
+            ['k' => 'condizioni', 't' => 'textarea', 'l' => 'Condizioni scritte sul buono digitale', 'max' => 300, 'help' => 'Compaiono in piccolo in fondo a ogni buono regalo digitale.'],
         ],
     ],
     [

@@ -15,7 +15,7 @@ $tema = $argv[2] ?? null; // "index natale" → anteprima/stagione-natale.html
 if ($pagina === null) {
     @mkdir("$root/anteprima", 0775, true);
     $stagioni = require "$root/da-caricare/inc/stagioni.php";
-    $lavori = [['index', null], ['privacy', null]];
+    $lavori = [['index', null], ['privacy', null], ['buono', null]];
     foreach (array_keys($stagioni) as $id) {
         $lavori[] = ['index', $id];
     }
@@ -41,6 +41,9 @@ $_SERVER['HTTP_HOST'] = 'anteprima.local';
 $_SERVER['SCRIPT_NAME'] = '/index.php';
 if ($tema) {
     $_GET['stagione'] = $tema;
+}
+if ($pagina === 'buono') { // un buono di esempio, per vedere com'è fatto
+    $GLOBALS['KN_BUONO_DEMO'] = ['codice' => 'KN-ESEM-PIO1', 'creato' => date('c'), 'a' => 'Anna Bianchi', 'da' => 'Mario', 'tipo' => 'trattamento', 'trattamento' => 'Copertura in gel', 'importo' => 0, 'messaggio' => 'Buon compleanno! Un pomeriggio tutto per te.', 'scadenza' => date('Y-m-d', strtotime('+12 months')), 'telefono' => '', 'note' => '', 'usi' => [], 'annullato' => false];
 }
 chdir("$root/da-caricare");
 ob_start();

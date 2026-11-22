@@ -157,13 +157,13 @@
   var GRUPPI = [
     { t: '', keys: ['inizio'] },
     { t: 'La pagina', keys: ['avviso', 'hero', 'prova', 'servizi', 'listino', 'prima_dopo', 'galleria', 'chi_sono', 'recensioni', 'buono', 'faq'] },
-    { t: 'Lo studio', keys: ['orari', 'contatti', 'studio'] },
+    { t: 'Lo studio', keys: ['orari', 'buoni', 'contatti', 'studio'] },
     { t: 'Il sito', keys: ['stagione', 'seo', 'sicurezza'] }
   ];
-  var TITOLI = { inizio: 'Inizio', sicurezza: 'Password e backup' };
+  var TITOLI = { inizio: 'Inizio', sicurezza: 'Password e backup', buoni: 'Buoni regalo' };
   S.schema.forEach(function (s) { TITOLI[s.key] = s.titolo; if (!GRUPPI.some(function (g) { return g.keys.indexOf(s.key) !== -1; })) GRUPPI[1].keys.push(s.key); });
   var VOCI = [].concat.apply([], GRUPPI.map(function (g) { return g.keys; })).filter(function (k) { return TITOLI[k]; });
-  var ANCORE = { avviso: 'inizio', hero: 'inizio', prova: 'prova', servizi: 'servizi', listino: 'listino', prima_dopo: 'prima-dopo', galleria: 'lavori', chi_sono: 'katy', recensioni: 'recensioni', buono: 'regalo', faq: 'domande', orari: 'prenota', contatti: 'prenota', studio: 'prenota', seo: 'inizio', stagione: 'inizio' };
+  var ANCORE = { avviso: 'inizio', hero: 'inizio', prova: 'prova', servizi: 'servizi', listino: 'listino', prima_dopo: 'prima-dopo', galleria: 'lavori', chi_sono: 'katy', recensioni: 'recensioni', buono: 'regalo', faq: 'domande', orari: 'prenota', contatti: 'prenota', studio: 'prenota', seo: 'inizio', stagione: 'inizio', buoni: 'regalo' };
 
   function drawMenu() {
     var m = $('#menu');
@@ -203,6 +203,7 @@
     main.replaceChildren();
     if (S.current === 'inizio') drawHome();
     else if (S.current === 'sicurezza') drawSecurity();
+    else if (S.current === 'buoni') drawBuoni();
     else if (sec) drawSection(sec);
   }
 
@@ -371,6 +372,7 @@
             h('div', null, h('span', { text: 'Prossima chiusura' }), h('span', { text: prossimaChiusura() })),
             h('div', null, h('span', { text: 'Avviso in cima al sito' }), h('span', { text: c.avviso && c.avviso.attivo && c.avviso.testo ? 'Acceso' : 'Spento' })),
             h('div', null, h('span', { text: 'Tema del sito' }), h('a', { href: '#stagione', text: temaTesto() })),
+            h('div', null, h('span', { text: 'Buoni regalo da usare' }), h('a', { href: '#buoni', text: String(boot.buoni_da_usare || 0) })),
             h('div', null, h('span', { text: 'Ultimo salvataggio' }), h('span', { text: c.aggiornato ? dataIt(c.aggiornato) : '—' })),
             h('div', null, h('span', { text: 'Versioni salvate' }), h('span', { text: S.backups.length + ' backup' }))
           )
@@ -388,7 +390,8 @@
           h('a', { href: '#galleria' }, ico('foto'), 'Aggiungi foto'),
           h('a', { href: '#avviso' }, ico('avviso'), 'Scrivi un avviso'),
           h('a', { href: '#orari' }, ico('orari'), 'Segna le ferie'),
-          h('a', { href: '#listino' }, ico('listino'), 'Cambia i prezzi')
+          h('a', { href: '#listino' }, ico('listino'), 'Cambia i prezzi'),
+          h('a', { href: '#buoni' }, ico('buono'), 'Buoni regalo')
         )
       )
     ]);
@@ -438,6 +441,225 @@
           api('pulisci', {}).then(function (r) { toast(r.eliminate ? 'Eliminate ' + r.eliminate + ' foto non usate.' : 'Nessuna foto da eliminare.'); }).catch(function (er) { toast(er.message, true); });
         } }))
     ]);
+  }
+
+  /* ---------- buoni regalo digitali ---------- */
+  ICO.buoni = ICO.buono;
+  var BU = { lista: null, filtro: 'validi', cerca: '', libs: {} };
+  var ST_ET = { valido: 'Valido', parziale: 'Usato in parte', usato: 'Usato', scaduto: 'Scaduto', annullato: 'Annullato' };
+  function euro(n) { n = Math.round((+n || 0) * 100) / 100; return (n % 1 ? n.toFixed(2).replace('.', ',') : String(n)) + ' €'; }
+  function mesi(n) { var d = new Date(); d.setMonth(d.getMonth() + n); return d.toISOString().slice(0, 10); }
+  function dataAnno(iso) { var d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' }); }
+  function loadScript(src) { // le librerie dei QR si caricano solo quando servono
+    if (BU.libs[src]) return BU.libs[src];
+    return BU.libs[src] = new Promise(function (res, rej) {
+      document.head.appendChild(h('script', { src: src, onload: res, onerror: function () { delete BU.libs[src]; rej(new Error('Non riesco a caricare una parte del pannello: ricarica la pagina.')); } }));
+    });
+  }
+  function qrSvg(testo) {
+    var q = qrcode(0, 'M'); q.addData(testo); q.make();
+    var box = h('div', { class: 'box' }); box.innerHTML = q.createSvgTag({ cellSize: 4, margin: 0, scalable: true });
+    return box;
+  }
+  function trattamenti() { // suggerimenti nel modulo: i servizi e le voci del listino
+    var out = [];
+    ((S.content.servizi || {}).elenco || []).forEach(function (x) { if (x.nome) out.push(x.nome); });
+    ((S.content.listino || {}).categorie || []).forEach(function (k) { (k.voci || []).forEach(function (v) { if (v.nome && out.indexOf(v.nome) < 0) out.push(v.nome); }); });
+    return out;
+  }
+  function dlgHeader(titolo, onclose) { return h('header', null, h('b', { text: titolo }), h('button', { type: 'button', class: 'ib', 'aria-label': 'Chiudi', onclick: onclose }, ico('x', 18))); }
+  function buonoDi(cod) { return (BU.lista || []).filter(function (x) { return x.codice === cod; })[0]; }
+  function statTile(n, label) { return h('div', { class: 'stat' }, h('b', { text: String(n) }), h('span', { text: label })); }
+
+  function drawBuoni() {
+    if (!BU.lista) {
+      put(main, [h('p', { class: 'loading', text: 'Carico i buoni…' })]);
+      api('buoni', {}).then(function (r) { BU.lista = r.buoni; if (S.current === 'buoni') drawBuoni(); }).catch(function (er) { put(main, [h('p', { class: 'warn', text: er.message })]); });
+      return;
+    }
+    var lista = BU.lista;
+    var conta = function (st) { return lista.filter(function (b) { return st.indexOf(b.stato) >= 0; }).length; };
+    var FILTRI = [['validi', 'Da usare', ['valido', 'parziale']], ['usati', 'Usati', ['usato']], ['altri', 'Scaduti e annullati', ['scaduto', 'annullato']], ['tutti', 'Tutti', ['valido', 'parziale', 'usato', 'scaduto', 'annullato']]];
+    var listEl = h('ul', { class: 'bu-list' });
+    var cerca = h('input', { type: 'search', id: 'bu-cerca', placeholder: 'Cerca per nome o codice', value: BU.cerca, oninput: function () { BU.cerca = cerca.value; paintList(); } });
+    var chips = h('div', { class: 'chips' }, FILTRI.map(function (f) { return h('button', { type: 'button', 'data-f': f[0], 'aria-pressed': String(f[0] === BU.filtro), text: f[1] + ' (' + conta(f[2]) + ')', onclick: function () { BU.filtro = f[0]; paintList(); } }); }));
+    function paintList() {
+      var f = FILTRI.filter(function (x) { return x[0] === BU.filtro; })[0] || FILTRI[0];
+      var q = BU.cerca.trim().toLowerCase();
+      var vis = lista.filter(function (b) { return f[2].indexOf(b.stato) >= 0 && (!q || (b.a + ' ' + (b.da || '') + ' ' + b.codice + ' ' + b.valore).toLowerCase().indexOf(q) >= 0); });
+      put(listEl, vis.length ? vis.map(function (b) {
+        return h('li', null, h('button', { type: 'button', class: 'bu st-' + b.stato, onclick: function () { openBuono(b.codice); } },
+          h('i'),
+          h('span', null, h('b', { text: 'Per ' + b.a }), h('small', { text: b.valore + (b.stato === 'parziale' ? ' · restano ' + euro(b.residuo) : '') + (b.da ? ' · da ' + b.da : '') + ' · ' + (b.scadenza ? 'scade il ' + dataAnno(b.scadenza) : 'senza scadenza') })),
+          h('code', { text: b.codice })));
+      }) : [h('li', { class: 'muted', text: lista.length ? 'Nessun buono qui.' : 'Ancora nessun buono: crea il primo con "Nuovo buono".' })]);
+      chips.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.getAttribute('data-f') === BU.filtro)); });
+    }
+    put(main, [
+      h('div', { class: 'page-h' }, h('h2', { text: 'Buoni regalo' }), h('p', { text: 'Crea un buono digitale, mandalo su WhatsApp e, quando la cliente viene in studio, leggi il suo QR e segnalo come usato. I buoni a importo si possono usare in più volte.' })),
+      h('div', { class: 'bu-stats' }, statTile(conta(['valido', 'parziale']), 'da usare'), statTile(conta(['usato']), 'usati'), statTile(conta(['scaduto']), 'scaduti')),
+      h('div', { class: 'bu-bar' },
+        h('button', { type: 'button', class: 'btn', id: 'bu-nuovo', onclick: function () { formBuono(null); } }, ico('piu', 16), 'Nuovo buono'),
+        h('button', { type: 'button', class: 'btn ghost', id: 'bu-scan', onclick: openScanner }, 'Leggi un QR'),
+        cerca),
+      chips, listEl
+    ]);
+    paintList();
+  }
+
+  function kvRow(k, v) { return h('div', null, h('span', { text: k }), h('span', { text: v })); }
+  function openBuono(codice) {
+    var d = $('#buonoDlg'), close = function () { d.close(); };
+    var ricarica = function (r, msg) { BU.lista = r.buoni; if (msg) toast(msg); paint(); if (S.current === 'buoni') drawBuoni(); };
+    var paint = function () {
+      var b = buonoDi(codice);
+      if (!b) { close(); return; }
+      var body = h('div', { class: 'bu-body' });
+      var qrWrap = h('div', { class: 'bu-qr' }, h('div', { class: 'box' }), h('div', null,
+        h('div', { class: 'bu-code', text: b.codice }),
+        h('div', { style: 'margin-top:8px' }, h('span', { class: 'stc st-' + b.stato, text: ST_ET[b.stato] })),
+        h('div', { class: 'muted', style: 'margin-top:8px', text: b.scadenza ? 'Scade il ' + dataAnno(b.scadenza) : 'Senza scadenza' })));
+      loadScript('../assets/js/vendor/qrcode.js').then(function () { qrWrap.replaceChild(qrSvg(b.url), qrWrap.firstChild); }).catch(function () {});
+      body.appendChild(qrWrap);
+      body.appendChild(h('div', { class: 'bu-kv' },
+        kvRow('Per', b.a), b.da ? kvRow('Da', b.da) : null,
+        kvRow('Vale per', b.valore + (b.tipo === 'importo' && b.stato === 'parziale' ? ' · restano ' + euro(b.residuo) : '')),
+        b.messaggio ? kvRow('Messaggio', b.messaggio) : null,
+        kvRow('Creato il', dataIt(b.creato)),
+        b.telefono ? kvRow('Telefono', b.telefono) : null,
+        b.note ? kvRow('Note (solo tue)', b.note) : null));
+      if (b.usi && b.usi.length) body.appendChild(h('p', { class: 'bu-usi', text: 'Utilizzi: ' + b.usi.map(function (u) { return dataIt(u.quando) + (u.importo ? ' · ' + euro(u.importo) : '') + (u.nota ? ' · ' + u.nota : ''); }).join(' — ') }));
+      if (b.stato !== 'usato' && b.stato !== 'annullato') {
+        var imp = b.tipo === 'importo' ? h('input', { type: 'number', step: '0.5', min: '0', max: String(b.residuo), value: String(b.residuo), id: 'bu-importo', 'aria-label': 'Importo da scalare' }) : null;
+        var usaBtn = h('button', { type: 'button', class: 'btn', id: 'bu-usa', text: b.tipo === 'importo' ? 'Scala dal buono' : 'Segna come usato', onclick: function () {
+          var importo = imp ? parseFloat(String(imp.value).replace(',', '.')) : null;
+          if (b.stato === 'scaduto' && !confirm('Il buono è scaduto. Vuoi accettarlo lo stesso?')) return;
+          if (!confirm(b.tipo === 'importo' ? 'Scalare ' + euro(importo || 0) + ' dal buono di ' + b.a + '?' : 'Segnare come usato il buono di ' + b.a + '?')) return;
+          usaBtn.disabled = true;
+          api('buono_usa', { codice: b.codice, importo: importo }).then(function (r) { ricarica(r, r.buono.stato === 'usato' ? 'Buono segnato come usato.' : 'Segnato: sul buono restano ' + euro(r.buono.residuo) + '.'); }).catch(function (er) { toast(er.message, true); usaBtn.disabled = false; });
+        } });
+        body.appendChild(h('div', { class: 'bu-usa' }, imp ? h('span', { class: 'muted', text: 'Importo' }) : null, imp, usaBtn));
+      }
+      var wa = 'https://wa.me/' + (b.telefono || '') + '?text=' + encodeURIComponent(b.wa || b.url);
+      var act = h('div', { class: 'bu-act' },
+        h('a', { class: 'btn wa wide', href: wa, target: '_blank', rel: 'noopener', text: 'Invia su WhatsApp' }),
+        h('a', { class: 'btn ghost', href: b.url, target: '_blank', rel: 'noopener', text: 'Apri il buono' }),
+        h('button', { type: 'button', class: 'btn ghost', text: 'Copia il link', onclick: function (e) { navigator.clipboard.writeText(b.url).then(function () { e.target.textContent = 'Copiato'; }, function () { toast('Non riesco a copiare: apri il buono e copia l\'indirizzo.', true); }); } }),
+        h('button', { type: 'button', class: 'btn ghost', text: 'Modifica', onclick: function () { formBuono(b); } }),
+        b.usi && b.usi.length ? h('button', { type: 'button', class: 'btn ghost', text: 'Annulla l\'ultimo utilizzo', onclick: function () { if (!confirm('Togliere l\'ultimo utilizzo segnato?')) return; api('buono_riapri', { codice: b.codice }).then(function (r) { ricarica(r, 'Utilizzo tolto.'); }).catch(function (er) { toast(er.message, true); }); } }) : null,
+        b.stato === 'annullato'
+          ? h('button', { type: 'button', class: 'btn ghost', text: 'Riattiva', onclick: function () { api('buono_riattiva', { codice: b.codice }).then(function (r) { ricarica(r, 'Buono riattivato.'); }).catch(function (er) { toast(er.message, true); }); } })
+          : h('button', { type: 'button', class: 'btn ghost', text: 'Annulla il buono', onclick: function () { if (!confirm('Annullare il buono di ' + b.a + '? Resta in archivio, ma non si può più usare.')) return; api('buono_annulla', { codice: b.codice }).then(function (r) { ricarica(r, 'Buono annullato.'); }).catch(function (er) { toast(er.message, true); }); } }),
+        h('button', { type: 'button', class: 'btn danger', text: 'Elimina', onclick: function () { if (!confirm('Eliminare per sempre il buono di ' + b.a + '? Meglio "Annulla", che lo tiene in archivio.')) return; api('buono_elimina', { codice: b.codice }).then(function (r) { BU.lista = r.buoni; toast('Buono eliminato.'); close(); if (S.current === 'buoni') drawBuoni(); }).catch(function (er) { toast(er.message, true); }); } }));
+      body.appendChild(act);
+      put(d.firstElementChild, [dlgHeader('Buono per ' + b.a, close), body]);
+      if (!d.open) d.showModal();
+    };
+    if (!buonoDi(codice)) return toast('Buono non trovato.', true);
+    paint();
+  }
+
+  function formBuono(b) {
+    var d = $('#buonoDlg'), edit = !!b, usato = !!(edit && b.usi && b.usi.length);
+    var v = b || { a: '', da: '', tipo: 'trattamento', trattamento: '', importo: '', messaggio: '', scadenza: '', telefono: '', note: '' };
+    var inA = h('input', { id: 'bu-a', value: v.a, maxlength: 60, required: true, disabled: usato, placeholder: 'Es. Anna Bianchi' });
+    var inDa = h('input', { id: 'bu-da', value: v.da || '', maxlength: 60, disabled: usato, placeholder: 'Es. Mario' });
+    var selTipo = h('select', { id: 'bu-tipo', disabled: usato }, h('option', { value: 'trattamento', text: 'Un trattamento' }), h('option', { value: 'importo', text: 'Un importo in euro (si può usare in più volte)' }));
+    selTipo.value = v.tipo || 'trattamento';
+    var inT = h('input', { id: 'bu-tratt', value: v.trattamento || '', maxlength: 60, list: 'bu-dl', disabled: usato, placeholder: 'Es. Copertura in gel' });
+    var dl = h('datalist', { id: 'bu-dl' }, trattamenti().map(function (t) { return h('option', { value: t }); }));
+    var inImp = h('input', { id: 'bu-imp', type: 'number', step: '0.5', min: '1', value: v.importo || '', disabled: usato, placeholder: 'Es. 40' });
+    var inMsg = h('textarea', { id: 'bu-msg', rows: 2, maxlength: 160, placeholder: 'Es. Buon compleanno!' }); inMsg.value = v.messaggio || '';
+    var selScad = h('select', { id: 'bu-scad' }, [['12', 'Tra 12 mesi'], ['6', 'Tra 6 mesi'], ['3', 'Tra 3 mesi'], ['0', 'Senza scadenza'], ['data', 'Scelgo io la data']].map(function (o) { return h('option', { value: o[0], text: o[1] }); }));
+    selScad.value = edit ? (v.scadenza ? 'data' : '0') : '12';
+    var inData = h('input', { id: 'bu-data', type: 'date', value: v.scadenza || '' });
+    var rowData = h('label', { class: 'f' }, h('span', { class: 'l', text: 'Data di scadenza' }), inData);
+    var syncScad = function () { rowData.hidden = selScad.value !== 'data'; };
+    selScad.addEventListener('change', syncScad); syncScad();
+    var inTel = h('input', { id: 'bu-tel', value: v.telefono || '', inputmode: 'numeric', placeholder: 'Es. 3491234567' });
+    var inNote = h('textarea', { id: 'bu-note', rows: 2, maxlength: 200, placeholder: 'Es. pagato in contanti il 3 dicembre' }); inNote.value = v.note || '';
+    var rowT = h('label', { class: 'f' }, h('span', { class: 'l', text: 'Trattamento' }), inT, dl);
+    var rowI = h('label', { class: 'f' }, h('span', { class: 'l', text: 'Importo in euro' }), inImp);
+    var syncTipo = function () { rowT.hidden = selTipo.value !== 'trattamento'; rowI.hidden = selTipo.value !== 'importo'; };
+    selTipo.addEventListener('change', syncTipo); syncTipo();
+    var btn = h('button', { type: 'submit', class: 'btn', id: 'bu-salva', text: edit ? 'Salva le modifiche' : 'Crea il buono' });
+    var form = h('form', { class: 'fields bu-body', onsubmit: function (e) {
+      e.preventDefault();
+      var scad = selScad.value === 'data' ? inData.value : selScad.value === '0' ? '' : mesi(+selScad.value);
+      var dati = { a: inA.value, da: inDa.value, tipo: selTipo.value, trattamento: inT.value, importo: inImp.value, messaggio: inMsg.value, scadenza: scad, telefono: inTel.value, note: inNote.value };
+      btn.disabled = true;
+      api(edit ? 'buono_modifica' : 'buono_crea', edit ? { codice: b.codice, dati: dati } : { dati: dati })
+        .then(function (r) { BU.lista = r.buoni; toast(edit ? 'Buono aggiornato.' : 'Buono creato: ora puoi mandarlo su WhatsApp.'); if (S.current === 'buoni') drawBuoni(); openBuono(r.buono.codice); })
+        .catch(function (er) { toast(er.message, true); btn.disabled = false; });
+    } },
+      usato ? h('p', { class: 'warn', text: 'Questo buono è già stato usato: puoi cambiare solo scadenza, messaggio, telefono e note.' }) : null,
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Per chi è (nome e cognome)' }), inA),
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Chi lo regala' }), inDa),
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Cosa vale' }), selTipo),
+      rowT, rowI,
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Messaggio scritto sul buono' }), inMsg),
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Scadenza' }), selScad),
+      rowData,
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Telefono di chi lo riceve (facoltativo, per mandarglielo su WhatsApp)' }), inTel),
+      h('label', { class: 'f' }, h('span', { class: 'l', text: 'Note solo per te' }), inNote),
+      h('div', null, btn));
+    put(d.firstElementChild, [dlgHeader(edit ? 'Modifica il buono' : 'Nuovo buono regalo', function () { d.close(); }), form]);
+    if (!d.open) d.showModal();
+    inA.focus();
+  }
+
+  function openScanner() {
+    var d = $('#scanDlg'), stream = null, raf = 0, attivo = true;
+    var video = h('video', { playsinline: true, autoplay: true }); video.muted = true;
+    var stato = h('p', { id: 'scan-stato', text: 'Inquadra il QR del buono.' });
+    var inCod = h('input', { id: 'scan-cod', placeholder: 'oppure scrivi il codice KN-XXXX-XXXX', autocomplete: 'off' });
+    var stop = function () { attivo = false; cancelAnimationFrame(raf); if (stream) stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; };
+    var close = function () { stop(); d.close(); };
+    var trovato = function (testo) {
+      var t = String(testo || '').toUpperCase(), m = t.match(/[?&]C=KN-?([A-HJ-NP-Z2-9]{4})-?([A-HJ-NP-Z2-9]{4})/); // il link del QR…
+      if (!m) m = t.replace(/[^A-Z0-9]/g, '').match(/^(?:KN)?([A-HJ-NP-Z2-9]{4})([A-HJ-NP-Z2-9]{4})$/); // …oppure il codice scritto a mano, anche senza trattini o spazi
+      if (!m) { stato.textContent = 'Questo codice non è un buono dello studio.'; return false; }
+      var cod = 'KN-' + m[1] + '-' + m[2];
+      if (!buonoDi(cod)) { stato.textContent = 'Il buono ' + cod + ' non è in archivio.'; return false; }
+      close(); openBuono(cod);
+      return true;
+    };
+    inCod.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); trovato(inCod.value); } });
+    put(d.firstElementChild, [dlgHeader('Leggi il QR di un buono', close), h('div', { class: 'scan' },
+      h('div', { class: 'mira' }, video), stato,
+      h('div', { class: 'manuale' }, inCod, h('button', { type: 'button', class: 'btn small', id: 'scan-cerca', text: 'Cerca', onclick: function () { trovato(inCod.value); } })))]);
+    d.oncancel = stop;
+    if (!d.open) d.showModal();
+    if (!BU.lista) api('buoni', {}).then(function (r) { BU.lista = r.buoni; }).catch(function () {});
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { stato.textContent = 'La fotocamera non è disponibile qui (serve il sito in HTTPS). Scrivi il codice qui sotto.'; return; }
+    var canvas = document.createElement('canvas'), ctx = canvas.getContext('2d', { willReadFrequently: true });
+    var detector = ('BarcodeDetector' in window) ? new BarcodeDetector({ formats: ['qr_code'] }) : null;
+    var pronto = detector ? Promise.resolve() : loadScript('../assets/js/vendor/jsqr.js');
+    navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 1280 } }, audio: false })
+      .then(function (s) { if (!attivo) { s.getTracks().forEach(function (t) { t.stop(); }); return; } stream = s; video.srcObject = s; return video.play().catch(function () {}); })
+      .then(function () { return pronto; })
+      .then(function () {
+        var occupato = false;
+        var loop = function () {
+          if (!attivo) return;
+          raf = requestAnimationFrame(loop);
+          if (occupato || video.readyState < 2) return;
+          if (detector) {
+            occupato = true;
+            detector.detect(video).then(function (codes) { occupato = false; if (codes.length && trovato(codes[0].rawValue)) stop(); }).catch(function () { occupato = false; });
+          } else {
+            var w = video.videoWidth, hh = video.videoHeight;
+            if (!w) return;
+            var sc = Math.min(1, 640 / w); canvas.width = Math.round(w * sc); canvas.height = Math.round(hh * sc);
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            var img = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            var r = jsQR(img.data, img.width, img.height, { inversionAttempts: 'dontInvert' });
+            if (r && r.data && trovato(r.data)) stop();
+          }
+        };
+        loop();
+      })
+      .catch(function (er) { stato.textContent = 'Non riesco ad aprire la fotocamera (' + (er && er.name === 'NotAllowedError' ? 'permesso negato' : (er && er.message) || er) + '). Scrivi il codice qui sotto.'; });
   }
 
   /* ---------- una sezione del sito ---------- */

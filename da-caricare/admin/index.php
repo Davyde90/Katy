@@ -6,12 +6,13 @@ declare(strict_types=1);
 require_once __DIR__ . '/../inc/lib.php';
 require_once __DIR__ . '/../inc/auth.php';
 require_once __DIR__ . '/../inc/sanitize.php';
+require_once __DIR__ . '/../inc/buoni.php';
 
-kn_security_headers();
+kn_security_headers(true); // fotocamera: per leggere i QR dei buoni
 header('X-Frame-Options: DENY');
 header('X-Robots-Tag: noindex, nofollow');
 header('Cache-Control: no-store');
-header("Content-Security-Policy: default-src 'self'; img-src 'self' blob: data:; style-src 'self'; script-src 'self'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
+header("Content-Security-Policy: default-src 'self'; img-src 'self' blob: data:; media-src 'self' blob: mediastream:; style-src 'self'; script-src 'self'; frame-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'");
 
 kn_session_start();
 $cfg = kn_config();
@@ -144,6 +145,8 @@ $csrf = $modo === 'pannello' ? kn_csrf() : '';
   <button class="btn small" type="button" id="salva2">Salva</button>
 </div>
 <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<dialog class="picker bu-dlg" id="buonoDlg"><div class="picker-in" id="buonoDlgIn"></div></dialog>
+<dialog class="picker bu-dlg" id="scanDlg"><div class="picker-in" id="scanDlgIn"></div></dialog>
 <dialog class="picker" id="picker"><div class="picker-in"><header><b>Scegli una foto dalla galleria</b><button type="button" class="ib" data-close aria-label="Chiudi"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button></header><div class="picker-grid" id="pickerGrid"></div></div></dialog>
 <script type="application/json" id="boot"><?= json_encode([
     'csrf' => $csrf,
@@ -152,6 +155,7 @@ $csrf = $modo === 'pannello' ? kn_csrf() : '';
     'backups' => kn_backups(),
     'https' => kn_is_https(),
     'stagione' => kn_stagione_info($c),
+    'buoni_da_usare' => count(array_filter(kn_buoni(), fn($b) => in_array(kn_buono_stato($b), ['valido', 'parziale'], true))),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 <script src="../<?= kn_asset('assets/js/admin.js') ?>"></script>
 <?php endif ?>

@@ -41,6 +41,7 @@ Cosa c'è:
 - servizi a lista con la foto grande che segue il mouse, listino su fondo lampone con le note di Katy, galleria con foto ingrandibili, domande frequenti, buono regalo, recensioni (compare solo se ce ne sono)
 - **Prima e dopo** pronto nel pannello: compare sul sito quando Katy carica coppie di foto vere
 - avvisi in cima al sito e chiusure per ferie che si annunciano da sole; orari riassunti nel piè di pagina
+- buoni regalo digitali con QR: creati dal pannello, inviati su WhatsApp, letti e scalati in studio (anche in parte), con archivio e backup
 - dati per Google (scheda NailSalon con coordinate, zona servita e listino), anteprima per WhatsApp e Facebook, `sitemap.xml` con le foto e `robots.txt` generati da soli, verifica di Search Console dal pannello, pagina 404, privacy, nessun cookie
 
 Schermate: [`screenshots/sito/`](screenshots/sito/) (telefono e computer) e [`screenshots/pannello/`](screenshots/pannello/).

@@ -7,6 +7,7 @@ require_once __DIR__ . '/../inc/lib.php';
 require_once __DIR__ . '/../inc/auth.php';
 require_once __DIR__ . '/../inc/sanitize.php';
 require_once __DIR__ . '/../inc/images.php';
+require_once __DIR__ . '/../inc/buoni.php';
 
 kn_security_headers();
 header('Content-Type: application/json; charset=utf-8');
@@ -22,6 +23,9 @@ function kn_out(array $data, int $code = 200): never
 kn_session_start();
 if (!kn_logged_in()) {
     kn_out(['errore' => 'Sei uscita dal pannello: ricarica la pagina e accedi di nuovo.'], 401);
+}
+if (($_GET['azione'] ?? '') === 'io') { // "sono Katy?": lo chiede la pagina pubblica del buono per mostrare i pulsanti solo a lei
+    kn_out(['ok' => true, 'csrf' => kn_csrf()]);
 }
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     kn_out(['errore' => 'Richiesta non valida.'], 405);
@@ -90,6 +94,63 @@ try {
 
         case 'pulisci':
             kn_out(['ok' => true, 'eliminate' => kn_cleanup_uploads(kn_content(true))]);
+
+        /* ---------- buoni regalo ---------- */
+        case 'buoni':
+            kn_out(['ok' => true, 'buoni' => array_map('kn_buono_admin', kn_buoni(true))]);
+
+        case 'buono_crea':
+            $lista = kn_buoni(true);
+            $b = kn_buono_pulisci((array) ($body['dati'] ?? [])) + ['codice' => kn_buono_codice($lista), 'creato' => date('c'), 'usi' => [], 'annullato' => false];
+            array_unshift($lista, $b);
+            kn_buoni_save($lista);
+            kn_out(['ok' => true, 'buono' => kn_buono_admin($b), 'buoni' => array_map('kn_buono_admin', kn_buoni()), 'wa' => kn_buono_testo_wa($b, kn_content())]);
+
+        case 'buono_modifica':
+        case 'buono_usa':
+        case 'buono_riapri':
+        case 'buono_annulla':
+        case 'buono_riattiva':
+        case 'buono_elimina':
+            $lista = kn_buoni(true);
+            $cod = kn_buono_normalizza((string) ($body['codice'] ?? ''));
+            $i = array_search($cod, array_column($lista, 'codice'), true);
+            if ($cod === '' || $i === false) {
+                kn_out(['errore' => 'Buono non trovato.'], 404);
+            }
+            $b = $lista[$i];
+            switch ($_GET['azione']) {
+                case 'buono_modifica':
+                    if (!empty($b['usi'])) {
+                        $nuovo = kn_buono_pulisci((array) ($body['dati'] ?? []) + $b);
+                        $b = ['scadenza' => $nuovo['scadenza'], 'note' => $nuovo['note'], 'telefono' => $nuovo['telefono'], 'messaggio' => $nuovo['messaggio']] + $b; // già usato: si cambiano solo scadenza, note, telefono e messaggio
+                    } else {
+                        $b = kn_buono_pulisci((array) ($body['dati'] ?? [])) + $b;
+                    }
+                    break;
+                case 'buono_usa':
+                    $b = kn_buono_usa($b, isset($body['importo']) && $body['importo'] !== '' ? (float) str_replace(',', '.', (string) $body['importo']) : null, (string) ($body['nota'] ?? ''));
+                    break;
+                case 'buono_riapri': // toglie l'ultimo utilizzo (per un errore)
+                    if (empty($b['usi'])) {
+                        kn_out(['errore' => 'Questo buono non è stato ancora usato.'], 400);
+                    }
+                    array_pop($b['usi']);
+                    break;
+                case 'buono_annulla':
+                    $b['annullato'] = true;
+                    break;
+                case 'buono_riattiva':
+                    $b['annullato'] = false;
+                    break;
+                case 'buono_elimina':
+                    array_splice($lista, $i, 1);
+                    kn_buoni_save($lista);
+                    kn_out(['ok' => true, 'buoni' => array_map('kn_buono_admin', kn_buoni())]);
+            }
+            $lista[$i] = $b;
+            kn_buoni_save($lista);
+            kn_out(['ok' => true, 'buono' => kn_buono_admin($b), 'buoni' => array_map('kn_buono_admin', kn_buoni()), 'wa' => kn_buono_testo_wa($b, kn_content())]);
     }
     kn_out(['errore' => 'Operazione sconosciuta.'], 404);
 } catch (Throwable $ex) {

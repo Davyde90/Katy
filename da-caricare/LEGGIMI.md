@@ -83,6 +83,18 @@ Gli ultimi due numeri sono l'intervallo di tinta dello smalto nella foto (0–36
 
 Carica i file nuovi **tranne** `data/` e `uploads/`: lì dentro ci sono i contenuti e le foto di Katy. Per un backup completo del sito bastano proprio queste due cartelle.
 
+## Buoni regalo digitali
+
+Dal pannello, sezione **Buoni regalo** (sotto "Lo studio"), Katy crea un buono: per chi è (nome e cognome), chi lo regala, cosa vale (un trattamento oppure un importo in euro), un messaggio, la scadenza (tra 3, 6 o 12 mesi, una data a scelta o senza scadenza), il telefono di chi lo riceve e una nota privata. Ogni buono ha un codice unico tipo `KN-7F3K-9Q2M`, una pagina pubblica (`buono.php?c=KN-7F3K-9Q2M`) con il QR, e il pulsante **Invia su WhatsApp** manda il link con un messaggio già scritto.
+
+**In studio.** La cliente mostra il QR dal telefono o stampato. Katy lo legge con **Leggi un QR** nel pannello (usa la fotocamera: serve il sito in HTTPS) oppure inquadrandolo con la fotocamera del telefono: si apre la pagina del buono e, se su quel telefono il pannello è aperto, compaiono i pulsanti per segnarlo. Si può anche scrivere il codice a mano. I buoni a importo si **scalano** anche in più volte: il buono tiene il residuo e la lista degli utilizzi. Un utilizzo segnato per sbaglio si toglie con "Annulla l'ultimo utilizzo". Un buono si può annullare (resta in archivio) o eliminare.
+
+**Chi può segnarlo come usato.** Solo Katy: il server accetta l'operazione soltanto con la sua sessione (password) e il token anti-CSRF. Chi ha il link vede il buono e basta. Il codice ha più di mille miliardi di combinazioni e le pagine dei buoni non vanno su Google (`robots.txt` e `noindex`).
+
+**Dove stanno i dati.** In `data/buoni.json`, con le ultime 20 copie in `data/backup/buoni-*.json`. Ci sono nomi di persone: è un trattamento di dati personali, minimo (nome, eventuale telefono) e giustificato dal servizio; conviene eliminare i buoni usati dopo qualche mese.
+
+Librerie: [qrcode-generator](https://github.com/kazuhikoarase/qrcode-generator) (MIT) per disegnare i QR e [jsQR](https://github.com/cozmo/jsQR) (Apache 2.0) per leggerli nei browser senza lettore integrato; stanno in `assets/js/vendor/`.
+
 ## Feste e stagioni
 
 Dal pannello (sezione "Feste e stagioni") il sito si veste a festa: Natale, San Valentino, Pasqua, Estate e Halloween. Ogni tema cambia i colori di tutto il sito, mette una decorazione animata leggera in apertura (neve, cuori, petali, scintille di sole, pipistrelli), una striscia con gli auguri in cima e aggiunge cinque colori di stagione, con la stellina, in "Prova il colore". Katy sceglie se i temi si accendono **da soli** nel loro periodo (Natale dal 1 dicembre al 6 gennaio, San Valentino dal 1 al 14 febbraio, Pasqua dalle tre settimane prima fino a Pasquetta, Estate dal 15 giugno al 31 agosto, Halloween dal 20 al 31 ottobre), **a mano**, o **mai**. Decorazioni, auguri e colori si spengono uno per uno.

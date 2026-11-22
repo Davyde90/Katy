@@ -11,5 +11,6 @@ echo "User-agent: *\n";
 echo "Disallow: /admin/\n";
 echo "Disallow: /inc/\n";
 echo "Disallow: /data/\n";
+echo "Disallow: /buono.php\n";
 echo "\n";
 echo 'Sitemap: ' . kn_base_url() . "/sitemap.xml\n";
