@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut android:shortcutId="qr" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/scorciatoia_qr">
-        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katisnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katisnails.it/admin/?scan=1" />
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katysnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katysnails.it/admin/?scan=1" />
     </shortcut>
     <shortcut android:shortcutId="buoni" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/scorciatoia_buoni">
-        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katisnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katisnails.it/admin/#buoni" />
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katysnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katysnails.it/admin/#buoni" />
     </shortcut>
     <shortcut android:shortcutId="foto" android:enabled="true" android:icon="@mipmap/ic_launcher" android:shortcutShortLabel="@string/scorciatoia_foto">
-        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katisnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katisnails.it/admin/#galleria" />
+        <intent android:action="android.intent.action.VIEW" android:targetPackage="it.katysnails.pannello" android:targetClass="com.google.androidbrowserhelper.trusted.LauncherActivity" android:data="https://katysnails.it/admin/#galleria" />
     </shortcut>
 </shortcuts>

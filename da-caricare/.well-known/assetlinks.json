@@ -2,7 +2,7 @@
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "it.katisnails.pannello",
+    "package_name": "it.katysnails.pannello",
     "sha256_cert_fingerprints": ["06:13:3A:1A:08:E3:01:57:51:8A:7F:BE:AF:49:FE:83:CC:0D:B3:38:6D:C4:10:F4:DC:5D:0A:72:BC:3D:74:CB"]
   }
 }]

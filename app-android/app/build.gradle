@@ -3,20 +3,20 @@ plugins {
 }
 
 // La chiave di firma NON sta nel repository: si passa con due variabili d'ambiente.
-//   KN_KEYSTORE=/percorso/katisnails-pannello.keystore  KN_KEYSTORE_PASSWORD=...  gradle assembleRelease
+//   KN_KEYSTORE=/percorso/katysnails-pannello.keystore  KN_KEYSTORE_PASSWORD=...  gradle assembleRelease
 def ks = System.getenv('KN_KEYSTORE')
 def kp = System.getenv('KN_KEYSTORE_PASSWORD')
 
 android {
-    namespace 'it.katisnails.pannello'
+    namespace 'it.katysnails.pannello'
     compileSdk 35
 
     defaultConfig {
-        applicationId 'it.katisnails.pannello'
+        applicationId 'it.katysnails.pannello'
         minSdk 24
         targetSdk 35
-        versionCode 1
-        versionName '1.0'
+        versionCode 2
+        versionName '1.0.1'
     }
 
     signingConfigs {
