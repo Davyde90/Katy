@@ -102,12 +102,25 @@ em.script,.script{font-family:var(--serif);font-style:italic;font-weight:400;let
 .mmenu nav a:hover .mi,.mmenu nav a:focus-visible .mi{background:var(--fragola);color:#fff}
 .mmenu nav a:hover,.mmenu nav a:focus-visible{background:var(--crema-2)}
 @media (min-width:1100px){
-  .nav .wrap{height:80px}
+  .nav .wrap{height:88px}
+  .brand{font-size:24px;gap:14px}
+  .brand img{width:52px;height:52px}
   .desk{display:flex!important}
-  .nav nav.desk{gap:30px}
-  .nav nav.desk a{text-decoration:none;font-size:14px;font-weight:500;letter-spacing:.04em;padding:6px 0;border-bottom:1px solid transparent;transition:border-color .2s}
+  .nav nav.desk{gap:34px}
+  .nav nav.desk a{text-decoration:none;font-size:16px;font-weight:500;letter-spacing:.03em;padding:6px 0;border-bottom:1px solid transparent;transition:border-color .2s}
   .nav nav.desk a:hover{border-bottom-color:var(--ink)}
+  .nav .btn.small{min-height:48px;padding:12px 24px;font-size:16px}
   .mmenu{display:none}
+  html{scroll-padding-top:96px}
+}
+@media (min-width:1500px){ /* schermi grandi: testata in proporzione */
+  .nav .wrap{height:100px}
+  .brand{font-size:28px;gap:16px}
+  .brand img{width:60px;height:60px}
+  .nav nav.desk{gap:42px}
+  .nav nav.desk a{font-size:18px}
+  .nav .btn.small{min-height:52px;padding:13px 28px;font-size:17px}
+  html{scroll-padding-top:110px}
 }
 
 /* ---------- apertura ---------- */

@@ -1,7 +1,7 @@
 <?php
 // Generato da tools/versione.php: non modificare a mano.
 return array (
-  'data' => '2026-11-22 23:51',
+  'data' => '2026-11-22 23:59',
   'file' => 
   array (
     '.htaccess' => '53476d72c84b02b40231b82fc56455d32bd50488d32a735e7cc4367b89d41113',
@@ -14,7 +14,7 @@ return array (
     'admin/sw.js' => 'ca1fa3ff29a058b52ce0692989949ce706b0453fb1b6ab3a4934d3e8211bb49f',
     'assetlinks.php' => 'e006bc527c36b96df6d3f814e64022edbc8ddde925ea494a63249d4e78235d72',
     'assets/css/admin.css' => 'a1281c5da69f47f8f5ca4f27d6d0675398db86f34f345e699df8b61fe7963db6',
-    'assets/css/site.css' => 'bcbc35cc9813b44be074c8aef50bfe853204e961204f759e7f27ed69cc942893',
+    'assets/css/site.css' => 'aa611c9deda17f9082a3bc4c95863ef7d45f7e3e80bd136c7d2ae3ace04d2ea1',
     'assets/fonts/fraunces-latin-ext-italic-300-700.woff2' => '4983926d3a16544eedcd2233448bd8a43f711e7bf1fabaae8431e78e0b798635',
     'assets/fonts/fraunces-latin-ext-normal-300-700.woff2' => 'a2930b27d13a228bd9ab6a49269b5f800237892ad560cb9dd7fab01b1620f88e',
     'assets/fonts/fraunces-latin-italic-300-700.woff2' => '066710ce7ed235a339d3d6cdcc8b55c0bea5632232662d83aacea25852108271',
