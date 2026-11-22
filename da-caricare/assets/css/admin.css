@@ -165,7 +165,7 @@ body.gate{min-height:100vh;display:grid;place-items:center;padding:20px;backgrou
 .f textarea{resize:vertical;min-height:84px;line-height:1.45}
 .f input:focus,.f select:focus,.f textarea:focus{border-color:var(--fragola);outline:none;box-shadow:0 0 0 3px rgba(232,49,138,.14)}
 .inline{display:flex;gap:8px;align-items:center}
-.inline input{flex:1}
+.inline input{flex:1;min-width:0}
 
 /* interruttore */
 .switch{display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:500;user-select:none;padding:4px 0}
@@ -225,11 +225,13 @@ body.gate{min-height:100vh;display:grid;place-items:center;padding:20px;backgrou
 
 /* orari */
 .days{display:grid;gap:8px}
-.day{display:grid;grid-template-columns:1fr auto;gap:8px 12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px 12px}
+.day{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;border:1px solid var(--line);border-radius:14px;padding:10px 12px;min-width:0}
 .day b{font-weight:500}
-.day .fasce{grid-column:1/-1;display:grid;gap:8px}
-.day .fascia{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
-.day .fascia input{border:1px solid var(--line-2);border-radius:10px;padding:7px 8px;min-height:42px;background:#fff;flex:1;min-width:0;color:var(--ink)}
+.day .fasce{grid-column:1/-1;display:grid;gap:8px;min-width:0}
+.day .fascia{display:grid;grid-template-columns:auto minmax(0,1fr) auto minmax(0,1fr);align-items:center;gap:8px;font-size:14px;color:var(--muted);min-width:0}
+.day .fascia input{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--line-2);border-radius:10px;padding:7px 6px;min-height:42px;background:#fff;color:var(--ink);font-size:16px;text-align:center}
+@media (max-width:440px){.day .fascia input::-webkit-calendar-picker-indicator{display:none}} /* sul telefono si tocca tutto il campo: l'icona dell'orologio ruba solo spazio */
+.main input,.main select,.main textarea{min-width:0;max-width:100%;box-sizing:border-box} /* nessun campo può uscire dallo schermo */
 .day.chiuso .fasce{display:none}
 .day .switch{padding:0;font-weight:400;font-size:14px}
 .day .pausa{grid-column:1/-1}
