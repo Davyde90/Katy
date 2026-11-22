@@ -8,6 +8,23 @@ const KN_WA_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><pat
 const KN_TEL_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>';
 const KN_PIN_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" class="ico"><path fill="currentColor" d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 010-5 2.5 2.5 0 010 5z"/></svg>';
 
+/** Icone del menu da telefono, disegnate a mano per lo studio: smalto, scintille, cartellino, foto, persona, calendario con il cuore. */
+const KN_MENU_ICONE = [
+    'prova' => '<rect x="9.5" y="2.5" width="5" height="5.5" rx="1.2"/><path d="M10 8v1.6M14 8v1.6"/><rect x="7.5" y="9.6" width="9" height="11.4" rx="2.6"/><path d="M7.8 14.5h8.4"/>',
+    'servizi' => '<path d="M12 3.5l1.9 4.9 4.9 1.9-4.9 1.9L12 17.1l-1.9-4.9-4.9-1.9 4.9-1.9z"/><path d="M19 15.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/><path d="M5 17l.6 1.4 1.4.6-1.4.6L5 21l-.6-1.4L3 19l1.4-.6z"/>',
+    'listino' => '<path d="M20.4 13.6L13.2 20.8a1.6 1.6 0 0 1-2.3 0L3.5 13.4V4.6a1.1 1.1 0 0 1 1.1-1.1h8.8l7 7a1.6 1.6 0 0 1 0 2.3z"/><circle cx="8.2" cy="8.2" r="1.5"/>',
+    'lavori' => '<rect x="3.5" y="5" width="17" height="14" rx="2.6"/><circle cx="9" cy="10" r="1.7"/><path d="M20.3 16.2l-4.3-4.3-6.2 6.6"/>',
+    'katy' => '<circle cx="12" cy="8.2" r="3.7"/><path d="M4.8 20.5c.7-4 3.8-6.2 7.2-6.2s6.5 2.2 7.2 6.2"/>',
+    'prenota' => '<rect x="3.5" y="5" width="17" height="15.5" rx="2.6"/><path d="M3.5 10h17M8 3v4M16 3v4"/><path d="M12 17.6l-2.4-2.3a1.45 1.45 0 0 1 2.1-2l.3.3.3-.3a1.45 1.45 0 0 1 2.1 2z" fill="currentColor" stroke="none"/>',
+    'instagram' => '<rect x="3.5" y="3.5" width="17" height="17" rx="4.6"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"/>',
+];
+
+function kn_menu_icona(string $id): string
+{
+    $d = KN_MENU_ICONE[$id] ?? '<circle cx="12" cy="12" r="3"/>';
+    return '<span class="mi" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">' . $d . '</svg></span>';
+}
+
 function kn_sezioni_menu(array $c): array
 {
     $sezioni = ['prova' => 'Prova il colore', 'servizi' => 'Servizi', 'listino' => 'Listino', 'lavori' => 'Lavori', 'katy' => 'Chi sono', 'prenota' => 'Prenota'];
@@ -82,8 +99,8 @@ function kn_page_start(array $c, array $opt): void
     <details class="mmenu" id="mmenu">
       <summary aria-label="Apri il menu"><i></i><i></i></summary>
       <nav aria-label="Menu">
-        <?php $k = 0; foreach ($sezioni as $id => $nome): $k++; ?><a href="./#<?= $id ?>"><small><?= sprintf('%02d', $k) ?></small><?= e($nome) ?></a><?php endforeach ?>
-        <?php if (kn_instagram_url($c)): ?><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><small>↗</small>Instagram</a><?php endif ?>
+        <?php foreach ($sezioni as $id => $nome): ?><a href="./#<?= $id ?>"><?= kn_menu_icona($id) ?><?= e($nome) ?></a><?php endforeach ?>
+        <?php if (kn_instagram_url($c)): ?><a href="<?= e(kn_instagram_url($c)) ?>" target="_blank" rel="noopener"><?= kn_menu_icona('instagram') ?>Instagram</a><?php endif ?>
       </nav>
     </details>
   </div>
