@@ -1,7 +1,7 @@
 <?php
 // Generato da tools/versione.php: non modificare a mano.
 return array (
-  'data' => '2026-11-22 23:38',
+  'data' => '2026-11-22 23:47',
   'file' => 
   array (
     '.htaccess' => '53476d72c84b02b40231b82fc56455d32bd50488d32a735e7cc4367b89d41113',
@@ -50,7 +50,7 @@ return array (
     'inc/config.example.php' => 'e07b2341215ae70d4bf8ec4051101fd4807a07ac6f67ce92d40cada3623170f3',
     'inc/defaults.php' => '4d340af066049fb3ddf4c8b6e77aeaba7fdbb194c05b2a1d4afcb6702abc01cc',
     'inc/images.php' => '009bc1f1119c169bfc485dffddb27c59589308a43da9eb316ed4aef0b7ca9f84',
-    'inc/layout.php' => '3cf4d466803b2a592891a705a0d35c57b744f4e8b991b5f40525b471137bb1fc',
+    'inc/layout.php' => 'c95972bd8aea134519219e862cf88fa6ecbe7b42fe99601a2f2ec9ed73cf211f',
     'inc/lib.php' => '883354519cf12332d7e97bb09e5b1ba7c40d06994fc5cd2f1ca9e0a49c2e24da',
     'inc/sanitize.php' => '9ff8475884285cece6e2db3cc9c3a7316dfc904b567b340633d99693356cc972',
     'inc/schema.php' => 'fd0be7c24a32ffd90b5fa9285b983ba489bf92d2d70d9c1e9b3ee6c363c81789',

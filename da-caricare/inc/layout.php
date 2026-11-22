@@ -45,6 +45,7 @@ function kn_page_start(array $c, array $opt): void
     $geo = kn_geo($c);
     $st = kn_stagione_attiva($c);
     kn_security_headers();
+    header('Cache-Control: no-cache'); // le pagine si rigenerano a ogni richiesta: niente copie vecchie nella cache dell'hosting o del telefono dopo un aggiornamento
     header('X-Frame-Options: SAMEORIGIN'); // il sito può stare in una cornice solo nel proprio pannello (anteprima dal vivo)
     header("Content-Security-Policy: frame-ancestors 'self'; object-src 'none'");
     ?>
