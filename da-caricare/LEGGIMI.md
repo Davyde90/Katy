@@ -100,6 +100,12 @@ ANDROID_HOME=/percorso/sdk KN_KEYSTORE=/percorso/katysnails-pannello.keystore KN
 
 Il file `.keystore` e la sua password **non stanno nel repository**: vanno conservati a parte, perché un aggiornamento dell'app si installa sopra il precedente solo se è firmato con la stessa chiave. A ogni nuova versione aumentare `versionCode` in `app/build.gradle`.
 
+## Statistiche delle visite
+
+Nel pannello, sezione **Statistiche**: visitatori e pagine aperte per giorno (7, 30, 90 giorni o 12 mesi), da dove arrivano (Google, Instagram, Facebook, link diretto…), telefono o computer, quali pagine, cosa toccano (WhatsApp, Chiama, prenotazioni inviate, prova colore, buoni) e a che ora del giorno. I conteggi li fa il sito stesso: `assets/js/site.js` manda un segnale a `stat.php`, che aggiorna `data/stats.json` (un record per giorno, tenuto 400 giorni).
+
+**Perché non serve il banner dei cookie.** Non viene usato nessun cookie e nessun servizio esterno. Per stimare i visitatori diversi di una giornata il server calcola un'impronta (hash di indirizzo IP, browser e un codice segreto che cambia ogni giorno, in `data/stats-salt.txt`), la confronta con quelle già viste e la butta via a fine giornata; l'indirizzo IP non viene mai salvato e dall'impronta non si risale a nessuno. Chi ha "Do Not Track" o "Global Privacy Control" nel browser non viene contato; i bot e le anteprime dei link nemmeno. La pagina privacy lo spiega. Se un giorno si aggiungessero Google Analytics, il pixel di Facebook, un feed Instagram incorporato o una mappa di Google dentro la pagina, allora sì, servirebbe il banner con la gestione del consenso.
+
 ## Buoni regalo digitali
 
 Dal pannello, sezione **Buoni regalo** (sotto "Lo studio"), Katy crea un buono: per chi è (nome e cognome), chi lo regala, cosa vale (un trattamento oppure un importo in euro), un messaggio, la scadenza (tra 3, 6 o 12 mesi, una data a scelta o senza scadenza), il telefono di chi lo riceve e una nota privata. Ogni buono ha un codice unico tipo `KN-7F3K-9Q2M`, una pagina pubblica (`buono.php?c=KN-7F3K-9Q2M`) con il QR, e il pulsante **Invia su WhatsApp** manda il link con un messaggio già scritto.
@@ -137,7 +143,7 @@ Onestamente: per la ricerca "unghie Oristano" la mappa di Google privilegia i sa
 - Intestazioni di sicurezza su tutte le pagine, mandate da PHP (quindi anche senza `.htaccess`): `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `frame-ancestors 'self'`; con HTTPS attivo parte anche HSTS (un anno).
 - Ogni foto caricata viene ridisegnata da zero: si perdono i dati nascosti (posizione GPS inclusa) e non può passare nessun file che non sia un'immagine. Le foto vengono ridotte a 1600 px e salvate in WebP. Già sul telefono vengono rimpicciolite, così il caricamento è veloce anche in 4G.
 - Tutto quello che arriva dal pannello viene controllato campo per campo (`inc/sanitize.php`, con le regole di `inc/schema.php`).
-- Il sito pubblico non usa cookie né statistiche: non serve il banner dei cookie.
+- Il sito pubblico non usa cookie; le statistiche sono interne e anonime (vedi sotto): non serve il banner dei cookie.
 
 ## Sviluppo in locale
 

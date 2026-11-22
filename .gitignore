@@ -4,6 +4,8 @@ da-caricare/data/auth.php
 da-caricare/data/sessions/
 da-caricare/data/tentativi.json
 da-caricare/data/buoni.json
+da-caricare/data/stats.json
+da-caricare/data/stats-salt.txt
 da-caricare/data/backup/*.json
 da-caricare/data/.lock
 da-caricare/data/*.tmp

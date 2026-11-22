@@ -7,6 +7,7 @@ require_once __DIR__ . '/../inc/lib.php';
 require_once __DIR__ . '/../inc/auth.php';
 require_once __DIR__ . '/../inc/sanitize.php';
 require_once __DIR__ . '/../inc/buoni.php';
+require_once __DIR__ . '/../inc/stats.php';
 
 kn_security_headers(true); // fotocamera: per leggere i QR dei buoni
 header('X-Frame-Options: DENY');
@@ -159,6 +160,7 @@ $csrf = $modo === 'pannello' ? kn_csrf() : '';
     'backups' => kn_backups(),
     'https' => kn_is_https(),
     'stagione' => kn_stagione_info($c),
+    'visite' => kn_stat_riassunto(),
     'buoni_da_usare' => count(array_filter(kn_buoni(), fn($b) => in_array(kn_buono_stato($b), ['valido', 'parziale'], true))),
 ], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG | JSON_HEX_AMP) ?></script>
 <script src="../<?= kn_asset('assets/js/admin.js') ?>"></script>

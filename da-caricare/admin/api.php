@@ -8,6 +8,7 @@ require_once __DIR__ . '/../inc/auth.php';
 require_once __DIR__ . '/../inc/sanitize.php';
 require_once __DIR__ . '/../inc/images.php';
 require_once __DIR__ . '/../inc/buoni.php';
+require_once __DIR__ . '/../inc/stats.php';
 
 kn_security_headers();
 header('Content-Type: application/json; charset=utf-8');
@@ -94,6 +95,9 @@ try {
 
         case 'pulisci':
             kn_out(['ok' => true, 'eliminate' => kn_cleanup_uploads(kn_content(true))]);
+
+        case 'statistiche':
+            kn_out(['ok' => true] + kn_stats_per_pannello());
 
         /* ---------- buoni regalo ---------- */
         case 'buoni':

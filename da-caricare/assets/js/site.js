@@ -391,4 +391,26 @@
       x0 = null;
     });
   }
+
+  /* ---------- statistiche anonime: niente cookie, nessun servizio esterno (vedi inc/stats.php) ---------- */
+  if (!document.documentElement.classList.contains('anteprima') && navigator.doNotTrack !== '1' && !navigator.globalPrivacyControl && location.protocol !== 'file:') {
+    var conta = function (d) {
+      var body = JSON.stringify(d);
+      try {
+        if (navigator.sendBeacon) navigator.sendBeacon('stat.php', new Blob([body], { type: 'application/json' }));
+        else fetch('stat.php', { method: 'POST', body: body, keepalive: true, headers: { 'Content-Type': 'application/json' } }).catch(function () {});
+      } catch (e) {}
+    };
+    conta({ t: 'visita', p: location.pathname, r: document.referrer });
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a,button');
+      if (!a) return;
+      var ev = a.id === 'prova-wa' ? 'prova_prenota' : a.matches('.btn.wa,.wa-float,.ab-wa,[href^="https://wa.me"]') ? 'whatsapp' : a.matches('[href^="tel:"]') ? 'chiama' : null;
+      if (ev) conta({ t: 'evento', e: ev });
+    });
+    var pal0 = document.getElementById('palette'), provato = false;
+    if (pal0) pal0.addEventListener('click', function () { if (!provato) { provato = true; conta({ t: 'evento', e: 'prova_colore' }); } });
+    var book0 = document.getElementById('booker');
+    if (book0) book0.addEventListener('submit', function () { conta({ t: 'evento', e: 'prenota' }); });
+  }
 })();

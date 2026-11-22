@@ -21,8 +21,9 @@ kn_page_start($c, ['title' => 'Privacy e cookie · ' . $s['nome'], 'desc' => 'In
   <p>Il sito non ha moduli che inviano dati al nostro server e non crea account per le clienti. Quando prenoti, il pulsante apre WhatsApp con un messaggio già scritto: sei tu a decidere se inviarlo. Da quel momento i dati che scrivi (nome, numero di telefono, richiesta) li riceviamo su WhatsApp e li usiamo solo per gestire l'appuntamento.</p>
   <p>Come tutti i siti, il server registra in automatico alcuni dati tecnici (indirizzo IP, browser, pagine visitate) per motivi di sicurezza. Questi dati vengono cancellati dal fornitore dell'hosting secondo i suoi tempi.</p>
 
-  <h2>Cookie</h2>
-  <p>Il sito pubblico non usa cookie di profilazione né strumenti di statistica, quindi non serve il banner dei cookie. L'unico cookie tecnico viene usato nell'area riservata, solo da chi gestisce il sito, per restare collegati.</p>
+  <h2>Cookie e statistiche</h2>
+  <p>Il sito pubblico non usa cookie di profilazione e nessun servizio di statistica esterno, quindi non serve il banner dei cookie. L'unico cookie tecnico viene usato nell'area riservata, solo da chi gestisce il sito, per restare collegati.</p>
+  <p>Per sapere quante persone lo visitano, il sito conta le visite da solo, sul proprio server e in forma anonima: per ogni pagina aperta registra giorno e ora, la pagina, il sito da cui arrivi (per esempio Google o Instagram) e se usi un telefono o un computer. L'indirizzo IP non viene salvato: serve solo, insieme a un codice che cambia ogni giorno, a stimare quante persone diverse hanno visitato il sito in una giornata, e da quel calcolo non si può risalire a te. Se nel browser hai attivato "Do Not Track" o "Global Privacy Control", il sito non conta la tua visita.</p>
 
   <h2>Servizi esterni</h2>
   <p>Alcuni link aprono servizi di altre aziende, con le loro regole sulla privacy: WhatsApp e Instagram (Meta), Google Maps (Google)<?= !empty($s['facebook']) ? ', Facebook (Meta)' : '' ?>. Il sito non li carica finché non tocchi il link.</p>

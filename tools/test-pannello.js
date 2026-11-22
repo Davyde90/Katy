@@ -166,6 +166,21 @@ const iso = d => d.toISOString().slice(0, 10);
   await page.goto(BASE + '/admin/#buoni'); await page.waitForSelector('.bu');
   check((await page.$$('.bu')).length === 1 && (await page.textContent('.bu-list')).includes('Giulia Verdi'), 'nella lista "da usare" resta solo il buono di Giulia');
 
+  console.log('Statistiche');
+  const UA = 'Mozilla/5.0 (Linux; Android 14; SM-S911B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Mobile Safari/537.36';
+  for (const r of ['https://www.google.com/', 'https://l.instagram.com/?u=x', '']) await page.request.post(BASE + '/stat.php', { data: { t: 'visita', p: '/', r }, headers: { 'User-Agent': UA } });
+  await page.request.post(BASE + '/stat.php', { data: { t: 'visita', p: '/buono.php', r: '' }, headers: { 'User-Agent': UA + ' altro telefono' } });
+  await page.request.post(BASE + '/stat.php', { data: { t: 'evento', e: 'whatsapp' }, headers: { 'User-Agent': UA } });
+  const bot = await page.request.post(BASE + '/stat.php', { data: { t: 'visita', p: '/' }, headers: { 'User-Agent': 'Googlebot/2.1 (+http://www.google.com/bot.html)' } });
+  const st = await page.evaluate(async () => (await fetch('api.php?azione=statistiche', { method: 'POST', headers: { 'X-CSRF-Token': JSON.parse(document.getElementById('boot').textContent).csrf, 'Content-Type': 'application/json' }, body: '{}' })).json());
+  const og = st.giorni[st.oggi] || {};
+  check(bot.status() === 204 && og.visite === 4, 'quattro pagine aperte contate, il bot no (visite: ' + og.visite + ')');
+  check(og.visitatori === 2, 'tre visite dallo stesso telefono valgono un visitatore: 2 visitatori in tutto (' + og.visitatori + ')');
+  check(og.fonti.google === 1 && og.fonti.instagram === 1 && og.fonti.diretto === 2 && og.dispositivi.telefono === 4 && og.pagine.inizio === 3 && og.pagine.buono === 1 && og.eventi.whatsapp === 1, 'provenienza, dispositivo, pagina ed evento sono giusti');
+  check(!('hash' in og) && !JSON.stringify(st).includes('127.0.0.1'), 'il pannello non riceve impronte né indirizzi IP');
+  await page.goto(BASE + '/admin/#statistiche'); await page.waitForSelector('.chart svg');
+  check((await page.$$('.chart svg path.bar')).length >= 30 && (await page.textContent('.main')).includes('visitatori oggi'), 'la pagina Statistiche mostra il grafico e i numeri');
+
   console.log('Orari e ferie');
   await page.goto(BASE + '/admin/#orari');
   await page.click('button.add');

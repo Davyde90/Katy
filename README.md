@@ -43,6 +43,7 @@ Cosa c'è:
 - **Prima e dopo** pronto nel pannello: compare sul sito quando Katy carica coppie di foto vere
 - avvisi in cima al sito e chiusure per ferie che si annunciano da sole; orari riassunti nel piè di pagina
 - il pannello si installa come app (Android e iPhone dal browser; APK Android in `app-android/`), con la lettura dei QR dei buoni a portata di mano
+- statistiche delle visite nel pannello (visitatori al giorno, provenienza, dispositivi, tocchi su WhatsApp e prenotazioni, ore del giorno), anonime e senza cookie: niente banner
 - buoni regalo digitali con QR: creati dal pannello, inviati su WhatsApp, letti e scalati in studio (anche in parte), con archivio e backup
 - dati per Google (scheda NailSalon con coordinate, zona servita e listino), anteprima per WhatsApp e Facebook, `sitemap.xml` con le foto e `robots.txt` generati da soli, verifica di Search Console dal pannello, pagina 404, privacy, nessun cookie
 
@@ -72,7 +73,6 @@ Schermate: [`screenshots/sito/`](screenshots/sito/) (telefono e computer) e [`sc
 4. In futuro, se servono:
    - prenotazione online con calendario dei posti liberi
    - galleria che si aggiorna da sola da Instagram (serve un'app Meta, più complicato)
-   - statistiche delle visite senza cookie
 
 ## Le bozze
 

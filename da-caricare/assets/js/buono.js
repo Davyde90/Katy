@@ -15,6 +15,12 @@
     qrBox.textContent = 'Codice: ' + card.getAttribute('data-codice');
   }
 
+  /* conteggio anonimo (come nel sito): la pagina del buono aperta, e i tocchi su condividi e prenota */
+  var conta = function (d) { try { var body = JSON.stringify(d); if (navigator.sendBeacon) navigator.sendBeacon('stat.php', new Blob([body], { type: 'application/json' })); } catch (e) {} };
+  if (navigator.doNotTrack !== '1' && !navigator.globalPrivacyControl) {
+    conta({ t: 'visita', p: location.pathname, r: document.referrer });
+    document.addEventListener('click', function (e) { var a = e.target.closest('a,button'); if (!a) return; if (a.id === 'condividi') conta({ t: 'evento', e: 'buono_condividi' }); else if (a.matches('.btn.wa')) conta({ t: 'evento', e: 'buono_prenota' }); });
+  }
   var share = $('#condividi');
   if (navigator.share || navigator.clipboard) {
     share.hidden = false;

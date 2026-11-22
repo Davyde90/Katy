@@ -31,6 +31,7 @@
     studio: 'M12 21s7-7.5 7-12a7 7 0 0 0-14 0c0 4.5 7 12 7 12zM12 11.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z',
     seo: 'M11 18a7 7 0 1 0 0-14 7 7 0 0 0 0 14zM20 20l-4-4',
     sicurezza: 'M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6zM9 12l2 2 4-4',
+    statistiche: 'M4 20v-9M10 20V5M16 20v-7M2 20h20',
     foto: 'M4 8h3l2-3h6l2 3h3v11H4zM12 16a3 3 0 1 0 0-6 3 3 0 0 0 0 6z',
     su: 'M12 19V5M5 12l7-7 7 7', giu: 'M12 5v14M5 12l7 7 7-7', sx: 'M19 12H5M12 5l-7 7 7 7', dx: 'M5 12h14M12 5l7 7-7 7',
     x: 'M6 6l12 12M18 6 6 18', chev: 'M6 9l6 6 6-6', grip: 'M9 6h.01M15 6h.01M9 12h.01M15 12h.01M9 18h.01M15 18h.01', star: 'M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z',
@@ -159,9 +160,9 @@
     { t: '', keys: ['inizio'] },
     { t: 'La pagina', keys: ['avviso', 'hero', 'prova', 'servizi', 'listino', 'prima_dopo', 'galleria', 'chi_sono', 'recensioni', 'buono', 'faq'] },
     { t: 'Lo studio', keys: ['orari', 'buoni', 'contatti', 'studio'] },
-    { t: 'Il sito', keys: ['stagione', 'seo', 'sicurezza'] }
+    { t: 'Il sito', keys: ['statistiche', 'stagione', 'seo', 'sicurezza'] }
   ];
-  var TITOLI = { inizio: 'Inizio', sicurezza: 'Password e backup', buoni: 'Buoni regalo' };
+  var TITOLI = { inizio: 'Inizio', sicurezza: 'Password e backup', buoni: 'Buoni regalo', statistiche: 'Statistiche' };
   S.schema.forEach(function (s) { TITOLI[s.key] = s.titolo; if (!GRUPPI.some(function (g) { return g.keys.indexOf(s.key) !== -1; })) GRUPPI[1].keys.push(s.key); });
   var VOCI = [].concat.apply([], GRUPPI.map(function (g) { return g.keys; })).filter(function (k) { return TITOLI[k]; });
   var ANCORE = { avviso: 'inizio', hero: 'inizio', prova: 'prova', servizi: 'servizi', listino: 'listino', prima_dopo: 'prima-dopo', galleria: 'lavori', chi_sono: 'katy', recensioni: 'recensioni', buono: 'regalo', faq: 'domande', orari: 'prenota', contatti: 'prenota', studio: 'prenota', seo: 'inizio', stagione: 'inizio', buoni: 'regalo' };
@@ -205,6 +206,7 @@
     if (S.current === 'inizio') drawHome();
     else if (S.current === 'sicurezza') drawSecurity();
     else if (S.current === 'buoni') drawBuoni();
+    else if (S.current === 'statistiche') drawStats();
     else if (sec) drawSection(sec);
   }
 
@@ -374,6 +376,7 @@
             h('div', null, h('span', { text: 'Avviso in cima al sito' }), h('span', { text: c.avviso && c.avviso.attivo && c.avviso.testo ? 'Acceso' : 'Spento' })),
             h('div', null, h('span', { text: 'Tema del sito' }), h('a', { href: '#stagione', text: temaTesto() })),
             h('div', null, h('span', { text: 'Buoni regalo da usare' }), h('a', { href: '#buoni', text: String(boot.buoni_da_usare || 0) })),
+            h('div', null, h('span', { text: 'Visitatori oggi · 7 giorni' }), h('a', { href: '#statistiche', text: (boot.visite ? boot.visite.oggi : 0) + ' · ' + (boot.visite ? boot.visite.settimana : 0) })),
             h('div', null, h('span', { text: 'Ultimo salvataggio' }), h('span', { text: c.aggiornato ? dataIt(c.aggiornato) : '—' })),
             h('div', null, h('span', { text: 'Versioni salvate' }), h('span', { text: S.backups.length + ' backup' }))
           )
@@ -441,6 +444,126 @@
           if (!confirm('Eliminare le foto che non sono usate da nessuna parte?')) return;
           api('pulisci', {}).then(function (r) { toast(r.eliminate ? 'Eliminate ' + r.eliminate + ' foto non usate.' : 'Nessuna foto da eliminare.'); }).catch(function (er) { toast(er.message, true); });
         } }))
+    ]);
+  }
+
+  /* ---------- statistiche delle visite ---------- */
+  var ST = { dati: null, periodo: 30, tabella: false };
+  var ST_FONTI = { google: 'Google', motori: 'Altri motori di ricerca', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', whatsapp: 'WhatsApp', diretto: 'Diretto (link o indirizzo scritto)', altri: 'Altri siti' };
+  var ST_DISP = { telefono: 'Telefono', computer: 'Computer', tablet: 'Tablet' };
+  var ST_PAGINE = { inizio: 'Pagina principale', buono: 'Buoni regalo', privacy: 'Privacy', altro: 'Altre' };
+  var ST_EVENTI = { whatsapp: 'Tocchi su WhatsApp', chiama: 'Tocchi su Chiama', prenota: 'Prenotazioni inviate dal modulo', prova_colore: 'Hanno provato un colore', prova_prenota: 'Prenota con il colore scelto', buono_prenota: 'Prenota da un buono regalo', buono_condividi: 'Buono regalo condiviso' };
+  var MESI_IT = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+  function ymdLocal(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+  function svgEl(tag, attrs) { var el = document.createElementNS('http://www.w3.org/2000/svg', tag); Object.keys(attrs || {}).forEach(function (k) { if (k === 'text') el.textContent = attrs[k]; else el.setAttribute(k, attrs[k]); }); return el; }
+  function barPath(x, y, w, hgt, r) { // barra con gli angoli in alto arrotondati, piede sulla linea di base
+    if (hgt <= 0) return '';
+    r = Math.min(r, w / 2, hgt);
+    return 'M' + x + ' ' + (y + hgt) + 'V' + (y + r) + 'a' + r + ' ' + r + ' 0 0 1 ' + r + ' -' + r + 'h' + (w - 2 * r) + 'a' + r + ' ' + r + ' 0 0 1 ' + r + ' ' + r + 'V' + (y + hgt) + 'z';
+  }
+  function passoBello(max) { var p = Math.pow(10, Math.floor(Math.log10(Math.max(1, max / 3)))); var c = [1, 2, 5, 10].map(function (k) { return k * p; }).filter(function (v) { return max / v <= 4; }); return c[0] || p * 10; }
+
+  function drawStats() {
+    if (!ST.dati) {
+      put(main, [h('p', { class: 'loading', text: 'Carico le statistiche…' })]);
+      api('statistiche', {}).then(function (r) { ST.dati = r; if (S.current === 'statistiche') drawStats(); }).catch(function (er) { put(main, [h('p', { class: 'warn', text: er.message })]); });
+      return;
+    }
+    var G = ST.dati.giorni, oggi = new Date(ST.dati.oggi + 'T12:00:00');
+    var giorni = function (n, fineOffset) { var out = []; for (var i = n - 1 + (fineOffset || 0); i >= (fineOffset || 0); i--) { var dt = new Date(oggi); dt.setDate(oggi.getDate() - i); var k = ymdLocal(dt); out.push({ d: k, dt: dt, g: G[k] || null }); } return out; };
+    var somma = function (lista, campo) { return lista.reduce(function (a, x) { return a + (x.g ? (x.g[campo] || 0) : 0); }, 0); };
+    var agg = function (lista, campo) { var o = {}; lista.forEach(function (x) { if (!x.g) return; var v = x.g[campo] || {}; Object.keys(v).forEach(function (k) { o[k] = (o[k] || 0) + v[k]; }); }); return o; };
+    var ore = function (lista) { var o = []; for (var i = 0; i < 24; i++) o[i] = 0; lista.forEach(function (x) { if (x.g && x.g.ore) x.g.ore.forEach(function (v, i) { o[i] += v; }); }); return o; };
+    var totale = Object.keys(G).reduce(function (a, k) { return a + (G[k].visite || 0); }, 0);
+
+    var l7 = giorni(7), l30 = giorni(30), prec30 = giorni(30, 30), oggiG = G[ST.dati.oggi];
+    var v30 = somma(l30, 'visitatori'), p30 = somma(prec30, 'visitatori');
+    var delta = p30 ? Math.round((v30 - p30) / p30 * 100) : null;
+    var tile = function (n, label, sub, cls) { return h('div', { class: 'stat' }, h('b', { text: String(n) }), h('span', { text: label }), sub ? h('span', { class: 'st-delta ' + (cls || ''), text: sub }) : null); };
+    var tiles = h('div', { class: 'stats' },
+      tile(oggiG ? oggiG.visitatori : 0, 'visitatori oggi', (oggiG ? oggiG.visite : 0) + ' pagine aperte'),
+      tile(somma(l7, 'visitatori'), 'visitatori, ultimi 7 giorni', somma(l7, 'visite') + ' pagine aperte'),
+      tile(v30, 'visitatori, ultimi 30 giorni', delta === null ? somma(l30, 'visite') + ' pagine aperte' : (delta >= 0 ? '+' : '') + delta + '% rispetto ai 30 giorni prima', delta === null ? '' : delta >= 0 ? 'su' : 'giu'),
+      tile((agg(l30, 'eventi').whatsapp || 0) + (agg(l30, 'eventi').prova_prenota || 0) + (agg(l30, 'eventi').buono_prenota || 0), 'tocchi su WhatsApp, 30 giorni', (agg(l30, 'eventi').chiama || 0) + ' su Chiama'));
+
+    // periodo scelto
+    var PERIODI = [[7, '7 giorni'], [30, '30 giorni'], [90, '90 giorni'], [365, '12 mesi']];
+    var lista = giorni(ST.periodo);
+    var serie; // barre del grafico: {label, sub, visitatori, visite}
+    if (ST.periodo === 365) {
+      var mesi = {};
+      lista.forEach(function (x) { var k = x.d.slice(0, 7); if (!mesi[k]) mesi[k] = { label: MESI_IT[+x.d.slice(5, 7) - 1], sub: MESI_IT[+x.d.slice(5, 7) - 1] + ' ' + x.d.slice(0, 4), visitatori: 0, visite: 0 }; if (x.g) { mesi[k].visitatori += x.g.visitatori || 0; mesi[k].visite += x.g.visite || 0; } });
+      serie = Object.keys(mesi).sort().map(function (k) { return mesi[k]; });
+    } else {
+      serie = lista.map(function (x, i) { var gg = x.dt.getDate(); return { label: ST.periodo === 7 ? ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'][x.dt.getDay()] : (gg === 1 || (ST.periodo === 30 && gg % 5 === 0 && gg < 30) || (ST.periodo === 90 && gg === 15) ? gg + ' ' + MESI_IT[x.dt.getMonth()] : ''), sub: x.dt.toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' }), visitatori: x.g ? x.g.visitatori || 0 : 0, visite: x.g ? x.g.visite || 0 : 0 }; });
+    }
+    var chips = h('div', { class: 'chips' }, PERIODI.map(function (p) { return h('button', { type: 'button', 'aria-pressed': String(p[0] === ST.periodo), text: p[1], onclick: function () { ST.periodo = p[0]; drawStats(); } }); }));
+
+    // grafico a barre: visitatori per giorno (o per mese)
+    var W = Math.max(320, Math.min(720, (main.clientWidth || 720) - 56)), H = W < 480 ? 200 : 230, ML = 36, MR = 8, MT = 12, MB = 28, PW = W - ML - MR, PH = H - MT - MB;
+    var max = Math.max(5, Math.max.apply(null, serie.map(function (s) { return s.visitatori; })));
+    var passo = passoBello(max), top = Math.ceil(max / passo) * passo;
+    var svg = svgEl('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Visitatori al giorno' });
+    for (var t = 0; t <= top; t += passo) {
+      var y = MT + PH - t / top * PH;
+      svg.appendChild(svgEl('line', { class: 'grid', x1: ML, x2: W - MR, y1: y, y2: y }));
+      svg.appendChild(svgEl('text', { class: 'ax', x: ML - 6, y: y + 4, 'text-anchor': 'end', text: String(t) }));
+    }
+    var slot = PW / serie.length, bw = Math.max(2, Math.min(28, slot - 2)), bars = [];
+    serie.forEach(function (s, i) {
+      var x = ML + i * slot + (slot - bw) / 2, hgt = s.visitatori / top * PH;
+      var p = svgEl('path', { class: 'bar', d: barPath(x, MT + PH - hgt, bw, hgt, 4) });
+      bars.push(p); svg.appendChild(p);
+      if (s.label) svg.appendChild(svgEl('text', { class: 'ax', x: x + bw / 2, y: H - 8, 'text-anchor': 'middle', text: s.label }));
+    });
+    var tip = h('div', { class: 'tip' }); tip.hidden = true;
+    var box = h('div', { class: 'chart' }, svg, tip);
+    var mostraTip = function (clientX) {
+      var r = svg.getBoundingClientRect(), i = Math.floor((clientX - r.left) / r.width * W - ML) / slot | 0;
+      if (i < 0 || i >= serie.length) { tip.hidden = true; bars.forEach(function (b) { b.classList.remove('on'); }); return; }
+      bars.forEach(function (b, k) { b.classList.toggle('on', k === i); });
+      put(tip, [h('b', { text: serie[i].sub }), h('br'), h('span', { text: serie[i].visitatori + ' visitatori · ' + serie[i].visite + ' pagine aperte' })]);
+      tip.hidden = false;
+      var cx = (ML + i * slot + slot / 2) / W * r.width;
+      tip.style.left = cx + 'px'; tip.style.top = ((MT + PH - serie[i].visitatori / top * PH) / H * r.height) + 'px';
+    };
+    svg.addEventListener('mousemove', function (e) { mostraTip(e.clientX); });
+    svg.addEventListener('touchstart', function (e) { mostraTip(e.touches[0].clientX); }, { passive: true });
+    svg.addEventListener('mouseleave', function () { tip.hidden = true; bars.forEach(function (b) { b.classList.remove('on'); }); });
+
+    var tabella = h('table', { class: 'st-table' }, h('thead', null, h('tr', null, h('th', { text: ST.periodo === 365 ? 'Mese' : 'Giorno' }), h('th', { text: 'Visitatori' }), h('th', { text: 'Pagine aperte' }))),
+      h('tbody', null, serie.slice().reverse().map(function (s) { return h('tr', null, h('td', { text: s.sub }), h('td', { text: String(s.visitatori) }), h('td', { text: String(s.visite) })); })));
+    var vistaBtn = h('button', { type: 'button', class: 'btn ghost small', text: ST.tabella ? 'Vedi il grafico' : 'Vedi come tabella', onclick: function () { ST.tabella = !ST.tabella; drawStats(); } });
+
+    // ripartizioni del periodo
+    var hbList = function (obj, nomi, vuoto) {
+      var keys = Object.keys(obj).filter(function (k) { return obj[k] > 0; }).sort(function (a, b) { return obj[b] - obj[a]; });
+      if (!keys.length) return h('p', { class: 'muted', text: vuoto || 'Ancora niente in questo periodo.' });
+      var tot = keys.reduce(function (a, k) { return a + obj[k]; }, 0), mx = obj[keys[0]];
+      return h('div', { class: 'hb-list' }, keys.map(function (k) {
+        return h('div', { class: 'hb' }, h('span', { text: nomi[k] || k }), h('b', { text: obj[k] + ' · ' + Math.round(obj[k] / tot * 100) + '%' }), h('span', { class: 'bar' }, h('i', { style: 'width:' + Math.round(obj[k] / mx * 100) + '%' })));
+      }));
+    };
+    var oreV = ore(lista), oreMax = Math.max(1, Math.max.apply(null, oreV));
+    var oreSvg = svgEl('svg', { viewBox: '0 0 ' + W + ' 120', role: 'img', 'aria-label': 'Pagine aperte per ora del giorno' });
+    var oSlot = (W - 16) / 24, oW = Math.max(4, oSlot - 4);
+    oreV.forEach(function (v, i) { var x = 8 + i * oSlot + (oSlot - oW) / 2, hgt = v / oreMax * 84; var p = svgEl('path', { class: 'bar', d: barPath(x, 96 - hgt, oW, hgt, 3) }); p.appendChild(svgEl('title', { text: i + ':00–' + i + ':59 · ' + v + ' pagine aperte' })); oreSvg.appendChild(p); if (i % (W < 480 ? 6 : 3) === 0) oreSvg.appendChild(svgEl('text', { class: 'ax', x: x + oW / 2, y: 114, 'text-anchor': 'middle', text: i + 'h' })); });
+    var nomePeriodo = PERIODI.filter(function (p) { return p[0] === ST.periodo; })[0][1];
+
+    put(main, [
+      h('div', { class: 'page-h' }, h('h2', { text: 'Statistiche' }), h('p', { text: 'Quante persone aprono il sito, da dove arrivano e cosa toccano. Conteggi anonimi fatti dal sito stesso: niente cookie e nessun servizio esterno, quindi niente banner.' })),
+      tiles,
+      h('section', { class: 'card' },
+        h('div', { class: 'card-h' }, h('div', null, h('h3', { text: 'Visitatori ' + (ST.periodo === 365 ? 'al mese' : 'al giorno') }), h('p', { text: 'Un visitatore è un telefono o computer diverso nella giornata. ' + nomePeriodo + '.' })), vistaBtn),
+        chips,
+        totale ? (ST.tabella ? tabella : box) : h('p', { class: 'muted', text: 'Ancora nessuna visita registrata: i conteggi partono da quando il sito è online con questa versione.' })),
+      h('div', { class: 'two-col' },
+        h('section', { class: 'card' }, h('h3', { text: 'Da dove arrivano' }), h('p', { class: 'muted', style: 'margin-bottom:12px', text: 'Pagine aperte per provenienza, ' + nomePeriodo.toLowerCase() + '.' }), hbList(agg(lista, 'fonti'), ST_FONTI)),
+        h('section', { class: 'card' }, h('h3', { text: 'Cosa fanno sul sito' }), h('p', { class: 'muted', style: 'margin-bottom:12px', text: 'I tocchi che contano: WhatsApp, telefono, prenotazioni, prova colore.' }), hbList(agg(lista, 'eventi'), ST_EVENTI, 'Ancora nessun tocco registrato.')),
+        h('section', { class: 'card' }, h('h3', { text: 'Telefono o computer' }), h('p', { class: 'muted', style: 'margin-bottom:12px', text: 'Da cosa viene aperto il sito.' }), hbList(agg(lista, 'dispositivi'), ST_DISP)),
+        h('section', { class: 'card' }, h('h3', { text: 'Pagine' }), h('p', { class: 'muted', style: 'margin-bottom:12px', text: 'Quali pagine vengono aperte.' }), hbList(agg(lista, 'pagine'), ST_PAGINE))),
+      h('section', { class: 'card' }, h('h3', { text: 'Ore del giorno' }), h('p', { class: 'muted', style: 'margin-bottom:8px', text: 'A che ora viene aperto il sito, ' + nomePeriodo.toLowerCase() + '. Utile per capire quando rispondere su WhatsApp.' }), h('div', { class: 'chart ore' }, oreSvg)),
+      h('p', { class: 'st-note', text: 'Come funziona: il sito registra giorno, ora, pagina, provenienza e tipo di dispositivo. Per contare i visitatori diversi usa un\'impronta che cambia ogni giorno e non salva mai l\'indirizzo IP. Chi ha "Do Not Track" attivo non viene contato. I dati stanno sul tuo server, in data/stats.json.' })
     ]);
   }
 
