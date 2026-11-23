@@ -48,7 +48,7 @@ return array (
     'inc/auth.php' => 'f7f12c8f9070936e0c4d60852b915ee09b644526d29491c89b65994082aa2d9b',
     'inc/buoni.php' => '88d94b0b8dab72af964ff20f22981781f0931aae7f178b1315fcbfab94115d01',
     'inc/config.example.php' => 'e07b2341215ae70d4bf8ec4051101fd4807a07ac6f67ce92d40cada3623170f3',
-    'inc/defaults.php' => '8b5e6a8a22be62308865c797a2b85ad9081b6252f60c1cad3ddd3990c0c5f1ce',
+    'inc/defaults.php' => '7421c1c7d99d4b5d81a07c4ef313bf650578c93fb8c8ef81f294e8d67bd5a8d2',
     'inc/images.php' => '009bc1f1119c169bfc485dffddb27c59589308a43da9eb316ed4aef0b7ca9f84',
     'inc/layout.php' => 'a6643938687243d125c9a17196896c8f8875e743654cc1262ac2b581b8beec67',
     'inc/lib.php' => '883354519cf12332d7e97bb09e5b1ba7c40d06994fc5cd2f1ca9e0a49c2e24da',

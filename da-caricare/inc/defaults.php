@@ -100,7 +100,7 @@ return (function (array $foto): array {
     'buono' => [
         'attivo' => true,
         'titolo' => 'Regala un trattamento',
-        'testo' => 'Un buono per una copertura in gel, un semipermanente o uno smalto: scrivimi su WhatsApp, scegliamo insieme il trattamento e lo prepari in un attimo per un compleanno, una festa o solo per coccolare qualcuno.',
+        'testo' => 'Un buono per una copertura in gel, un semipermanente o uno smalto. Scrivimi su WhatsApp: scegliamo insieme il trattamento e lo preparo per un compleanno, una ricorrenza o un pensiero.',
         'condizioni' => 'Vale per una persona e non si cambia in denaro. Basta mostrarlo all\'appuntamento, dal telefono o stampato.',
     ],
     'faq' => ['elenco' => [
