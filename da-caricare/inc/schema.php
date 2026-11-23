@@ -26,7 +26,7 @@ return [
         'key' => 'avviso', 'titolo' => 'Avviso', 'descr' => 'Una striscia in cima al sito per novità, promozioni o cambi di orario.',
         'fields' => [
             ['k' => 'attivo', 't' => 'toggle', 'l' => 'Mostra l\'avviso sul sito'],
-            ['k' => 'testo', 't' => 'text', 'l' => 'Testo dell\'avviso', 'max' => 160, 'ph' => 'Es. A dicembre prenota per tempo le unghie delle feste!'],
+            ['k' => 'testo', 't' => 'text', 'l' => 'Testo dell\'avviso', 'max' => 160, 'ph' => 'Es. A dicembre conviene prenotare con anticipo.'],
             ['k' => 'fino_al', 't' => 'date', 'l' => 'Toglilo da solo dopo il giorno', 'help' => 'Lascia vuoto per tenerlo finché non lo spegni tu.'],
         ],
     ],

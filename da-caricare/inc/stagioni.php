@@ -9,7 +9,7 @@ return [
     'natale' => [
         'nome' => 'Natale', 'dal' => '12-01', 'al' => '01-06',
         'descr' => 'Rosso, verde abete e oro, con la neve che scende in apertura.',
-        'auguri' => 'Buone feste! Prenota per tempo le unghie di Natale e Capodanno.',
+        'auguri' => 'Buone feste. Per dicembre conviene prenotare con qualche settimana di anticipo.',
         'decoro' => 'neve', 'crema' => '#FFF4F1',
         'colori' => [
             ['nome' => 'Rosso Natale', 'colore' => '#B3131F'],
@@ -22,7 +22,7 @@ return [
     'valentino' => [
         'nome' => 'San Valentino', 'dal' => '02-01', 'al' => '02-14',
         'descr' => 'Rosso e rosa, con i cuori che salgono in apertura.',
-        'auguri' => 'San Valentino si avvicina: prenota le unghie per la serata o regala un buono.',
+        'auguri' => 'Per San Valentino: un appuntamento prima della serata, o un buono regalo.',
         'decoro' => 'cuori', 'crema' => '#FFF0F3',
         'colori' => [
             ['nome' => 'Rosso passione', 'colore' => '#C8102E'],
@@ -35,7 +35,7 @@ return [
     'pasqua' => [
         'nome' => 'Pasqua', 'pasqua' => [-21, 1], // dalle tre settimane prima fino a Pasquetta
         'descr' => 'Pastelli di primavera: lilla, menta e giallo, con i petali in apertura.',
-        'auguri' => 'Buona Pasqua! Prenota per tempo i colori pastello della primavera.',
+        'auguri' => 'Buona Pasqua. Sulla parete degli smalti sono arrivati i colori di primavera.',
         'decoro' => 'petali', 'crema' => '#FFFBEE',
         'decoro_colori' => ['#C9A7E8', '#A8E0C9', '#F7E39B', '#F9C5D5', '#B5D8F5'],
         'colori' => [
@@ -49,7 +49,7 @@ return [
     'estate' => [
         'nome' => 'Estate', 'dal' => '06-15', 'al' => '08-31',
         'descr' => 'Corallo, turchese e giallo sole, con le scintille di sole in apertura.',
-        'auguri' => 'Estate: semipermanente piedi e colori accesi. Prenota prima delle ferie!',
+        'auguri' => 'In estate il semipermanente ai piedi si prenota con qualche giorno di anticipo.',
         'decoro' => 'sole', 'crema' => '#FFF8EC',
         'colori' => [
             ['nome' => 'Corallo', 'colore' => '#FF6F59'],
@@ -62,7 +62,7 @@ return [
     'halloween' => [
         'nome' => 'Halloween', 'dal' => '10-20', 'al' => '10-31',
         'descr' => 'Arancio zucca e viola scuro, con i pipistrelli in apertura.',
-        'auguri' => 'Halloween: unghie da paura! Prenota il tuo decoro.',
+        'auguri' => 'Per Halloween, decori a tema su richiesta.',
         'decoro' => 'pipistrelli', 'crema' => '#FFF4E8',
         'colori' => [
             ['nome' => 'Arancio zucca', 'colore' => '#F26A1B'],

@@ -99,7 +99,7 @@ $condizioni = $c['buono']['condizioni'] ?? '';
   <div class="valore">
     <div class="v"><?= e(kn_buono_valore($b)) ?></div>
     <?php if ($b['tipo'] === 'importo' && $stato === 'parziale'): ?><p class="r" id="residuo">Usato in parte: restano <?= e(kn_euro($residuo)) ?></p><?php endif ?>
-    <?php if ($b['tipo'] === 'importo' && $stato === 'valido'): ?><p class="r">da spendere in studio, anche in più volte</p><?php endif ?>
+    <?php if ($b['tipo'] === 'importo' && $stato === 'valido'): ?><p class="r">utilizzabile anche in più volte</p><?php endif ?>
   </div>
   <?php if ($b['messaggio']): ?><p class="msg">“<?= e($b['messaggio']) ?>”</p><?php endif ?>
   <div class="qr">
@@ -107,7 +107,7 @@ $condizioni = $c['buono']['condizioni'] ?? '';
     <div>
       <div class="cod"><?= e($b['codice']) ?></div>
       <div class="fino"><?= $b['scadenza'] ? 'Valido fino al ' . e(kn_data_it($b['scadenza'], true)) : 'Senza scadenza' ?></div>
-      <div class="come">Mostralo all'appuntamento, dal telefono o stampato.</div>
+      <div class="come">Da presentare all'appuntamento, dal telefono o stampato.</div>
     </div>
   </div>
   <div class="az">

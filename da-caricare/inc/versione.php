@@ -1,7 +1,7 @@
 <?php
 // Generato da tools/versione.php: non modificare a mano.
 return array (
-  'data' => '2026-11-23 10:49',
+  'data' => '2026-11-23 10:51',
   'file' => 
   array (
     '.htaccess' => '53476d72c84b02b40231b82fc56455d32bd50488d32a735e7cc4367b89d41113',
@@ -43,20 +43,20 @@ return array (
     'assets/js/site.js' => 'fb34333b4dcb2bc8da81c4d0365309ac09075f35b4118010e299ee8482f638ee',
     'assets/js/vendor/jsqr.js' => 'bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859',
     'assets/js/vendor/qrcode.js' => '18ae399f81182bc9de916e9c77b195df20cc58d6f2d55a62b085a299f1bf1780',
-    'buono.php' => '1253a6fbd6d91b83f15bf4509104d98e546ce776bc977f1a439e286cd5b6def7',
+    'buono.php' => 'e6befc1421441585b92827a79d44793f02e566354b954bdaa022126728368b87',
     'inc/.htaccess' => '4705a5213c89a013b1608b462fd66517e44ef5bb30ed388e7bae64bd84566533',
     'inc/auth.php' => 'f7f12c8f9070936e0c4d60852b915ee09b644526d29491c89b65994082aa2d9b',
-    'inc/buoni.php' => 'bd8b91456e4d43e884b6ec4e5cadc7824142ac889bbd6eede9aa31085b2b31d0',
+    'inc/buoni.php' => '88d94b0b8dab72af964ff20f22981781f0931aae7f178b1315fcbfab94115d01',
     'inc/config.example.php' => 'e07b2341215ae70d4bf8ec4051101fd4807a07ac6f67ce92d40cada3623170f3',
     'inc/defaults.php' => '8b5e6a8a22be62308865c797a2b85ad9081b6252f60c1cad3ddd3990c0c5f1ce',
     'inc/images.php' => '009bc1f1119c169bfc485dffddb27c59589308a43da9eb316ed4aef0b7ca9f84',
     'inc/layout.php' => 'a6643938687243d125c9a17196896c8f8875e743654cc1262ac2b581b8beec67',
     'inc/lib.php' => '883354519cf12332d7e97bb09e5b1ba7c40d06994fc5cd2f1ca9e0a49c2e24da',
     'inc/sanitize.php' => '9ff8475884285cece6e2db3cc9c3a7316dfc904b567b340633d99693356cc972',
-    'inc/schema.php' => '82473e4497f0a6d75a2fd19ef984d892b7f984c2ef07f230ca39225470c95f66',
-    'inc/stagioni.php' => '589ce3beeb7a0a53ee4c3fe89023bb5dae76a3c3687ddd36628608a82eb59a06',
+    'inc/schema.php' => '7363ecfec6af4b3cbedccc1b7938d371c2c2f8b7f5683d214ad5d77cacb1fc79',
+    'inc/stagioni.php' => 'f07cd816be2e90b49b57ecd13e95feb555fdbbc85ecc2d3de64eb54674174078',
     'inc/stats.php' => '0e5c840272359927301dd53722e95aef0bfeb7d3e8ee0b6705d8e23b2de51138',
-    'index.php' => '20d32ede90f309ca290d9ac15e2a7b18cb51fb3ffd413fcad169af57b87ae87d',
+    'index.php' => '3bef75380f5a0cf6d6330327bc47135f32755410752222ca271df83bddc53891',
     'privacy.php' => '071c39634f633b2d11884b30484a5d39ad2281224ac998649a3b23a23cbf3399',
     'robots.php' => '1cd7072c7aa382b7090cf463ad0d1785074a4230026e356ee06e1e32338d7a7f',
     'sitemap.php' => 'bce6a095a714cd086452f08b3f1ce203a3e6adea0403649ce9b7423afb693a91',

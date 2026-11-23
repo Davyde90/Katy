@@ -342,13 +342,13 @@ kn_page_start($c, ['jsonld' => true]);
             <div class="v-qr"><?= kn_qr_finto() ?></div>
             <div class="back-txt">
               <b>KN-7F3K-9Q2M</b>
-              <p>Arriva su WhatsApp, pronto da regalare.<br>Basta mostrarlo all'appuntamento.</p>
+              <p>Lo ricevi su WhatsApp.<br>Si presenta all'appuntamento.</p>
               <small>Tocca per girare</small>
             </div>
           </div>
         </div>
       </div>
-      <p class="gift-hint">Tocca la card per girarla, muovila col dito per vederla brillare</p>
+      <p class="gift-hint">Tocca la card per vedere il retro</p>
     </div>
     <div class="gift-text">
       <?= kn_kicker($numero, 'Buono regalo', 'rv') ?>
@@ -364,9 +364,9 @@ kn_page_start($c, ['jsonld' => true]);
           <label><input type="radio" name="gift-val" value="<?= e($nome) ?>"<?= $i === 0 ? ' checked' : '' ?>><span><?= e($nome) ?></span></label>
           <?php endforeach ?>
         </div>
-        <a class="btn" id="gift-wa" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Chiedi questo buono su WhatsApp</a>
+        <a class="btn" id="gift-wa" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Richiedi il buono su WhatsApp</a>
       </form>
-      <p class="gift-note rv">Lo ricevi su WhatsApp come buono digitale, con il QR: si regala con un link e si usa in studio.</p>
+      <p class="gift-note rv">Il buono è digitale: arriva su WhatsApp e si presenta all'appuntamento.</p>
     </div>
   </div>
 </section>
