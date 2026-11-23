@@ -73,6 +73,37 @@ function kn_img_tag(string $src, string $alt, string $attrs = ''): string
     return '<img src="' . e($src) . '" alt="' . e($alt) . '" ' . $attrs . '>';
 }
 
+/** Un finto QR decorativo (sempre uguale) per la card d'esempio del buono regalo. */
+function kn_qr_finto(): string
+{
+    $n = 21;
+    $bits = hash('sha256', 'katys-nails-buono');
+    $d = '';
+    $finder = function (int $x, int $y) use (&$d) {
+        $d .= "M{$x} {$y}h7v7h-7z";
+        $d .= 'M' . ($x + 1) . ' ' . ($y + 1) . 'h5v5h-5z';
+        $d .= 'M' . ($x + 2) . ' ' . ($y + 2) . 'h3v3h-3z';
+    };
+    $finder(0, 0);
+    $finder($n - 7, 0);
+    $finder(0, $n - 7);
+    $k = 0;
+    for ($y = 0; $y < $n; $y++) {
+        for ($x = 0; $x < $n; $x++) {
+            $inFinder = ($x < 8 && $y < 8) || ($x >= $n - 8 && $y < 8) || ($x < 8 && $y >= $n - 8);
+            if ($inFinder) {
+                continue;
+            }
+            $bit = hexdec($bits[$k % 64]) >> ($k % 4) & 1;
+            $k++;
+            if ($bit) {
+                $d .= "M{$x} {$y}h1v1h-1z";
+            }
+        }
+    }
+    return '<svg viewBox="0 0 21 21" fill-rule="evenodd"><path fill="#3B1230" d="' . $d . '"/></svg>';
+}
+
 function kn_kicker(int &$n, string $testo, string $extra = ''): string
 {
     $n++;
@@ -293,10 +324,20 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if (!empty($c['buono']['attivo'])): ?>
 <section class="sec gift" id="regalo">
   <div class="wrap gift-grid">
-    <div class="voucher rv" aria-hidden="true">
-      <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="44" height="44" loading="lazy"><span>Buono regalo</span></div>
-      <div class="v-name"><?= e($s['nome']) ?></div>
-      <div class="v-foot"><span>Per</span><i></i><span>Da</span><i></i></div>
+    <div class="gift-visual rv" aria-hidden="true">
+      <div class="v-back"></div>
+      <div class="voucher">
+        <span class="shine"></span>
+        <i class="v-spark s1">✦</i><i class="v-spark s2">✦</i><i class="v-spark s3">✦</i>
+        <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="44" height="44" loading="lazy"><span>Buono regalo</span><span class="v-brand"><?= e($s['nome']) ?></span></div>
+        <div class="v-name">Un pomeriggio<br><em>tutto per te</em></div>
+        <div class="v-mid"><span class="v-val"><?= e($servizi[0]['nome'] ?? 'Copertura in gel') ?></span><span class="v-val alt">oppure un importo</span></div>
+        <div class="v-foot">
+          <div class="v-per"><small>Per</small><span>Anna</span></div>
+          <div class="v-per"><small>Da</small><span>Mario</span></div>
+          <div class="v-qrbox"><div class="v-qr"><?= kn_qr_finto() ?></div><small>KN-7F3K-9Q2M</small></div>
+        </div>
+      </div>
     </div>
     <div class="gift-text">
       <?= kn_kicker($numero, 'Buono regalo', 'rv') ?>
