@@ -392,6 +392,63 @@
     });
   }
 
+  /* ---------- buono regalo: card 3D che si gira e si compila dal vivo ---------- */
+  var gcard = $('#gcard'), gstage = $('#gift-stage');
+  if (gcard && gstage) {
+    var flipped = false, dragging = false, moved = false, x0 = 0, y0 = 0;
+    var inclina = function (x, y) { // x, y tra 0 e 1
+      var ry = (x - 0.5) * 22, rx = (0.5 - y) * 16;
+      gcard.style.setProperty('--rx', rx.toFixed(1) + 'deg');
+      gcard.style.setProperty('--ry', ry.toFixed(1) + 'deg');
+      gcard.style.setProperty('--mx', (x * 100).toFixed(0) + '%');
+      gcard.style.setProperty('--my', (y * 100).toFixed(0) + '%');
+    };
+    var riposa = function () { gcard.classList.remove('live'); gcard.style.setProperty('--rx', '0deg'); gcard.style.setProperty('--ry', '0deg'); };
+    var posizione = function (e) { var r = gcard.getBoundingClientRect(); return [Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)), Math.min(1, Math.max(0, (e.clientY - r.top) / r.height))]; };
+    if (!calma) {
+      gstage.addEventListener('pointermove', function (e) {
+        if (e.pointerType === 'touch' && !dragging) return;
+        var p = posizione(e);
+        if (dragging && Math.hypot(e.clientX - x0, e.clientY - y0) > 8) moved = true;
+        gcard.classList.add('live');
+        inclina(p[0], p[1]);
+      });
+      gstage.addEventListener('pointerleave', riposa);
+      gcard.addEventListener('pointerdown', function (e) { dragging = true; moved = false; x0 = e.clientX; y0 = e.clientY; if (e.pointerType === 'touch') { var p = posizione(e); gcard.classList.add('live'); inclina(p[0], p[1]); } });
+      window.addEventListener('pointerup', function () { if (dragging) { dragging = false; riposa(); } });
+      if (window.DeviceOrientationEvent && 'ontouchstart' in window && typeof DeviceOrientationEvent.requestPermission !== 'function') {
+        window.addEventListener('deviceorientation', function (e) { // Android: la card segue l'inclinazione del telefono
+          if (dragging || e.gamma === null) return;
+          var r = gcard.getBoundingClientRect();
+          if (r.bottom < 0 || r.top > innerHeight) return;
+          inclina(Math.min(1, Math.max(0, 0.5 + e.gamma / 60)), Math.min(1, Math.max(0, 0.5 + (e.beta - 45) / 90)));
+          gcard.classList.remove('live');
+        }, { passive: true });
+      }
+    }
+    var gira = function () { flipped = !flipped; gcard.classList.toggle('flipped', flipped); };
+    gcard.addEventListener('click', function () { if (!moved) gira(); moved = false; });
+    gcard.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); gira(); } });
+
+    var form = $('#gift-form'), gPer = $('#g-per'), gDa = $('#g-da'), gVal = $('#g-val'), wa = $('#gift-wa');
+    if (form) {
+      var per = $('#gf-per'), da = $('#gf-da');
+      var aggiorna = function () {
+        var p = per.value.trim(), d = da.value.trim(), v = ($('input[name="gift-val"]:checked', form) || {}).value || '';
+        gPer.textContent = p || 'te';
+        gDa.textContent = d || form.getAttribute('data-nome');
+        gVal.textContent = v;
+        var testo = 'Ciao Katy! Vorrei regalare un buono' + (p ? ' per ' + p : '') + (d ? ' da parte di ' + d : '') + (v ? ': ' + v : '') + '.';
+        wa.href = 'https://wa.me/' + form.getAttribute('data-wa') + '?text=' + encodeURIComponent(testo);
+        if (flipped) { flipped = false; gcard.classList.remove('flipped'); }
+      };
+      form.addEventListener('input', aggiorna);
+      form.addEventListener('change', aggiorna);
+      form.addEventListener('submit', function (e) { e.preventDefault(); wa.click(); });
+      aggiorna();
+    }
+  }
+
   /* ---------- statistiche anonime: niente cookie, nessun servizio esterno (vedi inc/stats.php) ---------- */
   if (!document.documentElement.classList.contains('anteprima') && navigator.doNotTrack !== '1' && !navigator.globalPrivacyControl && location.protocol !== 'file:') {
     var conta = function (d) {

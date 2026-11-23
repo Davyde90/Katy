@@ -324,26 +324,49 @@ kn_page_start($c, ['jsonld' => true]);
 <?php if (!empty($c['buono']['attivo'])): ?>
 <section class="sec gift" id="regalo">
   <div class="wrap gift-grid">
-    <div class="gift-visual rv" aria-hidden="true">
-      <div class="v-back"></div>
-      <div class="voucher">
-        <span class="shine"></span>
-        <i class="v-spark s1">✦</i><i class="v-spark s2">✦</i><i class="v-spark s3">✦</i>
-        <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="44" height="44" loading="lazy"><span>Buono regalo</span><span class="v-brand"><?= e($s['nome']) ?></span></div>
-        <div class="v-name">Un pomeriggio<br><em>tutto per te</em></div>
-        <div class="v-mid"><span class="v-val"><?= e($servizi[0]['nome'] ?? 'Copertura in gel') ?></span><span class="v-val alt">oppure un importo</span></div>
-        <div class="v-foot">
-          <div class="v-per"><small>Per</small><span>Anna</span></div>
-          <div class="v-per"><small>Da</small><span>Mario</span></div>
-          <div class="v-qrbox"><div class="v-qr"><?= kn_qr_finto() ?></div><small>KN-7F3K-9Q2M</small></div>
+    <div class="gift-stage rv" id="gift-stage">
+      <div class="gcard" id="gcard" tabindex="0" role="button" aria-label="Gira il buono regalo">
+        <div class="gface front">
+          <span class="g-pattern"></span><span class="g-holo"></span><span class="g-spot"></span>
+          <i class="v-spark s1">✦</i><i class="v-spark s2">✦</i><i class="v-spark s3">✦</i>
+          <div class="v-top"><img src="assets/img/logo.jpg" alt="" width="44" height="44" loading="lazy"><span>Buono regalo</span><span class="v-brand foil"><?= e($s['nome']) ?></span></div>
+          <div class="v-name"><em>Per</em> <b id="g-per">te</b></div>
+          <div class="v-foot">
+            <div class="v-per"><small>Vale per</small><span id="g-val"><?= e($servizi[0]['nome'] ?? 'Un trattamento') ?></span></div>
+            <div class="v-per"><small>Da</small><span id="g-da"><?= e($s['nome']) ?></span></div>
+          </div>
+        </div>
+        <div class="gface back">
+          <span class="g-pattern"></span>
+          <div class="back-in">
+            <div class="v-qr"><?= kn_qr_finto() ?></div>
+            <div class="back-txt">
+              <b>KN-7F3K-9Q2M</b>
+              <p>Il buono vero arriva su WhatsApp con un link e il suo QR. In studio basta mostrarlo: <?= e($s['titolare'] ?: 'Katy') ?> lo legge e lo segna come usato.</p>
+              <small>Tocca per girare</small>
+            </div>
+          </div>
         </div>
       </div>
+      <p class="gift-hint">Tocca la card per girarla, muovila col dito per vederla brillare</p>
     </div>
     <div class="gift-text">
       <?= kn_kicker($numero, 'Buono regalo', 'rv') ?>
       <h2 class="rv"><?= e($c['buono']['titolo']) ?></h2>
       <p class="rv"><?= e($c['buono']['testo']) ?></p>
-      <a class="btn rv" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Chiedi un buono regalo</a>
+      <form class="gift-form rv" id="gift-form" data-wa="<?= e(kn_digits($s['whatsapp'])) ?>" data-nome="<?= e($s['nome']) ?>">
+        <div class="gift-fields">
+          <label class="gf"><span>Per chi è?</span><input id="gf-per" maxlength="30" placeholder="Es. Anna" autocomplete="off"></label>
+          <label class="gf"><span>Da parte di</span><input id="gf-da" maxlength="30" placeholder="Es. Mario" autocomplete="off"></label>
+        </div>
+        <div class="pills" role="radiogroup" aria-label="Cosa regalare">
+          <?php foreach (array_merge(array_column($servizi, 'nome'), ['Un importo a scelta']) as $i => $nome): ?>
+          <label><input type="radio" name="gift-val" value="<?= e($nome) ?>"<?= $i === 0 ? ' checked' : '' ?>><span><?= e($nome) ?></span></label>
+          <?php endforeach ?>
+        </div>
+        <a class="btn" id="gift-wa" href="<?= e(kn_wa_url($c, 'Ciao Katy! Vorrei regalare un buono per un trattamento.')) ?>" target="_blank" rel="noopener"><?= KN_WA_ICON ?>Chiedi questo buono su WhatsApp</a>
+      </form>
+      <p class="gift-note rv">Lo ricevi su WhatsApp come buono digitale, con il QR: si regala con un link e si usa in studio.</p>
     </div>
   </div>
 </section>

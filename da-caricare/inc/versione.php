@@ -1,7 +1,7 @@
 <?php
 // Generato da tools/versione.php: non modificare a mano.
 return array (
-  'data' => '2026-11-23 10:37',
+  'data' => '2026-11-23 10:41',
   'file' => 
   array (
     '.htaccess' => '53476d72c84b02b40231b82fc56455d32bd50488d32a735e7cc4367b89d41113',
@@ -14,7 +14,7 @@ return array (
     'admin/sw.js' => 'ca1fa3ff29a058b52ce0692989949ce706b0453fb1b6ab3a4934d3e8211bb49f',
     'assetlinks.php' => 'e006bc527c36b96df6d3f814e64022edbc8ddde925ea494a63249d4e78235d72',
     'assets/css/admin.css' => 'a1281c5da69f47f8f5ca4f27d6d0675398db86f34f345e699df8b61fe7963db6',
-    'assets/css/site.css' => '8be5ea1bd43582f99aac686f7f71cc3bc01e191f8ca62b72ec08c366f8dde33d',
+    'assets/css/site.css' => '4365625be6118a98d32fbdb5df62a13266e776e9f0fa788031d781e15538d6ce',
     'assets/fonts/fraunces-latin-ext-italic-300-700.woff2' => '4983926d3a16544eedcd2233448bd8a43f711e7bf1fabaae8431e78e0b798635',
     'assets/fonts/fraunces-latin-ext-normal-300-700.woff2' => 'a2930b27d13a228bd9ab6a49269b5f800237892ad560cb9dd7fab01b1620f88e',
     'assets/fonts/fraunces-latin-italic-300-700.woff2' => '066710ce7ed235a339d3d6cdcc8b55c0bea5632232662d83aacea25852108271',
@@ -40,7 +40,7 @@ return array (
     'assets/img/prova/prova.json' => '309d910b8c796572487dd1d208600c77653d83550ec59681b34f76cf663c54c6',
     'assets/js/admin.js' => 'db5b26f634279b72c1e3927f0bca1f8a0919d4703c992730a71040eb427c595f',
     'assets/js/buono.js' => '8bee6beb19d5e68fe544b3bbcbf107d80d65c51617c8bc79b6fdfa6d50f99e08',
-    'assets/js/site.js' => 'c20ea72bb22d9495c3282d73c99f34148142fdda659324473824159171396cc1',
+    'assets/js/site.js' => 'fb34333b4dcb2bc8da81c4d0365309ac09075f35b4118010e299ee8482f638ee',
     'assets/js/vendor/jsqr.js' => 'bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859',
     'assets/js/vendor/qrcode.js' => '18ae399f81182bc9de916e9c77b195df20cc58d6f2d55a62b085a299f1bf1780',
     'buono.php' => 'ec674aec476330f1ac525df57515a9c0aab4bce7453df157b5576a8fb13fff15',
@@ -56,7 +56,7 @@ return array (
     'inc/schema.php' => 'fd0be7c24a32ffd90b5fa9285b983ba489bf92d2d70d9c1e9b3ee6c363c81789',
     'inc/stagioni.php' => '589ce3beeb7a0a53ee4c3fe89023bb5dae76a3c3687ddd36628608a82eb59a06',
     'inc/stats.php' => '0e5c840272359927301dd53722e95aef0bfeb7d3e8ee0b6705d8e23b2de51138',
-    'index.php' => '02a2b191486e1c1fb84b41ffc4403d27a9ba696f4780f23dec7d5bf6356ad91f',
+    'index.php' => 'ed3fa112b9af8521de9a09f64524ceece0921d63882fe812e09cfc5a33c67378',
     'privacy.php' => 'fcc6cc083734b9b1660128d45066fd212d2a709727ce8323ac2530ec9705e4e2',
     'robots.php' => '1cd7072c7aa382b7090cf463ad0d1785074a4230026e356ee06e1e32338d7a7f',
     'sitemap.php' => 'bce6a095a714cd086452f08b3f1ce203a3e6adea0403649ce9b7423afb693a91',
