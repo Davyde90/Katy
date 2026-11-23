@@ -342,7 +342,7 @@ kn_page_start($c, ['jsonld' => true]);
             <div class="v-qr"><?= kn_qr_finto() ?></div>
             <div class="back-txt">
               <b>KN-7F3K-9Q2M</b>
-              <p>Il buono vero arriva su WhatsApp con un link e il suo QR. In studio basta mostrarlo: <?= e($s['nome']) ?> lo legge e lo segna come usato.</p>
+              <p>Arriva su WhatsApp, pronto da regalare.<br>Basta mostrarlo all'appuntamento.</p>
               <small>Tocca per girare</small>
             </div>
           </div>

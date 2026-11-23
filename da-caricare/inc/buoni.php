@@ -206,6 +206,6 @@ function kn_buono_testo_wa(array $b, array $c): string
     $righe = ['Ciao' . ($b['da'] ? ' ' . $b['da'] : '') . '! Ecco il buono regalo di ' . ($s['nome'] ?? '') . ' per ' . $b['a'] . ':', kn_buono_url($b['codice']), ''];
     $righe[] = 'Vale per: ' . kn_buono_valore($b);
     $righe[] = $b['scadenza'] ? 'Scade il ' . kn_data_it($b['scadenza'], true) : 'Senza scadenza';
-    $righe[] = 'Per usarlo basta mostrare il QR in studio, dal telefono o stampato, e prenotare su WhatsApp.';
+    $righe[] = 'Basta mostrarlo all\'appuntamento, dal telefono o stampato.';
     return implode("\n", $righe);
 }

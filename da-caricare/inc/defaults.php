@@ -101,7 +101,7 @@ return (function (array $foto): array {
         'attivo' => true,
         'titolo' => 'Regala un trattamento',
         'testo' => 'Un buono per una copertura in gel, un semipermanente o uno smalto: scrivimi su WhatsApp, scegliamo insieme il trattamento e lo prepari in un attimo per un compleanno, una festa o solo per coccolare qualcuno.',
-        'condizioni' => 'Vale per una persona e non si cambia in denaro. Per usarlo basta mostrarlo in studio, dal telefono o stampato, e prenotare su WhatsApp dicendo il codice.',
+        'condizioni' => 'Vale per una persona e non si cambia in denaro. Basta mostrarlo all\'appuntamento, dal telefono o stampato.',
     ],
     'faq' => ['elenco' => [
         ['domanda' => 'Che differenza c\'è tra semipermanente e copertura in gel?', 'risposta' => 'Il semipermanente è uno smalto che si asciuga con la lampada: colora e protegge l\'unghia naturale. La copertura in gel è più spessa e resistente: rinforza le unghie fragili mantenendo la tua lunghezza, e si ritocca ogni 3–4 settimane.'],

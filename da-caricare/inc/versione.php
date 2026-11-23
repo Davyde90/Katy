@@ -1,7 +1,7 @@
 <?php
 // Generato da tools/versione.php: non modificare a mano.
 return array (
-  'data' => '2026-11-23 10:45',
+  'data' => '2026-11-23 10:49',
   'file' => 
   array (
     '.htaccess' => '53476d72c84b02b40231b82fc56455d32bd50488d32a735e7cc4367b89d41113',
@@ -43,12 +43,12 @@ return array (
     'assets/js/site.js' => 'fb34333b4dcb2bc8da81c4d0365309ac09075f35b4118010e299ee8482f638ee',
     'assets/js/vendor/jsqr.js' => 'bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859',
     'assets/js/vendor/qrcode.js' => '18ae399f81182bc9de916e9c77b195df20cc58d6f2d55a62b085a299f1bf1780',
-    'buono.php' => 'caebca66710e7e9421ab82de608557c787ac8b45e3161731c9e932a9fa9c70e3',
+    'buono.php' => '1253a6fbd6d91b83f15bf4509104d98e546ce776bc977f1a439e286cd5b6def7',
     'inc/.htaccess' => '4705a5213c89a013b1608b462fd66517e44ef5bb30ed388e7bae64bd84566533',
     'inc/auth.php' => 'f7f12c8f9070936e0c4d60852b915ee09b644526d29491c89b65994082aa2d9b',
-    'inc/buoni.php' => 'bcec566aeefc3e8e623bd6707ace783678a9e098affb6ad7658e6e0171b037e0',
+    'inc/buoni.php' => 'bd8b91456e4d43e884b6ec4e5cadc7824142ac889bbd6eede9aa31085b2b31d0',
     'inc/config.example.php' => 'e07b2341215ae70d4bf8ec4051101fd4807a07ac6f67ce92d40cada3623170f3',
-    'inc/defaults.php' => '4d340af066049fb3ddf4c8b6e77aeaba7fdbb194c05b2a1d4afcb6702abc01cc',
+    'inc/defaults.php' => '8b5e6a8a22be62308865c797a2b85ad9081b6252f60c1cad3ddd3990c0c5f1ce',
     'inc/images.php' => '009bc1f1119c169bfc485dffddb27c59589308a43da9eb316ed4aef0b7ca9f84',
     'inc/layout.php' => 'a6643938687243d125c9a17196896c8f8875e743654cc1262ac2b581b8beec67',
     'inc/lib.php' => '883354519cf12332d7e97bb09e5b1ba7c40d06994fc5cd2f1ca9e0a49c2e24da',
@@ -56,7 +56,7 @@ return array (
     'inc/schema.php' => '82473e4497f0a6d75a2fd19ef984d892b7f984c2ef07f230ca39225470c95f66',
     'inc/stagioni.php' => '589ce3beeb7a0a53ee4c3fe89023bb5dae76a3c3687ddd36628608a82eb59a06',
     'inc/stats.php' => '0e5c840272359927301dd53722e95aef0bfeb7d3e8ee0b6705d8e23b2de51138',
-    'index.php' => '7f4c4ab7291b16c399b9438d5185c0df055a2e0671e57f39875d8969f79f172e',
+    'index.php' => '20d32ede90f309ca290d9ac15e2a7b18cb51fb3ffd413fcad169af57b87ae87d',
     'privacy.php' => '071c39634f633b2d11884b30484a5d39ad2281224ac998649a3b23a23cbf3399',
     'robots.php' => '1cd7072c7aa382b7090cf463ad0d1785074a4230026e356ee06e1e32338d7a7f',
     'sitemap.php' => 'bce6a095a714cd086452f08b3f1ce203a3e6adea0403649ce9b7423afb693a91',
