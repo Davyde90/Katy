@@ -433,9 +433,15 @@
     var form = $('#gift-form'), gPer = $('#g-per'), gDa = $('#g-da'), gVal = $('#g-val'), wa = $('#gift-wa');
     if (form) {
       var per = $('#gf-per'), da = $('#gf-da');
+      var bello = function (t) { // TUTTO MAIUSCOLO o tutto minuscolo → Iniziali Maiuscole
+        if (!(/^[^a-zà-ÿ]*$/.test(t) || /^[^A-ZÀ-Ý]*$/.test(t))) return t;
+        return t.toLowerCase().replace(/(^|[\s'’-])([a-zà-ÿ])/g, function (m, a, b) { return a + b.toUpperCase(); });
+      };
       var aggiorna = function () {
-        var p = per.value.trim(), d = da.value.trim(), v = ($('input[name="gift-val"]:checked', form) || {}).value || '';
-        gPer.textContent = p || 'te';
+        var p = bello(per.value.trim()), d = bello(da.value.trim()), v = ($('input[name="gift-val"]:checked', form) || {}).value || '';
+        var nome = p || 'te', n = nome.length;
+        gPer.textContent = nome;
+        gPer.style.setProperty('--scala', n <= 9 ? '1em' : n <= 14 ? '.82em' : n <= 20 ? '.66em' : '.54em');
         gDa.textContent = d || form.getAttribute('data-nome');
         gVal.textContent = v;
         var testo = 'Ciao Katy! Vorrei regalare un buono' + (p ? ' per ' + p : '') + (d ? ' da parte di ' + d : '') + (v ? ': ' + v : '') + '.';
