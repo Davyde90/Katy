@@ -6,7 +6,7 @@ require_once __DIR__ . '/inc/layout.php';
 
 $c = kn_content();
 $s = $c['studio'];
-$titolare = trim(($s['titolare'] ?? '') . ' – ' . ($s['nome'] ?? ''), ' –');
+$titolare = (string) ($s['nome'] ?? '');
 
 kn_page_start($c, ['title' => 'Privacy e cookie · ' . $s['nome'], 'desc' => 'Informativa privacy e cookie del sito di ' . $s['nome'] . '.', 'path' => 'privacy.php']);
 ?>

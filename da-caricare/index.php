@@ -289,7 +289,7 @@ kn_page_start($c, ['jsonld' => true]);
 <section class="sec about" id="katy">
   <div class="wrap about-grid">
     <?php if ($c['chi_sono']['foto']): ?>
-    <div class="portrait rv"><?= kn_img_tag($c['chi_sono']['foto'], 'Foto di ' . ($s['titolare'] ?: $s['nome']), 'loading="lazy" width="600" height="750"') ?></div>
+    <div class="portrait rv"><?= kn_img_tag($c['chi_sono']['foto'], 'Foto di ' . $s['nome'], 'loading="lazy" width="600" height="750"') ?></div>
     <?php endif ?>
     <div class="about-text">
       <?= kn_kicker($numero, 'Chi sono', 'rv') ?>
@@ -342,7 +342,7 @@ kn_page_start($c, ['jsonld' => true]);
             <div class="v-qr"><?= kn_qr_finto() ?></div>
             <div class="back-txt">
               <b>KN-7F3K-9Q2M</b>
-              <p>Il buono vero arriva su WhatsApp con un link e il suo QR. In studio basta mostrarlo: <?= e($s['titolare'] ?: 'Katy') ?> lo legge e lo segna come usato.</p>
+              <p>Il buono vero arriva su WhatsApp con un link e il suo QR. In studio basta mostrarlo: <?= e($s['nome']) ?> lo legge e lo segna come usato.</p>
               <small>Tocca per girare</small>
             </div>
           </div>

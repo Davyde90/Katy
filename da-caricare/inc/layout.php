@@ -134,7 +134,7 @@ function kn_page_end(array $c): void
     <div class="foot-grid">
       <div>
         <p class="foot-k">Lo studio</p>
-        <p><?= e($s['nome'] ?? '') ?><?= !empty($s['titolare']) ? '<br>di ' . e($s['titolare']) : '' ?><br><?= e($s['indirizzo'] ?? '') ?><br><?= e(trim((($s['cap'] ?? '') ? $s['cap'] . ' ' : '') . ($s['citta'] ?? '') . (!empty($s['provincia']) ? ' (' . $s['provincia'] . ')' : ''))) ?></p>
+        <p><?= e($s['nome'] ?? '') ?><br><?= e($s['indirizzo'] ?? '') ?><br><?= e(trim((($s['cap'] ?? '') ? $s['cap'] . ' ' : '') . ($s['citta'] ?? '') . (!empty($s['provincia']) ? ' (' . $s['provincia'] . ')' : ''))) ?></p>
         <?php if (!empty($s['piva'])): ?><p class="foot-s">P.IVA <?= e($s['piva']) ?></p><?php endif ?>
       </div>
       <div>

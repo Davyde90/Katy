@@ -107,7 +107,7 @@ $condizioni = $c['buono']['condizioni'] ?? '';
     <div>
       <div class="cod"><?= e($b['codice']) ?></div>
       <div class="fino"><?= $b['scadenza'] ? 'Valido fino al ' . e(kn_data_it($b['scadenza'], true)) : 'Senza scadenza' ?></div>
-      <div class="come">In studio mostra questo QR dal telefono, o stampato: <?= e($s['titolare'] ?: 'Katy') ?> lo legge e lo segna come usato.</div>
+      <div class="come">In studio mostra questo QR dal telefono, o stampato: <?= e($s['nome']) ?> lo legge e lo segna come usato.</div>
     </div>
   </div>
   <div class="az">

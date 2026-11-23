@@ -190,7 +190,7 @@ return [
         'key' => 'studio', 'titolo' => 'Dati dello studio', 'descr' => 'Indirizzo, telefono, social e dati obbligatori.',
         'fields' => [
             ['k' => 'nome', 't' => 'text', 'l' => 'Nome dello studio', 'max' => 40],
-            ['k' => 'titolare', 't' => 'text', 'l' => 'Titolare', 'max' => 60],
+            ['k' => 'titolare', 't' => 'text', 'l' => 'Titolare', 'max' => 60, 'help' => 'Non compare sul sito: serve solo ai dati per Google (chi ha fondato lo studio).'],
             ['k' => 'indirizzo', 't' => 'text', 'l' => 'Via e numero', 'max' => 80],
             ['k' => 'cap', 't' => 'digits', 'l' => 'CAP', 'max' => 5],
             ['k' => 'citta', 't' => 'text', 'l' => 'Comune', 'max' => 40],
